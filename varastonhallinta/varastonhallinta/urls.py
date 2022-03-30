@@ -14,8 +14,17 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import include, path
+
+from varastonhallintasovellus import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    # kirjautumissivu on etusivu joten ei URL slugia
+    path('', views.kirjautuminen),
+    path('tuotehaku', views.tuotehaku),
+    path('lainaus', views.lainaus),
+    path('palautus', views.palautus),
+    path('hallinta', views.hallinta),
+    path('tuotteiden-lisaaminen', views.lisaaminen),
 ]
