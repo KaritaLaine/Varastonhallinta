@@ -25,11 +25,12 @@ class Rooli(models.Model):
 
 class Henkilo(models.Model):
     roolinimitys_FK = models.ForeignKey(Rooli, on_delete=models.RESTRICT)
+    email = models.EmailField(max_length=254, default=None)
     etunimi = models.CharField(max_length=20)
     sukunimi = models.CharField(max_length=30)
 
     def __str__(self):
-        return self.etunimi + self.sukunimi
+        return self.etunimi + ' ' + self.sukunimi
 
 
 class Tuoteryhma(models.Model):
