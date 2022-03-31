@@ -1,9 +1,9 @@
 from django.shortcuts import render
 
-from django.http import (
-    HttpResponse, 
-    HttpResponseBadRequest,
-    HttpResponseNotFound)
+# from django.http import (
+#     HttpResponse, 
+#     HttpResponseBadRequest,
+#     HttpResponseNotFound)
 
 from django.shortcuts import render
 
@@ -13,21 +13,21 @@ def kirjautuminen(request):
     return render(request, 'kirjautuminen.html')
 
 
-def tuotehaku(request):
-    return HttpResponse('tuotehaku')
+# def tuotehaku(request):
+    # return HttpResponse('tuotehaku')
 
 
 def lainaus(request):
-    return HttpResponse('lainaussivu')
+    return render(request, 'lainaus.html')
 
 
-def palautus(request):
-    return HttpResponse('palautussivu')
+# def palautus(request):
+#     return HttpResponse('palautussivu')
 
 
 def hallinta(request):
-    return HttpResponse('hallinta')
+    return render(request, 'hallinta.html')
 
 
-def lisaaminen(request):
-    return HttpResponse('tuotteiden lisääminen')
+# def lisaaminen(request):
+#     return HttpResponse('tuotteiden lisääminen')
