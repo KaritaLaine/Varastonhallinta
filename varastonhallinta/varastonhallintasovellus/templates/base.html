@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <!-- Lataa staattiset tiedostot ja yhdistetään css-tiedostoon -->
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'base.css'%}"> 
+        <!-- Rasekon favicon -->
+        <link rel="shortcut icon" href="{% static 'favicon.svg' %}"/>
+        <!-- Lisätty Rasekon fontit Nunito Sans Light, Kanit Extrabold, Caveat Brush
+            Nunito Sans Semibold -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Caveat+Brush&family=Kanit:wght@800&family=Nunito+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+        <!-- Asettaa eri laitteille sopivan skaalauksen -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>    
+
+    <header>
+        <title>Varastonhallinta</title>
+        <div class="vasen-header">
+            <a href="{% url 'lainaus' %}"> <img class="logo" src="{% static 'Raseko-logo-vaaka_VÄRI.png' %}" alt="Lainaus"/>
+            <nav>   
+            <ul class="nav-links">
+                <!-- Ensimmäinen linkki on väliaikainen linkki takaisin kirjautumissivulle
+                <li {% if request.resolver_match.url_name == '' %}class="active"{% endif %}><a href="{% url 'kirjautuminen' %}">&larr;</a></li> -->
+                <li {% if request.resolver_match.url_name == 'lainaus' %}class="active"{% else %} class="inactive" {% endif %}><a href="{% url 'lainaus' %}">Lainaus</a></li>
+                <li {% if request.resolver_match.url_name == 'hallinta' %}class="active"{% else %} class="inactive" {% endif %}><a href="{% url 'hallinta' %}">Hallinta</a></li>
+        </div>
+        <div class="oikea-header">
+                <li class="right"><a href="{% url 'kirjautuminen' %}">Kirjaudu ulos</a></li>
+            </ul>
+        </nav>
+        </div>
+    </header>
+
+    <!-- Wrapper on vähän niinkuin pussi, jonka sisälle kaikki elementit tulee. 
+        Sen avulla on helppo optimoida esim. sivun kokoa ja muita laajia asetuksia.-->
+    <div class="wrapper">
+        {% block content %}{% endblock %}
+    </div>
+
+
+<!-- WIP Footer? jos sellainen halutaan lisätä -->
+
+    <footer>
+
+    </footer>
+</html>
