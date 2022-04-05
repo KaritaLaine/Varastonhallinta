@@ -15,6 +15,7 @@ form {
     width: 35%;
     height: 80%;
     text-align: center;
+    border-radius: 10%;
 }
 
 #raseko-logo {
@@ -26,7 +27,7 @@ form {
 
 input {
     width: 70%;
-    height: 8%;
+    height: 7%;
     margin: 10px;
     border-radius: 7px;
     border: 1px solid;
@@ -40,4 +41,8 @@ button {
     border: 1px solid;
     color: #ffffff;
     background-color: #df2070;
+}
+
+footer {
+    text-align: center;
 }
