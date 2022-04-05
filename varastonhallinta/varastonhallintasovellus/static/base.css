@@ -131,3 +131,40 @@ header {
     font-size: 12pt;
     color: #df2070;
 }
+
+/* LAINAUSTAULU*/
+
+.lainaus-keskita {
+    width: 1400px;
+    margin: auto;
+}
+
+.lainaus-taulu {
+    width: 100%;
+}
+
+.lainaus-taulu td, .lainaus-taulu th {
+    border-collapse: collapse;
+    text-align: left;
+    height: 70px;
+    padding: 0.5rem;
+}
+
+tr:nth-child(even) {
+    background-color: #efefef;
+}
+
+.lainaus-taulu th {
+    background-color: #df2070;
+    color: white;
+}
+
+/* LAINAUSTYYLITTELYÄ */
+
+#lainaus-otsikko {
+    margin: 30px 0 10px 0;
+}
+
+.lainaus-ohjeteksti {
+    margin-bottom: 20px;
+}

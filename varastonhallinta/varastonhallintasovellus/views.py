@@ -1,11 +1,11 @@
 from django.shortcuts import render
+from .models import Tuote
 
 # from django.http import (
 #     HttpResponse, 
 #     HttpResponseBadRequest,
 #     HttpResponseNotFound)
 
-from django.shortcuts import render
 
 #from .models import Henkilo
 
@@ -18,7 +18,9 @@ def kirjautuminen(request):
 
 
 def lainaus(request):
-    return render(request, 'lainaus.html')
+    tuotteet = Tuote.objects.all()
+    context = {'tuotteet':tuotteet}
+    return render(request, 'lainaus.html', context)
 
 
 # def palautus(request):

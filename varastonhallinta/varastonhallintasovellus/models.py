@@ -45,13 +45,14 @@ class Tuote(models.Model):
     tuote_id = models.IntegerField()
     nimike = models.CharField(max_length=50)
     kappalemaara = models.IntegerField()
-    tuotekuva = models.ImageField(upload_to=None, null=True, blank=True) # Ei vielä paikkaa
+    tuotekuva = models.ImageField(upload_to=None, null=True, blank=True) #BUG Ei vielä toiminnallisuutta
     hankintapaikka = models.CharField(max_length=50, null=True, blank=True)
     hankintavuosi = models.IntegerField(null=True, blank=True)
     hankintahinta = models.FloatField(null=True, blank=True)
     laskun_numero = models.IntegerField(null=True, blank=True)
     kustannuspaikka = models.CharField(max_length=10, null=True, blank=True)
     takuuaika = models.DateTimeField(null=True, blank=True)
+    varaston_nimi = models.ForeignKey(Varasto, related_name='tuotesijainti', on_delete=models.RESTRICT)
 
     def __str__(self):
         return self.nimike
@@ -62,7 +63,7 @@ class Varastotapahtuma(models.Model):
     viivakoodi_FK = models.ForeignKey(Tuote, on_delete=models.RESTRICT)
     maara = models.IntegerField(default=1)
     arkistotunnus = models.CharField(max_length=50)
-    varasto_FK = models.ForeignKey(Varasto, on_delete=models.RESTRICT)
+    varasto_FK = models.ForeignKey(Varasto, related_name='varastofk', on_delete=models.RESTRICT)
     aikaleima = models.DateTimeField()
     asiakas_FK = models.ForeignKey(Henkilo, related_name='asiakas', on_delete=models.RESTRICT)
     varastonhoitaja_FK = models.ForeignKey(Henkilo, related_name='varastonhoitaja', on_delete=models.RESTRICT)
