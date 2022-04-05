@@ -20,7 +20,6 @@ from varastonhallintasovellus import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # kirjautumissivu on etusivu joten ei URL slugia
     path('', views.kirjautuminen, name='kirjautuminen'),
     #path('tuotehaku', views.tuotehaku),
     path('lainaus/', views.lainaus, name="lainaus"),
