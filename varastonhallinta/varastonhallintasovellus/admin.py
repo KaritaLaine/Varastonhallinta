@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Varastotyyppi, Varasto, Rooli, Henkilo, Tuoteryhma, Tuote, Varastotapahtuma
+from .models import Varastotyyppi, Varasto, Henkilo, Tuoteryhma, Tuote, Varastotapahtuma
 
 
 @admin.register(Varastotyyppi)
@@ -10,11 +10,6 @@ class TuoteAdmin(admin.ModelAdmin):
 
 @admin.register(Varasto)
 class VarastoAdmin(admin.ModelAdmin):
-    pass
-
-
-@admin.register(Rooli)
-class RooliAdmin(admin.ModelAdmin):
     pass
 
 
