@@ -40,9 +40,12 @@ button {
     border-radius: 7px;
     border: 1px solid;
     color: #ffffff;
+    font-weight: bold;
     background-color: #df2070;
 }
 
-footer {
-    text-align: center;
+section > p:first-of-type {
+    color: #1b3259;
+    font-size: 1.2em;
+    font-weight: bold;
 }
