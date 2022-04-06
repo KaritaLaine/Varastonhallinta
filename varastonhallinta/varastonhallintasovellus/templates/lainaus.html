@@ -4,30 +4,34 @@
 {% block content %}
 <body>
     <div class = "lainaus-keskita">
-    <h1 class="iso_otsikko" id="lainaus-otsikko">Tervetuloa, (Opiskelijan Nimi)</h1>
-    <p class="lainaus-ohjeteksti"> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do 
-        eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut <br/> 
-        enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut 
-        aliquip ex ea commodo consequat. <br/> <br/>
-
-    <table class="lainaus-taulu">
-        <tr>
-            <th>Tuotekuva</th>
-            <th>Nimike</th>
-            <th>Kappalemäärä</th>
-            <th>Lainaa</th>
-            <th>Palauta</th>
-        </tr>
-        {%for tuote in tuotteet%}
-            <tr>
-                <td>{{tuote.tuotekuva}}</td>
-                <td>{{tuote.nimike}}</td>
-                <td>{{tuote.kappalemaara}}</td>
-                <td> - </td> <!-- WIP lainaus-toiminto -->
-                <td> - </td> <!-- WIP palautus-toiminto -->
-            </tr>
-        {%endfor%}
-    </table>
+        <h1 class="iso_otsikko" id="lainaus-otsikko">Tervetuloa, (Opiskelijan Nimi)</h1>
+        <p class="lainaus-ohjeteksti"> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do 
+            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut <br/> 
+            enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut 
+            aliquip ex ea commodo consequat. <br/> <br/>
+        
+        <div class="lainaus-scroll">
+            <table class="lainaus-taulu">
+                <div class="lainaus-otsikot">
+                    <tr>
+                        <th>Tuotekuva</th>
+                        <th>Nimike</th>
+                        <th>Kappalemäärä</th>
+                        <th>Lainaa</th>
+                        <th>Palauta</th>
+                    </tr>
+                </div>
+                {%for tuote in tuotteet%}
+                    <tr>
+                        <td>{{tuote.tuotekuva}}</td>
+                        <td>{{tuote.nimike}}</td>
+                        <td>{{tuote.kappalemaara}}</td>
+                        <td class="lainaus-nappi"> - </td> <!-- WIP lainaus-toiminto -->
+                        <td class="lainaus-nappi"> - </td> <!-- WIP palautus-toiminto -->
+                    </tr>
+                {%endfor%}
+            </table>
+        </div>
     </div>
 </body>
 {% endblock %}
