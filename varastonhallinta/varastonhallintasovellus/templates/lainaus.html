@@ -14,7 +14,6 @@
         <tr>
             <th>Tuotekuva</th>
             <th>Nimike</th>
-            <th>Sijoituspaikka</th>
             <th>Kappalemäärä</th>
             <th>Lainaa</th>
             <th>Palauta</th>
@@ -23,10 +22,9 @@
             <tr>
                 <td>{{tuote.tuotekuva}}</td>
                 <td>{{tuote.nimike}}</td>
-                <td>{{tuote.varaston_nimi}}</td>
                 <td>{{tuote.kappalemaara}}</td>
-                <td> - </td>
-                <td> - </td>
+                <td> - </td> <!-- WIP lainaus-toiminto -->
+                <td> - </td> <!-- WIP palautus-toiminto -->
             </tr>
         {%endfor%}
     </table>
