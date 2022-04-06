@@ -10,16 +10,18 @@
             <img id="raseko-logo" src="{% static 'Raseko-logo-vaaka_VÄRI.png' %}" alt="RASEKO-Logo"/>
             <h1>Kirjaudu Sisään</h1>
             <p>Kirjautuminen tapahtuu oppilaan henkilökohtaisella, koulun tarjoamalla opiskelijatunnuksella ja salasanalla</p>
+            <section>
+                <p>
+                    {% if messages %}
+                        {% for message in messages %}
+                            {{ message }}
+                        {% endfor %}
+                    {% endif %}
+                </p>
+            </section>
             <input type="text" name="käyttäjätunnus" placeholder="Käyttäjätunnus"><br>
             <input type="password" name="salasana" placeholder="Salasana"><br>
             <button type="submit">Kirjaudu Sisään</button>
-            <footer id="login-unsuccessful">
-                {% if messages %}
-                    {% for message in messages %}
-                        {{ message }}
-                    {% endfor %}
-                {% endif %}
-            </footer>
         </form>
     </body>
 </html>

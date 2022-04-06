@@ -21,6 +21,7 @@ from varastonhallintasovellus import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.kirjautuminen, name='kirjautuminen'),
+    path('uloskirjautuminen/', views.uloskirjautuminen, name="uloskirjautuminen"),
     #path('tuotehaku', views.tuotehaku),
     path('lainaus/', views.lainaus, name="lainaus"),
     #path('palautus', views.palautus),

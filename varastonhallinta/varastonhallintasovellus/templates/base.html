@@ -28,7 +28,7 @@
                 <li {% if request.resolver_match.url_name == 'hallinta' %}class="active"{% else %} class="inactive" {% endif %}><a href="{% url 'hallinta' %}">Hallinta</a></li>
         </div>
         <div class="oikea-header">
-                <li class="right"><a href="{% url 'kirjautuminen' %}">Kirjaudu ulos</a></li>
+                <li class="right"><a href="{% url 'uloskirjautuminen' %}">Kirjaudu ulos</a></li>
             </ul>
         </nav>
         </div>
