@@ -1,17 +1,25 @@
-<!-- Kirjautumissivu -->
-
 <!DOCTYPE html>
 <html lang="fi">
     <head>
-        <!-- Väliaikaset linkit koodin navigoinnin helpottamiseks -->
-        <ul class="nav-links">
-            <li><a href="{% url 'lainaus' %}">Lainaus</a></li>
-            <li><a href="{% url 'hallinta' %}">Hallinta</a></li>
-        </ul>
-        
-        <!--<title>Todo -- {% block title %}{% endblock %}</title>-->
+        {% load static %}
+        <link rel="stylesheet" type="text/css" href="{% static 'kirjautuminen.css' %}">
     </head>
     <body>
-        <h1>OTSIKKO</h1>
+        <form action="" method="post">
+            {% csrf_token %}
+            <img id="raseko-logo" src="{% static 'Raseko-logo-vaaka_VÄRI.png' %}" alt="RASEKO-Logo"/>
+            <h1>Kirjaudu Sisään</h1>
+            <p>Kirjautuminen tapahtuu oppilaan henkilökohtaisella, koulun tarjoamalla opiskelijatunnuksella ja salasanalla</p>
+            <input type="text" name="käyttäjätunnus" placeholder="Käyttäjätunnus"><br>
+            <input type="password" name="salasana" placeholder="Salasana"><br>
+            <button type="submit">Kirjaudu Sisään</button>
+            <footer id="login-unsuccessful">
+                {% if messages %}
+                    {% for message in messages %}
+                        {{ message }}
+                    {% endfor %}
+                {% endif %}
+            </footer>
+        </form>
     </body>
 </html>

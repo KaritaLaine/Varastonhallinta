@@ -1,31 +1,29 @@
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 # Create your models here.
 class Varastotyyppi(models.Model):
-    varastotyypin_nimi = models.CharField(max_length=30)
+    nimi = models.CharField(max_length=30)
 
     def __str__(self):
-        return self.varastotyypin_nimi
+        return self.nimi
 
 
 class Varasto(models.Model):
-    varaston_nimi = models.CharField(max_length=30)
-    varastotyyppi_FK = models.ForeignKey(Varastotyyppi, on_delete=models.RESTRICT) # MIETITÄÄN VIELÄ!
+    nimi = models.CharField(max_length=30)
+    varastotyyppi = models.ForeignKey(Varastotyyppi, on_delete=models.RESTRICT) # MIETITÄÄN VIELÄ!
 
     def __str__(self):
-        return self.varaston_nimi
-
-
-class Rooli(models.Model):
-    roolinimitys = models.CharField(primary_key=True, max_length=20)
-
-    def __str__(self):
-        return self.roolinimitys
+        return self.nimi
 
 
 class Henkilo(models.Model):
-    roolinimitys_FK = models.ForeignKey(Rooli, on_delete=models.RESTRICT)
+    rooli = models.CharField(max_length=20, default=None, choices=[
+        ("oppilas", _("Oppilas")),
+        ("opettaja", _("Opettaja")),
+        ])
     email = models.EmailField(max_length=254, default=None)
+    password = models.CharField(max_length=30, default=None)
     etunimi = models.CharField(max_length=20)
     sukunimi = models.CharField(max_length=30)
 
@@ -34,10 +32,10 @@ class Henkilo(models.Model):
 
 
 class Tuoteryhma(models.Model):
-    ryhman_nimi = models.CharField(max_length=50)
+    nimi = models.CharField(max_length=50)
 
     def __str__(self):
-        return self.ryhman_nimi
+        return self.nimi
 
 
 class Tuote(models.Model):
@@ -60,10 +58,10 @@ class Tuote(models.Model):
 
 class Varastotapahtuma(models.Model):
     palautuspaiva = models.DateTimeField()
-    viivakoodi_FK = models.ForeignKey(Tuote, on_delete=models.RESTRICT)
+    tuote = models.ForeignKey(Tuote, on_delete=models.RESTRICT)
     maara = models.IntegerField(default=1)
     arkistotunnus = models.CharField(max_length=50)
-    varasto_FK = models.ForeignKey(Varasto, related_name='varastofk', on_delete=models.RESTRICT)
+    varasto = models.ForeignKey(Varasto, on_delete=models.RESTRICT)
     aikaleima = models.DateTimeField()
-    asiakas_FK = models.ForeignKey(Henkilo, related_name='asiakas', on_delete=models.RESTRICT)
-    varastonhoitaja_FK = models.ForeignKey(Henkilo, related_name='varastonhoitaja', on_delete=models.RESTRICT)
+    asiakas = models.ForeignKey(Henkilo, related_name='asiakas', on_delete=models.RESTRICT)
+    varastonhoitaja = models.ForeignKey(Henkilo, related_name='varastonhoitaja', on_delete=models.RESTRICT)
