@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+from .models import Tuote
+
 #from django.contrib.auth import login, logout
 
 # from django.http import (
@@ -30,7 +32,9 @@ def kirjautuminen(request):
 
 
 def lainaus(request):
-    return render(request, 'lainaus.html')
+    tuotteet = Tuote.objects.all()
+    context = {'tuotteet':tuotteet}
+    return render(request, 'lainaus.html', context)
 
 
 # def palautus(request):
