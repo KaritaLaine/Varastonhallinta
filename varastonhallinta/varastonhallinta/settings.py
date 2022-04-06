@@ -122,3 +122,10 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Uudelleenohjataan etusivulle (kirjautumissivulle) jos käyttäjä ei ole kirjautunut ja yrittää
+# mennä kirjautumista vaativalle sivulle --> KATSO "views.py" LISÄTIETOJA VARTEN!
+LOGIN_URL = "/"
+
+# Uudelleenohjataan etusivulle (kirjautumissivulle) kun käyttäjä kirjautuu ulos
+LOGOUT_REDIRECT_URL = "/"
