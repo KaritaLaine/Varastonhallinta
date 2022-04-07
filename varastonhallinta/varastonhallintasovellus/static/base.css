@@ -162,7 +162,6 @@ tr:nth-child(even) {
     top: 0;
 }
 
-
 .lainaus-scroll {
     overflow-x:auto;
     height: 560px;
@@ -181,7 +180,6 @@ tr:nth-child(even) {
 
 /* LAINAUS SCROLL */
   
-  /* Works on Chrome, Edge, and Safari */
   *::-webkit-scrollbar {
     width: 12px;
   }
@@ -196,7 +194,6 @@ tr:nth-child(even) {
     border: 3px solid #efefef;
   }
 
-    /* Handle on hover */
     ::-webkit-scrollbar-thumb:hover {
     background: #6b6b6b
   }
