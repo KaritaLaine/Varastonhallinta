@@ -1,7 +1,9 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+#from django.contrib.auth.models import AbstractUser
+#from django.contrib.auth.models import User
 
-# Create your models here.
+
 class Varastotyyppi(models.Model):
     nimi = models.CharField(max_length=30)
 
@@ -18,6 +20,9 @@ class Varasto(models.Model):
 
 
 class Henkilo(models.Model):
+    # KYSY TUOMAKSELTA MITEN TÄMÄ KANNATTAA TEHDÄ!
+    #henkilo = models.OneToOneField(User, on_delete=models.CASCADE) ?????
+    # OR SOME "class Henkilo(AbstractUser)" ?????
     rooli = models.CharField(max_length=20, default=None, choices=[
         ("oppilas", _("Oppilas")),
         ("opettaja", _("Opettaja")),
