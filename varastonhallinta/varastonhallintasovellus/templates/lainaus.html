@@ -15,9 +15,9 @@
             enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut 
             aliquip ex ea commodo consequat. <br/> <br/>
         
+        <!-- BUG: searchbar-toiminto -->
         <form method="get">
-            {{filter.form}}
-            <button type="submit"> Search </button>
+            <!-- <button type="submit"> Search </button> !-->
         </form> </br>
 
         <div class="lainaus-scroll">
@@ -36,8 +36,8 @@
                         <td>{{tuote.tuotekuva}}</td>
                         <td>{{tuote.nimike}}</td>
                         <td>{{tuote.kappalemaara}}</td>
-                        <td class="lainaus-nappi"> - </td> <!-- WIP lainaus-toiminto -->
-                        <td class="lainaus-nappi"> - </td> <!-- WIP palautus-toiminto -->
+                        <td class="lainaus-nappi"> - </td> <!-- BUG: lainaus-toiminto -->
+                        <td class="lainaus-nappi"> - </td> <!-- BUG: palautus-toiminto -->
                     </tr>
                 {%endfor%}
             </table>
