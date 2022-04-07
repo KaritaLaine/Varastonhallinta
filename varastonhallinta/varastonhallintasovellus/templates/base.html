@@ -17,7 +17,9 @@
     </head>    
 
     <header>
-        <title>Varastonhallinta</title>
+    <!-- Sivun nimeä varten -->
+    {%block title%} {%endblock title%}
+    
         <div class="vasen-header">
             <a href="{% url 'lainaus' %}"> <img class="logo" src="{% static 'Raseko-logo-vaaka_VÄRI.png' %}" alt="Lainaus"/>
             <nav>   
@@ -37,8 +39,11 @@
     <!-- Wrapper on vähän niinkuin pussi, jonka sisälle kaikki elementit tulee. 
         Sen avulla on helppo optimoida esim. sivun kokoa ja muita laajia asetuksia.-->
     <div class="wrapper">
-        {% block content %}{% endblock %}
+        {%block content%} {%endblock%}
     </div>
+
+    <!-- Script varten -->
+    {%block scripts%} {%endblock scripts%}
 
 
 <!-- WIP Footer? jos sellainen halutaan lisätä -->

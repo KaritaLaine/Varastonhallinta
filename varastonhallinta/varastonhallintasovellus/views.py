@@ -1,4 +1,6 @@
 from django.shortcuts import render, redirect
+from django.views.generic import ListView #???
+import json
 # Djangon autentikaatiot sisään- ja uloskirjautumiseen
 from django.contrib.auth import authenticate, login, logout
 # Djangon sisäänkirjautumisfunktio jolla suojataan näkymät jotta käyttäjän on
@@ -10,6 +12,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
 from .models import Tuote
+from .filters import TuoteFilter
 
 
 def kirjautuminen(request):
@@ -44,8 +47,14 @@ def uloskirjautuminen(request):
 @login_required
 def lainaus(request):
     tuotteet = Tuote.objects.all()
-    context = {'tuotteet':tuotteet}
+    
+    filter = TuoteFilter(request.GET, queryset=tuotteet)
+    tuotteet = filter.qs
+
+
+    context = {'tuotteet':tuotteet, 'filter':filter}
     return render(request, 'lainaus.html', context)
+
 
 
 #@login_required

@@ -154,6 +154,10 @@ tr:nth-child(even) {
     background-color: #efefef;
 }
 
+tr:nth-child(odd) {
+    background-color: #fafafa;
+}
+
 .lainaus-taulu th {
     background-color: #df2070;
     color: white;

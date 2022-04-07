@@ -38,7 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'varastonhallintasovellus',
+    'django_filters',
 ]
+
+FILTERS_DISABLE_HELP_TEXT = True
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

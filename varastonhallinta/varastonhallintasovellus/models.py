@@ -58,7 +58,7 @@ class Tuote(models.Model):
     varaston_nimi = models.ForeignKey(Varasto, related_name='tuotesijainti', on_delete=models.RESTRICT)
 
     def __str__(self):
-        return self.nimike
+        return str(self.nimike) #NOTE KOKEILEN
 
 
 class Varastotapahtuma(models.Model):
