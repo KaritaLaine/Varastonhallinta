@@ -48,7 +48,7 @@ class Tuote(models.Model):
     tuote_id = models.IntegerField()
     nimike = models.CharField(max_length=50)
     kappalemaara = models.IntegerField()
-    tuotekuva = models.ImageField(upload_to=None, null=True, blank=True) #BUG Ei vielä toiminnallisuutta
+    tuotekuva = models.ImageField(upload_to='tuote/%Y/%d/%m', null=True, blank=True) #BUG Ei vielä toiminnallisuutta
     hankintapaikka = models.CharField(max_length=50, null=True, blank=True)
     hankintavuosi = models.IntegerField(null=True, blank=True)
     hankintahinta = models.FloatField(null=True, blank=True)
@@ -58,7 +58,7 @@ class Tuote(models.Model):
     varaston_nimi = models.ForeignKey(Varasto, related_name='tuotesijainti', on_delete=models.RESTRICT)
 
     def __str__(self):
-        return str(self.nimike) #NOTE KOKEILEN
+        return self.nimike
 
 
 class Varastotapahtuma(models.Model):
