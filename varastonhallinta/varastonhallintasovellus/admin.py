@@ -4,14 +4,18 @@ from django.contrib.auth.admin import UserAdmin
 from .models import Varastotyyppi, Varasto, Henkilo, Tuoteryhma, Tuote, Varastotapahtuma
 
 
-
 class HenkiloAdmin(UserAdmin):
+
+    readonly_fields = [
+        'date_joined',
+    ]
+    
     list_display = (
         'username', 'email', 'first_name', 'last_name', 'rooli'
         )
 
     list_filter = (
-        'rooli',
+        'rooli', 'vastuuopettaja',
     )
 
     fieldsets = (
@@ -31,7 +35,7 @@ class HenkiloAdmin(UserAdmin):
             'fields': ('last_login', 'date_joined')
         }),
         ('Additional info', {
-            'fields': ('rooli',)
+            'fields': ('rooli', 'vastuuopettaja',)
         })
     )
 
@@ -52,7 +56,7 @@ class HenkiloAdmin(UserAdmin):
             'fields': ('last_login', 'date_joined')
         }),
         ('Additional info', {
-            'fields': ('rooli',)
+            'fields': ('rooli', 'vastuuopettaja',)
         })
     )
 
