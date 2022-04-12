@@ -146,14 +146,7 @@ header {
     text-align: left;
     height: 80px;
     padding: 0.5rem;
-}
-
-tr:nth-child(even) {
-    background-color: #efefef;
-}
-
-tr:nth-child(odd) {
-    background-color: #fafafa;
+    min-width: 270px ;
 }
 
 .lainaus-taulu th {
@@ -165,7 +158,7 @@ tr:nth-child(odd) {
 }
 
 .lainaus-scroll {
-    overflow-x:auto;
+    overflow-y:scroll;
     height: 560px;
     position: relative;
 }

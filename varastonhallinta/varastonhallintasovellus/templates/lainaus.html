@@ -13,35 +13,73 @@
         <p class="lainaus-ohjeteksti"> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do 
             eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut <br/> 
             enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut 
-            aliquip ex ea commodo consequat. <br/> <br/>
+            aliquip ex ea commodo consequat. <br/>
         
-        <!-- BUG: searchbar-toiminto -->
-        <form method="get">
-            <!-- <button type="submit"> Search </button> !-->
-        </form> </br>
+        <!-- Hakukenttä -->
+        <div class="form-group">
+            <input type="text" class="form-control" id="hakukentta" placeholder="Hae"/>
+        </div>
+        
+        <!-- Ei tulosta -näkymä -->
+        <div class="ei-tulosta">
+            <p> Ei hakutulosta </p>
+        </div>
 
+        <div class="taulukko-perus">
         <div class="lainaus-scroll">
-            <table class="lainaus-taulu">
-                <div class="lainaus-otsikot">
-                    <tr>
-                        <th>Tuotekuva</th>
-                        <th>Nimike</th>
-                        <th>Kappalemäärä</th>
-                        <th>Lainaa</th>
-                        <th>Palauta</th>
-                    </tr>
-                </div>
-                {%for tuote in tuotteet%}
-                    <tr>
-                        <td>{{tuote.tuotekuva}}</td>
-                        <td>{{tuote.nimike}}</td>
-                        <td>{{tuote.kappalemaara}}</td>
-                        <td class="lainaus-nappi"> - </td> <!-- BUG: lainaus-toiminto -->
-                        <td class="lainaus-nappi"> - </td> <!-- BUG: palautus-toiminto -->
-                    </tr>
-                {%endfor%}
-            </table>
+                <table class="lainaus-taulu">
+                    <div class="lainaus-otsikot">
+                        <thead>
+                            <tr>
+                                <th>Tuotekuva</th>
+                                <th>Nimike</th>
+                                <th>Kappalemäärä</th>
+                                <th>Lainaa</th>
+                                <th>Palauta</th>
+                            </tr>
+                        </thead>
+                    </div>
+                    {%for tuote in tuotteet%}
+                        <tbody>
+                            <tr>
+                                <td>{{tuote.tuotekuva}}</td>
+                                <td>{{tuote.nimike}}</td>
+                                <td>{{tuote.kappalemaara}}</td>
+                                <td class="lainaus-nappi"> - </td> <!-- BUG: lainaus-toiminto -->
+                                <td class="lainaus-nappi"> - </td> <!-- BUG: palautus-toiminto -->
+                            </tr>
+                        </tbody>
+                    {%endfor%}
+                </table>
+            </div>
+        </div>
+        
+        <div class="taulukko-tulos">
+            <div class="lainaus-scroll">
+                <table class="lainaus-taulu">
+                    <div class="lainaus-otsikot">
+                        <thead>
+                            <tr>
+                                <th>Tuotekuva</th>
+                                <th>Nimike</th>
+                                <th>Kappalemäärä</th>
+                                <th>Lainaa</th>
+                                <th>Palauta</th>
+                            </tr>
+                        </thead>
+                    </div>
+                    <tbody class="table-body">
+                        <!-- Tänne tulostuu hakukentta.js-tiedostosta taulurivejä -->
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </body>
-{% endblock %}
+{% endblock content%}
+
+<!-- Linkataan hakukentta.js -->
+{% load static %}
+{%block scripts%}
+<script src="{% static 'hakukentta.js' %}"></script>
+{%endblock scripts%}
