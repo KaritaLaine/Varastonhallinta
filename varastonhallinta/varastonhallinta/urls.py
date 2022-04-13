@@ -28,5 +28,5 @@ urlpatterns = [
     path('tuotehaku/', csrf_exempt(views.tuotehaku), name="tuotehaku"),
     path('lainaus/', views.lainaus, name='lainaus'),
     #path('palautus', views.palautus, name='palautus'),
-    #path('tuotteiden-lisaaminen', views.lisaaminen, name='lisaaminen'),
+    path('lisaa-tuotteita', views.TuotteidenLisaaminenView.as_view(), name='lisaaminen'),
 ]
