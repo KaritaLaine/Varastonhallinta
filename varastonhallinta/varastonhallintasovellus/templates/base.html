@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <!-- Tarvittavat meta-tägit. Viewport asettaa eri laitteille sopivan skaalauksen -->
         <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <!-- Lataa staattiset tiedostot ja yhdistetään css-tiedostoon -->
         {% load static %}
         <link rel="stylesheet" href="{% static 'base.css'%}"> 
@@ -12,18 +14,16 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Caveat+Brush&family=Kanit:wght@800&family=Nunito+Sans:wght@300;400;600&display=swap" rel="stylesheet">
-        <!-- Asettaa eri laitteille sopivan skaalauksen -->
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>    
 
     <header>
-        <title>Varastonhallinta</title>
+    <!-- Sivun nimeä varten -->
+    {%block title%} {%endblock title%}
+    
         <div class="vasen-header">
             <a href="{% url 'lainaus' %}"> <img class="logo" src="{% static 'Raseko-logo-vaaka_VÄRI.png' %}" alt="Lainaus"/>
             <nav>   
             <ul class="nav-links">
-                <!-- Ensimmäinen linkki on väliaikainen linkki takaisin kirjautumissivulle
-                <li {% if request.resolver_match.url_name == '' %}class="active"{% endif %}><a href="{% url 'kirjautuminen' %}">&larr;</a></li> -->
                 <li {% if request.resolver_match.url_name == 'lainaus' %}class="active"{% else %} class="inactive" {% endif %}><a href="{% url 'lainaus' %}">Lainaus</a></li>
                 <li {% if request.resolver_match.url_name == 'hallinta' %}class="active"{% else %} class="inactive" {% endif %}><a href="{% url 'etusivu' %}">Hallinta</a></li>
         </div>
@@ -36,9 +36,14 @@
 
     <!-- Wrapper on vähän niinkuin pussi, jonka sisälle kaikki elementit tulee. 
         Sen avulla on helppo optimoida esim. sivun kokoa ja muita laajia asetuksia.-->
+    <div class="container"
     <div class="wrapper">
-        {% block content %}{% endblock %}
+        {%block content%} {%endblock content%}
     </div>
+    </div>
+
+    <!-- Script varten -->
+    {%block scripts%} {%endblock scripts%}
 
 
 <!-- WIP Footer? jos sellainen halutaan lisätä -->

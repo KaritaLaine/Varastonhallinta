@@ -13,6 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib import admin
 from django.urls import path
 
@@ -25,6 +26,7 @@ urlpatterns = [
     path('uloskirjautuminen/', views.uloskirjautuminen, name="uloskirjautuminen"),
     #path('tuotehaku', views.tuotehaku),
     path('lainaus/', views.lainaus, name="lainaus"),
+    path('tuotehaku/', csrf_exempt(views.tuotehaku), name="tuotehaku"), 
     #path('palautus', views.palautus),
     #path('tuotteiden-lisaaminen', views.lisaaminen),
 ]
