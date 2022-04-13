@@ -106,11 +106,26 @@ header {
     height: 100%;
     margin: auto;
     padding-top: 5px;
-    /* Jos haluaa sivuista ruudun kokoisen:
-        min-height: 100vh; */
-    /* leipätekstin fontti */
-    font-size: 12px;
 }
+
+/* JOS HALUTAAN FOOTER 
+
+#container {
+    position: relative;
+    min-height: 100vh; >> Jos haluaa sivuista ruudun kokoisen
+  }
+  
+#wrapper {
+    padding-bottom: 60px; >> Sama kuin footerin pituus
+}
+  
+footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 60px; >> Footerin pituus           
+  background-color: #122340;
+} */
 
 /* FONTTEJA RASEKON OHJEIDEN MUKAAN */
 
@@ -132,7 +147,7 @@ header {
     color: #df2070;
 }
 
-/* LAINAUSTAULU*/
+/* LAINAUSTAULU */
 
 .lainaus-keskita {
     width: 1400px;
@@ -148,10 +163,15 @@ header {
     text-align: left;
     height: 80px;
     padding: 0.5rem;
+    min-width: 270px ;
 }
 
-tr:nth-child(even) {
+table.lainaus-taulu tr:nth-child(odd){
     background-color: #efefef;
+}
+
+table.lainaus-taulu tr:nth-child(even){
+    background-color: #fafafa;
 }
 
 .lainaus-taulu th {
@@ -163,7 +183,7 @@ tr:nth-child(even) {
 }
 
 .lainaus-scroll {
-    overflow-x:auto;
+    overflow-y:scroll;
     height: 560px;
     position: relative;
 }
@@ -180,20 +200,22 @@ tr:nth-child(even) {
 
 /* LAINAUS SCROLL */
   
-  *::-webkit-scrollbar {
+*::-webkit-scrollbar {
     width: 12px;
-  }
-  
-  *::-webkit-scrollbar-track {
+}
+
+*::-webkit-scrollbar-track {
     background: #efefef
-  }
-  
-  *::-webkit-scrollbar-thumb {
+}
+
+*::-webkit-scrollbar-thumb {
     background-color: grey;
     border-radius: 10px;
     border: 3px solid #efefef;
-  }
+}
 
-    ::-webkit-scrollbar-thumb:hover {
+::-webkit-scrollbar-thumb:hover {
     background: #6b6b6b
-  }
+}
+
+/* LAINAUS SEARCH BAR /*

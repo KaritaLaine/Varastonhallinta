@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
-
-# Importit kirjautumiseen & uloskirjautuminen
+# Tarvittavat json-importit hakukentän toimimiseen
+import json
+from django.http import JsonResponse
+# Djangon autentikaatiot sisään- ja uloskirjautumiseen
 from django.contrib.auth import authenticate, login, logout
 # MUUT KIRJAUTUMISEEN / ULOSKIRJAUTUMISEEN TARVITTAVAT ASETUKSET
 # LÖYTYVÄT --> settings.py!
@@ -91,8 +93,20 @@ class EtusivuView(KaikkiKayttajatUserMixin, TemplateView):
 @login_required
 def lainaus(request):
     tuotteet = Tuote.objects.all()
-    context = {'tuotteet':tuotteet}
+    context = {'tuotteet':tuotteet,}
     return render(request, 'lainaus.html', context)
+
+
+def tuotehaku(request):
+    if request.method=='POST':
+        # Hakuun syötettävät asiat muutetaan python dictionaryksi
+        haku_str = json.loads(request.body).get('hakuteksti')
+        # Tallentaa tuotteet-muuttujaan haut, jotka vastaavat haun sisältöä
+        tuotteet = Tuote.objects.filter(nimike__icontains=haku_str)
+    data = tuotteet.values()
+    # Palauttaa tulokset JSON-muodossa
+    return JsonResponse(list(data), safe=False)
+
 
 
 #@login_required
