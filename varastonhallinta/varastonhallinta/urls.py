@@ -20,13 +20,13 @@ from django.urls import path
 from varastonhallintasovellus import views
 
 urlpatterns = [
-    path('', views.hallinta, name='etusivu'),
     path('admin/', admin.site.urls),
-    path('login/', views.kirjautuminen, name='kirjautuminen'),
-    path('uloskirjautuminen/', views.uloskirjautuminen, name="uloskirjautuminen"),
-    #path('tuotehaku', views.tuotehaku),
-    path('lainaus/', views.lainaus, name="lainaus"),
-    path('tuotehaku/', csrf_exempt(views.tuotehaku), name="tuotehaku"), 
-    #path('palautus', views.palautus),
-    #path('tuotteiden-lisaaminen', views.lisaaminen),
+    path('', views.EtusivuView.as_view(), name='etusivu'),
+    path('kirjautuminen/', views.kirjautuminen, name='kirjautuminen'),
+    path('uloskirjautuminen/', views.uloskirjautuminen, name='uloskirjautuminen'),
+    path('hallinta/', views.HallintaView.as_view(), name='hallinta'),
+    path('tuotehaku/', csrf_exempt(views.tuotehaku), name="tuotehaku"),
+    path('lainaus/', views.lainaus, name='lainaus'),
+    #path('palautus', views.palautus, name='palautus'),
+    #path('tuotteiden-lisaaminen', views.lisaaminen, name='lisaaminen'),
 ]

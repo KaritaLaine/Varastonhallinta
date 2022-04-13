@@ -132,7 +132,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Uudelleenohjataan etusivulle (kirjautumissivulle) jos käyttäjä ei ole kirjautunut ja yrittää
 # mennä kirjautumista vaativalle sivulle --> KATSO "views.py" LISÄTIETOJA VARTEN!
-LOGIN_URL = "/login/"
+LOGIN_URL = "/kirjautuminen/"
 
 # Uudelleenohjataan etusivulle (kirjautumissivulle) kun käyttäjä kirjautuu ulos
 LOGOUT_REDIRECT_URL = "/"
