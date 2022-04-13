@@ -180,6 +180,10 @@ footer {
     top: 0;
 }
 
+.lainaus-taulu tr:nth-child(odd){
+    background-color: #1b32590a;
+}
+
 .lainaus-scroll {
     overflow-y:scroll;
     height: 560px;
