@@ -39,17 +39,17 @@
                             </tr>
                         </thead>
                     </div>
-                    {%for tuote in tuotteet%}
                         <tbody>
-                            <tr>
-                                <td>{{tuote.tuotekuva}}</td>
-                                <td>{{tuote.nimike}}</td>
-                                <td>{{tuote.kappalemaara}}</td>
-                                <td class="lainaus-nappi"> - </td> <!-- BUG: lainaus-toiminto -->
-                                <td class="lainaus-nappi"> - </td> <!-- BUG: palautus-toiminto -->
-                            </tr>
+                            {%for tuote in tuotteet%}
+                                <tr>
+                                    <td>{{tuote.tuotekuva}}</td>
+                                    <td>{{tuote.nimike}}</td>
+                                    <td>{{tuote.kappalemaara}}</td>
+                                    <td class="lainaus-nappi"> - </td> <!-- BUG: lainaus-toiminto -->
+                                    <td class="lainaus-nappi"> - </td> <!-- BUG: palautus-toiminto -->
+                                </tr>
+                            {%endfor%}
                         </tbody>
-                    {%endfor%}
                 </table>
             </div>
         </div>
