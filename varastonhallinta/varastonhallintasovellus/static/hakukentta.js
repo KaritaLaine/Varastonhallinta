@@ -57,7 +57,6 @@ hakukentta.addEventListener('keyup', (e) => {
                             <td>${tuote.nimike}</td>
                             <td>${tuote.kappalemaara}</td>
                             <td> - </td>
-                            <td> - </td>
                         </tr>`;
                     });
                 }
