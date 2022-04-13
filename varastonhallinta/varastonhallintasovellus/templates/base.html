@@ -17,15 +17,22 @@
     </head>    
 
     <header>
-        <title>Varastonhallinta</title>
+        <title>{% block title %}Varastonhallinta{% endblock %}</title>
         <div class="vasen-header">
-            <a href="{% url 'lainaus' %}"> <img class="logo" src="{% static 'Raseko-logo-vaaka_VÄRI.png' %}" alt="Lainaus"/>
+            <a href="{% url 'etusivu' %}"> <img class="logo" src="{% static 'Raseko-logo-vaaka_VÄRI.png' %}" alt="Raseko Logo"/>
             <nav>   
             <ul class="nav-links">
-                <!-- Ensimmäinen linkki on väliaikainen linkki takaisin kirjautumissivulle
-                <li {% if request.resolver_match.url_name == '' %}class="active"{% endif %}><a href="{% url 'kirjautuminen' %}">&larr;</a></li> -->
-                <li {% if request.resolver_match.url_name == 'lainaus' %}class="active"{% else %} class="inactive" {% endif %}><a href="{% url 'lainaus' %}">Lainaus</a></li>
-                <li {% if request.resolver_match.url_name == 'hallinta' %}class="active"{% else %} class="inactive" {% endif %}><a href="{% url 'etusivu' %}">Hallinta</a></li>
+                {% if request.user.rooli == 'varastonhoitaja' %}
+                    {% comment %} <li {% if request.resolver_match.url_name == 'lainaus' %}class="active"{% else %} class="inactive" {% endif %}><a href="{% url 'lainaus' %}">Lainaus</a></li>
+                    <li {% if request.resolver_match.url_name == 'hallinta' %}class="active"{% else %} class="inactive" {% endif %}><a href="{% url 'hallinta' %}">Hallinta</a></li> {% endcomment %}
+                    <li {% if request.resolver_match.url_name == 'hallinta' %}class="active"{% else %} class="inactive" {% endif %}><a href="#">Varastonhoitaja</a></li>
+                {% elif request.user.rooli == 'opettaja' %}
+                    <li {% if request.resolver_match.url_name == 'lainaus' %}class="active"{% else %} class="inactive" {% endif %}><a href="#">Opettaja</a></li>
+                {% elif request.user.rooli == 'hallinto' %}
+                    <li {% if request.resolver_match.url_name == 'lainaus' %}class="active"{% else %} class="inactive" {% endif %}><a href="#">Hallinto</a></li>
+                {% else %}
+                    <li {% if request.resolver_match.url_name == 'lainaus' %}class="active"{% else %} class="inactive" {% endif %}><a href="#">Oppilas</a></li>
+                {% endif %}
         </div>
         <div class="oikea-header">
                 <li class="right"><a href="{% url 'uloskirjautuminen' %}">Kirjaudu ulos</a></li>
