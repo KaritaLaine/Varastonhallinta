@@ -22,7 +22,7 @@ class Henkilo(AbstractUser):
 
 
 class Varastotyyppi(models.Model):
-    nimi = models.CharField(max_length=30)
+    nimi = models.CharField(max_length=50)
 
     class Meta:
         verbose_name_plural = "Varastotyypit"
@@ -32,8 +32,8 @@ class Varastotyyppi(models.Model):
 
 
 class Varasto(models.Model):
-    nimi = models.CharField(max_length=30)
-    varastotyyppi = models.ForeignKey(Varastotyyppi, on_delete=models.RESTRICT) # MIETITÄÄN VIELÄ!
+    nimi = models.CharField(max_length=50)
+    varastotyyppi = models.ForeignKey(Varastotyyppi, on_delete=models.RESTRICT)
 
     class Meta:
         verbose_name_plural = "Varastot"
@@ -53,19 +53,19 @@ class Tuoteryhma(models.Model):
 
 
 class Tuote(models.Model):
-    viivakoodi = models.CharField(primary_key=True, max_length=30)
-    tuote_id = models.IntegerField()
+    viivakoodi = models.CharField(max_length=30)
     nimike = models.CharField(max_length=50)
-    kappalemaara = models.IntegerField(validators=[MinValueValidator(1)], default=1)
+    valmistaja = models.CharField(max_length=100, null=True, blank=True)
+    kappalemaara = models.IntegerField(validators=[MinValueValidator(1)], default=1, verbose_name="kappalemäärä")
     tuotekuva = models.ImageField(upload_to=None, null=True, blank=True) #BUG Ei vielä toiminnallisuutta
     hankintapaikka = models.CharField(max_length=50, null=True, blank=True)
     hankintavuosi = models.IntegerField(null=True, blank=True)
-    hankintapaiva = models.DateTimeField(null=True, blank=True)
+    hankintapaiva = models.DateField(null=True, blank=True, verbose_name="hankintapäivä")
     hankintahinta = models.FloatField(null=True, blank=True)
     laskun_numero = models.IntegerField(null=True, blank=True)
     kustannuspaikka = models.CharField(max_length=10, null=True, blank=True)
-    takuuaika = models.DateTimeField(null=True, blank=True)
-    varaston_nimi = models.ForeignKey(Varasto, related_name="tuotesijainti", on_delete=models.RESTRICT)
+    takuuaika = models.DateField(null=True, blank=True, verbose_name="takuun päättymispäivä")
+    varaston_nimi = models.ForeignKey(Varasto, on_delete=models.RESTRICT)
 
     class Meta:
         verbose_name_plural = "Tuotteet"
@@ -76,11 +76,11 @@ class Tuote(models.Model):
 
 class Varastotapahtuma(models.Model):
     tuote = models.ForeignKey(Tuote, on_delete=models.RESTRICT)
-    maara = models.IntegerField(validators=[MinValueValidator(1)], default=1)
+    maara = models.IntegerField(validators=[MinValueValidator(1)], default=1, verbose_name="määrä")
     arkistotunnus = models.CharField(max_length=50)
-    varasto = models.ForeignKey(Varasto, on_delete=models.RESTRICT, related_name="varastosta")
-    aikaleima = models.DateTimeField(auto_now=True)
-    palautuspaiva = models.DateTimeField()
+    varasto = models.ForeignKey(Varasto, on_delete=models.RESTRICT)
+    aikaleima = models.DateField(auto_now=True)
+    palautuspaiva = models.DateField(verbose_name="palautuspäivä")
     asiakas = models.ForeignKey(Henkilo, related_name="asiakas", on_delete=models.RESTRICT)
     varastonhoitaja = models.ForeignKey(Henkilo, related_name="varastonhoitaja", on_delete=models.RESTRICT)
 
