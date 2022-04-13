@@ -25,7 +25,7 @@
             <nav>   
             <ul class="nav-links">
                 <li {% if request.resolver_match.url_name == 'lainaus' %}class="active"{% else %} class="inactive" {% endif %}><a href="{% url 'lainaus' %}">Lainaus</a></li>
-                <li {% if request.resolver_match.url_name == 'hallinta' %}class="active"{% else %} class="inactive" {% endif %}><a href="{% url 'hallinta' %}">Hallinta</a></li>
+                <li {% if request.resolver_match.url_name == 'hallinta' %}class="active"{% else %} class="inactive" {% endif %}><a href="{% url 'etusivu' %}">Hallinta</a></li>
         </div>
         <div class="oikea-header">
                 <li class="right"><a href="{% url 'uloskirjautuminen' %}">Kirjaudu ulos</a></li>

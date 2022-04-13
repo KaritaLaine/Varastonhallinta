@@ -14,23 +14,24 @@ from django.contrib import messages
 
 from .models import Tuote
 
+# if request.user.is_authenticated:
+#         return redirect('hallinta/')
+# else:
+
 
 def kirjautuminen(request):
-    if request.user.is_authenticated:
-        return redirect('hallinta/')
-    else:
-        if request.method == 'POST':
-            username = request.POST['käyttäjätunnus']
-            password = request.POST['salasana']
-            user = authenticate(request, username=username, password=password)
-            if user is not None:
-                login(request, user)
-                return redirect('hallinta/')
-            else:
-                messages.success(request, ("Antamasi salasana tai käyttäjätunnus on väärä!"))
-                return redirect('kirjautuminen')
+    if request.method == 'POST':
+        username = request.POST['käyttäjätunnus']
+        password = request.POST['salasana']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('/')
         else:
-            return render(request, 'kirjautuminen.html')
+            messages.success(request, ("Antamasi salasana tai käyttäjätunnus on väärä!"))
+            return redirect('/')
+    else:
+        return render(request, 'kirjautuminen.html')
 
 
 def uloskirjautuminen(request):

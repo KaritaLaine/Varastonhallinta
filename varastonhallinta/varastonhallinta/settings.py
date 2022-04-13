@@ -105,6 +105,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTH_USER_MODEL = 'varastonhallintasovellus.Henkilo'
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
@@ -130,7 +132,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Uudelleenohjataan etusivulle (kirjautumissivulle) jos käyttäjä ei ole kirjautunut ja yrittää
 # mennä kirjautumista vaativalle sivulle --> KATSO "views.py" LISÄTIETOJA VARTEN!
-LOGIN_URL = "/"
+LOGIN_URL = "/login/"
 
 # Uudelleenohjataan etusivulle (kirjautumissivulle) kun käyttäjä kirjautuu ulos
 LOGOUT_REDIRECT_URL = "/"
