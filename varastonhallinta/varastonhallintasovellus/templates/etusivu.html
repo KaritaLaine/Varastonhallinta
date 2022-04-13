@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block title %}Etusivu{% endblock %}
+
+{% block content %}
+    <main>
+        <h1>Tervetuloa {{ user.get_full_name }}</h1>
+        <p>Kirjautumisen jälkeinen sivu -> ETUSIVU</p>
+    </main>
+{% endblock %}
