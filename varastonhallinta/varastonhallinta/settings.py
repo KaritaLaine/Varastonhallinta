@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'varastonhallintasovellus',
-    'django_filters',
 ]
 
 #NOTE kuville kansio yritys..
