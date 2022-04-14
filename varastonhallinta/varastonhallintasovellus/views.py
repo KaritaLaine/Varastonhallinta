@@ -21,6 +21,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Importit class näkymä tyypeille
 from django.views.generic.base import TemplateView
+from django.views.generic.edit import CreateView
 
 # Models importit
 from .models import Tuote
@@ -151,8 +152,16 @@ class HallintaView(PaakayttajatUserMixin, TemplateView):
 #     return HttpResponse('tuotteiden lisääminen')
 
 
-class TuotteidenLisaaminenView(PaakayttajatUserMixin, TemplateView):
-    model = Tuote
+class TuotteidenLisaaminenView(PaakayttajatUserMixin, CreateView):
     form_class = LisaaTuoteForm
     template_name = 'lisaa-tuote.html'
-    success_url = "/"
+    success_url = '/lisaa-tuotteita'
+
+    def get_form_kwargs(self):
+        kwargs = super(TuotteidenLisaaminenView, self).get_form_kwargs()
+        kwargs['kayttajan_rooli'] = self.request.user.rooli
+        return kwargs
+
+    def form_valid(self, form):
+        messages.success(self.request, f'Tuote on nyt lisätty! Lisätäänkö saman tien toinen?')
+        return super().form_valid(form)
