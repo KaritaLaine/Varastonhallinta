@@ -4,6 +4,8 @@ from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import AbstractUser
 
+from django.db.models import Q
+
 from django.core.validators import MinValueValidator
 
 
@@ -15,7 +17,7 @@ class Henkilo(AbstractUser):
         ("opettaja", _("Opettaja")),
         ("hallinto", _("Hallinto")),
         ])
-    vastuuopettaja = models.ForeignKey("self", on_delete=models.SET_NULL, null=True, blank=True)
+    vastuuopettaja = models.ForeignKey("self", on_delete=models.SET_NULL, null=True, blank=True, limit_choices_to=Q(rooli__icontains="opettaja"))
 
     REQUIRED_FIELDS = ["email", "first_name", "last_name"]
 
@@ -71,7 +73,7 @@ class Tuote(models.Model):
     nimike = models.CharField(max_length=100)
     valmistaja = models.CharField(max_length=100, null=True, blank=True)
     kappalemaara = models.IntegerField(validators=[MinValueValidator(1)], default=1, verbose_name="kappalemäärä")
-    tuotekuva = models.ImageField(upload_to=None, null=True, blank=True) #BUG Ei vielä toiminnallisuutta
+    tuotekuva = models.ImageField(upload_to=None, null=True, blank=True)
     hankintapaikka = models.CharField(max_length=100, null=True, blank=True)
     hankintapaiva = models.DateField(null=True, blank=True, validators=[hankintapaiva_validaattori], verbose_name="hankintapäivä")
     hankintahinta = models.DecimalField(validators=[MinValueValidator(0)], decimal_places=2, max_digits=8, null=True, blank=True)
