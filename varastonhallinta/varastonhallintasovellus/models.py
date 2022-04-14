@@ -1,4 +1,6 @@
+import datetime
 from django.db import models
+from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import AbstractUser
 
@@ -52,20 +54,30 @@ class Tuoteryhma(models.Model):
         return self.nimi
 
 
+def pieni_paiva_validaattori(arvo):
+    if arvo < datetime.date.today():
+        raise ValidationError("Et voi valita päivää menneisyydestä")
+    return arvo
+
+
 class Tuote(models.Model):
+
+    def hankintapaiva_validaattori(arvo):
+        if arvo > datetime.date.today():
+            raise ValidationError("Hankintapäivä ei voi olla tulevaisuudessa")
+        return arvo
+
     viivakoodi = models.CharField(max_length=30)
-    nimike = models.CharField(max_length=50)
+    nimike = models.CharField(max_length=100)
     valmistaja = models.CharField(max_length=100, null=True, blank=True)
     kappalemaara = models.IntegerField(validators=[MinValueValidator(1)], default=1, verbose_name="kappalemäärä")
     tuotekuva = models.ImageField(upload_to=None, null=True, blank=True) #BUG Ei vielä toiminnallisuutta
-    hankintapaikka = models.CharField(max_length=50, null=True, blank=True)
-    hankintavuosi = models.IntegerField(null=True, blank=True)
-    hankintapaiva = models.DateField(null=True, blank=True, verbose_name="hankintapäivä")
-    hankintahinta = models.FloatField(null=True, blank=True)
+    hankintapaikka = models.CharField(max_length=100, null=True, blank=True)
+    hankintapaiva = models.DateField(null=True, blank=True, validators=[hankintapaiva_validaattori], verbose_name="hankintapäivä")
+    hankintahinta = models.DecimalField(validators=[MinValueValidator(0)], decimal_places=2, max_digits=8, null=True, blank=True)
     laskun_numero = models.IntegerField(null=True, blank=True)
-    kustannuspaikka = models.CharField(max_length=10, null=True, blank=True)
-    takuuaika = models.DateField(null=True, blank=True, verbose_name="takuun päättymispäivä")
-    varaston_nimi = models.ForeignKey(Varasto, on_delete=models.RESTRICT)
+    kustannuspaikka = models.CharField(max_length=30, null=True, blank=True)
+    takuuaika = models.DateField(null=True, blank=True, validators=[pieni_paiva_validaattori], verbose_name="takuun päättymispäivä")
 
     class Meta:
         verbose_name_plural = "Tuotteet"
@@ -79,8 +91,8 @@ class Varastotapahtuma(models.Model):
     maara = models.IntegerField(validators=[MinValueValidator(1)], default=1, verbose_name="määrä")
     arkistotunnus = models.CharField(max_length=50)
     varasto = models.ForeignKey(Varasto, on_delete=models.RESTRICT)
-    aikaleima = models.DateField(auto_now=True)
-    palautuspaiva = models.DateField(verbose_name="palautuspäivä")
+    aikaleima = models.DateField(default=datetime.date.today)
+    palautuspaiva = models.DateField(verbose_name="palautuspäivä", validators=[pieni_paiva_validaattori])
     asiakas = models.ForeignKey(Henkilo, related_name="asiakas", on_delete=models.RESTRICT)
     varastonhoitaja = models.ForeignKey(Henkilo, related_name="varastonhoitaja", on_delete=models.RESTRICT)
 
