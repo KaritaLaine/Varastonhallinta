@@ -134,4 +134,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = "/kirjautuminen/"
 
 # Uudelleenohjataan etusivulle (kirjautumissivulle) kun käyttäjä kirjautuu ulos
+# MUTTA... koska käyttäjä ei ole kirjautunut "LOGIN_URL" uudelleenohjaa kirjautumissivulle
 LOGOUT_REDIRECT_URL = "/"
+
+# Kansio jota käytetään mediatiedostojen lataamiseen
+# Kansion sisällä on "tuotekuvat" kansio jonne tallennetaan kaikki tuotekuvat
+# Katso models.py --> Tuote model --> tuotekuva --> upload_to="tuotekuvat"
+MEDIA_ROOT = BASE_DIR / 'lataukset'
+
+MEDIA_URL = "/url-media/"

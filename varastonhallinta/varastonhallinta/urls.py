@@ -17,7 +17,11 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib import admin
 from django.urls import path
 
+from django.conf.urls.static import static
+
 from varastonhallintasovellus import views
+
+from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,4 +33,4 @@ urlpatterns = [
     path('lainaus/', views.lainaus, name='lainaus'),
     #path('palautus', views.palautus, name='palautus'),
     path('lisaa-tuotteita', views.TuotteidenLisaaminenView.as_view(), name='lisaaminen'),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
