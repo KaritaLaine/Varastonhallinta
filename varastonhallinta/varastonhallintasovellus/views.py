@@ -20,6 +20,7 @@ from django.contrib.auth.mixins import UserPassesTestMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Importit class näkymä tyypeille
+from django.views.generic import ListView
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import CreateView
 
@@ -66,7 +67,7 @@ class JosEiOikeuttaUserMixin(LoginRequiredMixin, UserPassesTestMixin):
     """
     Kun käyttäjällä ei ole oikeutta johonkin sivuun...
     1. Käyttäjällä ei ole oikeutta johonkin sivuun uudelleenohjaus --> 'kirjautuminen'
-    2. tai jos käyttäjä on kirjautunut --> 'kirjautuminen' -> '/'
+    2. tai jos käyttäjä on kirjautunut mutta ei oikeutta --> 'kirjautuminen' -> 'etusivu'
     """
 
     def handle_no_permission(self):
@@ -143,8 +144,10 @@ def tuotehaku(request):
 #     return render(request, 'hallinta.html')
 
 
-class HallintaView(PaakayttajatUserMixin, TemplateView):
+class HallintaView(PaakayttajatUserMixin, ListView):
     template_name = 'hallinta.html'
+    model = Tuote
+    context_object_name = "tuotteet"
 
 
 #@login_required
@@ -165,3 +168,7 @@ class TuotteidenLisaaminenView(PaakayttajatUserMixin, CreateView):
     def form_valid(self, form):
         messages.success(self.request, f'Tuote on nyt lisätty! Lisätäänkö saman tien toinen?')
         return super().form_valid(form)
+
+
+# class TuotteenMuokkaaminenView(PaakayttajatUserMix, UpdateView):
+#     pass
