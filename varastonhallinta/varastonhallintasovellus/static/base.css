@@ -184,7 +184,7 @@ footer {
     background-color: #1b32590a;
 }
 
-.lainaus-scroll {
+.scroll-wrap {
     overflow-y:scroll;
     height: 560px;
     position: relative;
