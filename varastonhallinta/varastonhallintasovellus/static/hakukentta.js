@@ -45,7 +45,6 @@ hakukentta.addEventListener('keyup', (e) => {
                 //    eiTulosta-block.
                 if (data.length === 0) {
                     eiTulosta.style.display = "block";
-                    taulukkoTulos.style.display = "none";
                 } else {
                     eiTulosta.style.display = "none";
                     // Lisätään jokaisen hakua vastaavan tuotteen tiedot

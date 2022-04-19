@@ -27,11 +27,6 @@
             </div>
         </div>
 
-        <!-- Ei tulosta -näkymä -->
-        <div class="ei-tulosta">
-            <p><b> Ei hakutulosta </b></p>
-        </div>
-
         <!-- Taulukon perusnäkymä -->
         <div class="taulukko-perus">
             <div class="scroll-wrap">
@@ -79,6 +74,11 @@
                             taulurivejä -->
                     </tbody>
                 </table>
+
+                <!-- Ei tulosta -näkymä -->
+                <div class="ei-tulosta">
+                    </br><p><b> Ei hakutulosta </b></p>
+                </div>
             </div>
         </div>
     </div>
@@ -88,5 +88,5 @@
 <!-- Ladataan staattiset tiedostot ja linkataan hakukentta.js -->
 {% load static %}
 {%block scripts%}
-<script src="{% static 'hakukentta.js' %}"></script>
+    <script src="{% static 'hakukentta.js' %}"></script>
 {%endblock scripts%}
