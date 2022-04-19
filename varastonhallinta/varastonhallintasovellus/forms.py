@@ -2,6 +2,11 @@ from django import forms
 
 from .models import Tuote
 
+
+class DateInput(forms.DateInput):
+    input_type = 'date'
+
+
 class LisaaTuoteForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('kayttajan_rooli')
@@ -15,14 +20,18 @@ class LisaaTuoteForm(forms.ModelForm):
 
         fields = '__all__'
 
+        widgets = {
+            'hankintapaiva': DateInput(),
+        }
+
         labels = {
             "viivakoodi": "Lisää tuotteen viivakoodi",
             "nimike": "Lisää tuotteen nimi",
             "valmistaja": "Lisää tuotteen valmistaja",
             "kappalemaara": "Lisää tuotteiden kappalemäärä",
             "tuotekuva": "Anna tuotteelle kuva",
+            "tuoteryhma": "Valitse tuoteryhmä johon tuote kuuluu",
             "hankintapaikka": "Mistä tuote on ostettu?",
-            "hankintavuosi": "Vuosi jona tuote on ostettu",
             "hankintapaiva": "Lisää päivä jona tuote on ostettu",
             "hankintahinta": "Tuotteen hankintahinta",
             "laskun_numero": "Laskun numero",
@@ -41,4 +50,7 @@ class LisaaTuoteForm(forms.ModelForm):
             "hankintapaikka": {
                 "max_length": "Hankintapaikan nimen on oltava maksimissaan 100 merkkiä."
             },
+            "tuoteryhma": {
+                "required": "Sinun on lisättävä tuotteen tuoteryhmä johon tuote kuuluu."
+            }
         }
