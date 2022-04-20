@@ -2,29 +2,34 @@
 
 {% extends "base.html" %}
 
-{% block title %}Lainaus{% endblock title %}
+{% block title %}
+    Varastonhallinta - Lainaussivu
+{% endblock title %}
 
 {% block content %}
 <body>
-    <div class="lainaus-keskita">
-        <h1 class="iso_otsikko" id="lainaus-otsikko">Tervetuloa, {{ user.get_full_name | capfirst }}</h1>
+    <div class = "lainaus-keskita">
+        <!-- "lorem ipsum | title" muuttaa jokaisen sanan ekan kirjaimen isoksi 
+            esim. tässä tapauksessa "lorem ipsum" >> "Lorem Ipsum" !-->
+        <h1 class="iso_otsikko" id="lainaus-otsikko">Tervetuloa, {{ user.get_full_name | title }}</h1>
         <p class="lainaus-ohjeteksti"> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do 
             eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut <br> 
             enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut 
             aliquip ex ea commodo consequat.<br>
         
         <!-- Hakukenttä -->
-        <div class="form-group">
-            <input type="text" class="form-control" id="hakukentta" placeholder="Hae"/>
-        </div>
-        
-        <!-- Ei tulosta -näkymä -->
-        <div class="ei-tulosta">
-            <p> Ei hakutulosta </p>
+        <div class = "hakukentta-wrap">
+            <div class="vasen-hakukentta">
+                <p><b> Hae tuotteita </b></p>
+            </div>
+            <div class="oikea-hakukentta">
+                <input type="text" class="haku" id="hakukentta" placeholder="Hae"/>
+            </div>
         </div>
 
+        <!-- Taulukon perusnäkymä -->
         <div class="taulukko-perus">
-        <div class="lainaus-scroll">
+            <div class="scroll-wrap">
                 <table class="lainaus-taulu">
                     <div class="lainaus-otsikot">
                         <thead>
@@ -32,8 +37,7 @@
                                 <th>Tuotekuva</th>
                                 <th>Nimike</th>
                                 <th>Kappalemäärä</th>
-                                <th>Lainaa</th>
-                                <th>Palauta</th>
+                                <th>Tila</th>
                             </tr>
                         </thead>
                     </div>
@@ -44,7 +48,6 @@
                                     <td>{{tuote.nimike}}</td>
                                     <td>{{tuote.kappalemaara}}</td>
                                     <td class="lainaus-nappi"> - </td> <!-- BUG: lainaus-toiminto -->
-                                    <td class="lainaus-nappi"> - </td> <!-- BUG: palautus-toiminto -->
                                 </tr>
                             {%endfor%}
                         </tbody>
@@ -52,8 +55,9 @@
             </div>
         </div>
         
+        <!-- Taulukon tulosnäkymä -->
         <div class="taulukko-tulos">
-            <div class="lainaus-scroll">
+            <div class="scroll-wrap">
                 <table class="lainaus-taulu">
                     <div class="lainaus-otsikot">
                         <thead>
@@ -61,23 +65,28 @@
                                 <th>Tuotekuva</th>
                                 <th>Nimike</th>
                                 <th>Kappalemäärä</th>
-                                <th>Lainaa</th>
-                                <th>Palauta</th>
+                                <th>Tila</th>
                             </tr>
                         </thead>
                     </div>
                     <tbody class="table-body">
-                        <!-- Tänne tulostuu hakukentta.js-tiedostosta taulurivejä -->
+                        <!-- Tänne tulostuu hakukentta.js-tiedostosta 
+                            taulurivejä -->
                     </tbody>
                 </table>
+
+                <!-- Ei tulosta -näkymä -->
+                <div class="ei-tulosta">
+                    </br><p><b> Ei hakutulosta </b></p>
+                </div>
             </div>
         </div>
     </div>
 </body>
 {% endblock content%}
 
-<!-- Linkataan hakukentta.js -->
+<!-- Ladataan staattiset tiedostot ja linkataan hakukentta.js -->
 {% load static %}
-{% block scripts %}
+{%block scripts%}
     <script src="{% static 'hakukentta.js' %}"></script>
-{% endblock scripts %}
+{%endblock scripts%}
