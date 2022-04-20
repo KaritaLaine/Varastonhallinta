@@ -3,14 +3,10 @@ from django import forms
 from .models import Tuote
 
 
-class DateInput(forms.DateInput):
-    input_type = 'date'
-
-
-class LisaaTuoteForm(forms.ModelForm):
+class TuoteForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('kayttajan_rooli')
-        super(LisaaTuoteForm, self).__init__(*args, **kwargs)
+        super(TuoteForm, self).__init__(*args, **kwargs)
         if self.user == 'varastonhoitaja':
             for kentta in ['hankintapaikka', 'hankintapaiva', 'hankintahinta', 'laskun_numero', 'kustannuspaikka', 'takuuaika']:
                 del self.fields[kentta]
@@ -21,7 +17,8 @@ class LisaaTuoteForm(forms.ModelForm):
         fields = '__all__'
 
         widgets = {
-            'hankintapaiva': DateInput(),
+            'hankintapaiva': forms.DateInput(format=('%Y-%m-%d'), attrs={'type': 'date'}),
+            'takuuaika': forms.DateInput(format=('%Y-%m-%d'), attrs={'type': 'date'}),
         }
 
         labels = {
