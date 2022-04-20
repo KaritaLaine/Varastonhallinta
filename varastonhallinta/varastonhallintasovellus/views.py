@@ -20,14 +20,14 @@ from django.contrib.auth.mixins import UserPassesTestMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Importit class näkymä tyypeille
-from django.views.generic import ListView
+from django.views.generic import ListView, UpdateView
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import CreateView
 
 # Models importit
 from .models import Tuote
 
-from .forms import LisaaTuoteForm
+from .forms import TuoteForm
 
 
 def kirjautuminen(request):
@@ -145,6 +145,12 @@ def tuotehaku(request):
 
 
 class HallintaView(PaakayttajatUserMixin, ListView):
+    """
+    Vain pääkäyttäjät (varastonhoitaja', 'opettaja', 'hallinto) pääsevät hallinta
+    näkymään, jossa listataan kaikki tietokannassa olevat tuotteet ja joissa on linkit
+    niiden poistamiseen ja muokkaamiseen + tiedot tuotteista
+    --> (tiedon määrä riippuen käyttäjän roolista).
+    """
     template_name = 'hallinta.html'
     model = Tuote
     context_object_name = "tuotteet"
@@ -155,13 +161,15 @@ class HallintaView(PaakayttajatUserMixin, ListView):
 #     return HttpResponse('tuotteiden lisääminen')
 
 
-class TuotteidenLisaaminenView(PaakayttajatUserMixin, CreateView):
-    form_class = LisaaTuoteForm
+class LisaaTuoteView(PaakayttajatUserMixin, CreateView):
+
+    model = Tuote
+    form_class = TuoteForm
     template_name = 'lisaa-tuote.html'
-    success_url = '/lisaa-tuotteita'
+    success_url = '/lisaa-tuote/'
 
     def get_form_kwargs(self):
-        kwargs = super(TuotteidenLisaaminenView, self).get_form_kwargs()
+        kwargs = super(LisaaTuoteView, self).get_form_kwargs()
         kwargs['kayttajan_rooli'] = self.request.user.rooli
         return kwargs
 
@@ -170,5 +178,17 @@ class TuotteidenLisaaminenView(PaakayttajatUserMixin, CreateView):
         return super().form_valid(form)
 
 
-# class TuotteenMuokkaaminenView(PaakayttajatUserMix, UpdateView):
-#     pass
+class MuokkaaTuotettaView(PaakayttajatUserMixin, UpdateView):
+    model = Tuote
+    form_class = TuoteForm
+    template_name = 'muokkaa-tuotetta.html'
+    success_url = '/hallinta/'
+
+    def get_form_kwargs(self):
+        kwargs = super(MuokkaaTuotettaView, self).get_form_kwargs()
+        kwargs['kayttajan_rooli'] = self.request.user.rooli
+        return kwargs
+
+    def form_valid(self, form):
+        messages.success(self.request, f'Tuotetta on nyt muokattu!')
+        return super().form_valid(form)
