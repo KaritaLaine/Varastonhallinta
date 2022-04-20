@@ -52,7 +52,6 @@ header {
 
 .active {
     height: 60px;
-    width: 100%;
     background-color: #efefef;
     border-bottom: 1px solid #1b3259;
 }

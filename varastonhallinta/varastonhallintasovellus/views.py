@@ -1,11 +1,14 @@
 from django.shortcuts import render, redirect
+
 # Tarvittavat json-importit hakukentän toimimiseen
 import json
 from django.http import JsonResponse
+
 # Djangon autentikaatiot sisään- ja uloskirjautumiseen
 from django.contrib.auth import authenticate, login, logout
 # MUUT KIRJAUTUMISEEN / ULOSKIRJAUTUMISEEN TARVITTAVAT ASETUKSET
 # LÖYTYVÄT --> settings.py!
+
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
@@ -17,14 +20,22 @@ from django.contrib.auth.mixins import UserPassesTestMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Importit class näkymä tyypeille
+from django.views.generic import ListView
 from django.views.generic.base import TemplateView
+from django.views.generic.edit import CreateView
 
 # Models importit
 from .models import Tuote
 
+from .forms import LisaaTuoteForm
 
-# Funktio kirjautumista varten
+
 def kirjautuminen(request):
+    """
+    Funktio sisäänkirjautumista varten, sekä uudelleenohjaus etusivulle jos
+    käyttäjä on jo kirjautunut ja uudelleenohjaus kirjautumissivulle jos
+    käyttäjän antamat todentamistiedot ovat virheelliset.
+    """
     if request.user.is_authenticated:
         return redirect('/')
     else:
@@ -37,32 +48,37 @@ def kirjautuminen(request):
                 return redirect('/')
             else:
                 messages.success(request, ('Antamasi salasana tai käyttäjätunnus on väärä!'))
-                return redirect('/')
+                return redirect('kirjautuminen')
         else:
             return render(request, 'kirjautuminen.html')
 
 
-# Funktio uloskirjautumista varten
 def uloskirjautuminen(request):
+    """
+    Funktio uloskirjautumista varten, sekä viesti kirjautumislomakkeeseen
+    että käyttäjä on nyt kirjautunut ulos
+    """
     logout(request)
     messages.success(request, ('Olet nyt kirjautunut ulos.'))
     return redirect('kirjautuminen')
 
 
-# Jos käyttäjällä ei ole oikeutta johonkin sivuun, uudelleenohjataan
-# kirjautumissivulle ja jos käyttäjä on jo kirjautuneena kirjautuminen funtio...
-
-#if request.user.is_authenticated:
-    # return redirect('/')
-
-# uudelleenohjaa kirjautuneen käyttäjän persnonoidulle etusivulle
 class JosEiOikeuttaUserMixin(LoginRequiredMixin, UserPassesTestMixin):
+    """
+    Kun käyttäjällä ei ole oikeutta johonkin sivuun...
+    1. Käyttäjällä ei ole oikeutta johonkin sivuun uudelleenohjaus --> 'kirjautuminen'
+    2. tai jos käyttäjä on kirjautunut mutta ei oikeutta --> 'kirjautuminen' -> 'etusivu'
+    """
+
     def handle_no_permission(self):
         return redirect('kirjautuminen')
 
 
-# Pääsyoikeidet kaikille käyttäjätyypeille --> esim etusivua varten
 class KaikkiKayttajatUserMixin(JosEiOikeuttaUserMixin, UserPassesTestMixin):
+    """
+    Pääsyoikeidet kaikille käyttäjätyypeille --> esim etusivua varten
+    --> Tätä classia käytetään parametrina tietyissä class näkymissä.
+    """
     
     def test_func(self):
         sallitut_kayttajatyypit = ['oppilas', 'varastonhoitaja', 'opettaja', 'hallinto']
@@ -71,8 +87,11 @@ class KaikkiKayttajatUserMixin(JosEiOikeuttaUserMixin, UserPassesTestMixin):
             return True
 
 
-# Pääsyoikeidet kaikille pääkäyttäjäjille --> varastonhoitajat, opettajat, hallinto jne.
-class PaaKayttajatUserMixin(JosEiOikeuttaUserMixin, UserPassesTestMixin):
+class PaakayttajatUserMixin(JosEiOikeuttaUserMixin, UserPassesTestMixin):
+    """
+    Pääsyoikeidet kaikille pääkäyttäjäjille --> varastonhoitajat, opettajat, hallinto jne.
+    --> Tätä classia käytetään parametrina tietyissä class näkymissä.
+    """
     
     def test_func(self):
         sallitut_kayttajatyypit = ['varastonhoitaja', 'opettaja', 'hallinto']
@@ -82,6 +101,10 @@ class PaaKayttajatUserMixin(JosEiOikeuttaUserMixin, UserPassesTestMixin):
 
 
 class EtusivuView(KaikkiKayttajatUserMixin, TemplateView):
+    """
+    Näkymä etusivulle johon pääse kaikki kirjautuneet käyttäjät joiden
+    rooli on joko --> 'oppilas', 'varastonhoitaja', 'opettaja' tai 'hallinto'
+    """
     template_name = 'etusivu.html'
 
 
@@ -121,12 +144,31 @@ def tuotehaku(request):
 #     return render(request, 'hallinta.html')
 
 
-class HallintaView(PaaKayttajatUserMixin, TemplateView):
+class HallintaView(PaakayttajatUserMixin, ListView):
     template_name = 'hallinta.html'
-
-
+    model = Tuote
+    context_object_name = "tuotteet"
 
 
 #@login_required
 # def lisaaminen(request):
 #     return HttpResponse('tuotteiden lisääminen')
+
+
+class TuotteidenLisaaminenView(PaakayttajatUserMixin, CreateView):
+    form_class = LisaaTuoteForm
+    template_name = 'lisaa-tuote.html'
+    success_url = '/lisaa-tuotteita'
+
+    def get_form_kwargs(self):
+        kwargs = super(TuotteidenLisaaminenView, self).get_form_kwargs()
+        kwargs['kayttajan_rooli'] = self.request.user.rooli
+        return kwargs
+
+    def form_valid(self, form):
+        messages.success(self.request, f'Tuote on nyt lisätty! Lisätäänkö saman tien toinen?')
+        return super().form_valid(form)
+
+
+# class TuotteenMuokkaaminenView(PaakayttajatUserMix, UpdateView):
+#     pass
