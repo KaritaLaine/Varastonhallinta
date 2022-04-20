@@ -2,16 +2,29 @@
 
 {% extends "base.html" %}
 
-{% block title %}
-    <title> Varastonhallinta - Hallintasivu </title>
-{% endblock title %}
+{% block title %}Tuotteiden Hallinta{% endblock title %}
 
 {% block content %}
-<body>
     <h1 class="iso_otsikko">Hallinta</h1>
-    <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do 
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut <br/> 
-            enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut 
-            aliquip ex ea commodo consequat. <br/>
-</body>
+    <p>Hallitse tietokannassa olevia tuotteita</p>
+    <ul>
+        {% for tuote in tuotteet %}
+            <li>Tuotteen viivakoodi - {{ tuote.viivakoodi }}</li>
+            <li>Tuotteen nimike - {{ tuote.nimike }}</li>
+            <li>Tuotteen valmistaja - {{ tuote.valmistaja }}</li>
+            <li>Tuotteen kappalemäärä - {{ tuote.kappalemaara }}</li>
+            <li>Tuotteen tuotekuva - <img src="{{ tuote.tuotekuva.url }}"></li>
+            {% if request.user.rooli == 'hallinto' or request.user.rooli == 'opettaja' %}
+                <li>Tuotteen tuoteryhmä - {{ tuote.tuoteryhma }}</li>
+                <li>Tuotteen hankintapaikka - {{ tuote.hankintapaikka }}</li>
+                <li>Tuotteen hankintapäivä - {{ tuote.hankintapaiva }}</li>
+                <li>Tuotteen hankintahinta - {{ tuote.hankintahinta }}</li>
+                <li>Tuotteen laskun numero - {{ tuote.laskun_numero }}</li>
+                <li>Tuotteen kustannuspaikka - {{ tuote.kustannuspaikka }}</li>
+                <li>Tuotteen takuuaika - {{ tuote.takuuaika }}</li>
+            {% endif %}
+        {% empty %}
+            <li>Tyhjältä näyttää</li>
+        {% endfor %}
+    </ul>
 {% endblock %}
