@@ -32,5 +32,6 @@ urlpatterns = [
     path('tuotehaku/', csrf_exempt(views.tuotehaku), name="tuotehaku"),
     path('lainaus/', views.lainaus, name='lainaus'),
     #path('palautus', views.palautus, name='palautus'),
-    path('lisaa-tuotteita', views.TuotteidenLisaaminenView.as_view(), name='lisaaminen'),
+    path('lisaa-tuote/', views.LisaaTuoteView.as_view(), name='lisaaminen'),
+    path('muokkaa-tuotetta/<int:pk>/', views.MuokkaaTuotettaView.as_view(), name='muokkaaminen'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
