@@ -125,7 +125,9 @@ def tuotehaku(request):
         # Hakuun syötettävät asiat muutetaan python dictionaryksi
         haku_str = json.loads(request.body).get('hakuteksti')
         # Tallentaa tuotteet-muuttujaan haut, jotka vastaavat haun sisältöä
-        tuotteet = Tuote.objects.filter(nimike__icontains=haku_str)
+        tuotteet = Tuote.objects.filter(
+            nimike__icontains=haku_str) | Tuote.objects.filter(
+            viivakoodi__icontains=haku_str)
     data = tuotteet.values()
     # Palauttaa tulokset JSON-muodossa
     return JsonResponse(list(data), safe=False)
