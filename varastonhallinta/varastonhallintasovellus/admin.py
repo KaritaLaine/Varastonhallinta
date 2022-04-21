@@ -22,19 +22,19 @@ class HenkiloAdmin(UserAdmin):
         (None, {
             'fields': ('username', 'password')
         }),
-        ('Personal info', {
+        ('Käyttäjätiedot', {
             'fields': ('first_name', 'last_name', 'email')
         }),
-        ('Permissions', {
+        ('Luvat', {
             'fields': (
                 'is_active', 'is_staff', 'is_superuser',
                 'groups', 'user_permissions'
                 )
         }),
-        ('Important dates', {
+        ('Tärkeät päivämäärät', {
             'fields': ('last_login', 'date_joined')
         }),
-        ('Additional info', {
+        ('Lisätiedot', {
             'fields': ('rooli', 'vastuuopettaja',)
         })
     )

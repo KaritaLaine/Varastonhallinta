@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Lisää Tuote{% endblock %}
+{% block title %}Muokkaa Tuotetta{% endblock %}
 
 {% block css %}
 {% load static %}
@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block content %}
-    <h1>Lisää Tuote</h1>
+    <h1>Muokkaa Tuotetta</h1>
     <form method="POST">
         {% csrf_token %}
 
@@ -26,7 +26,7 @@
             </div>
         {% endfor %}
 
-        <button type="submit">Lisää tuote</button>
+        <button type="submit">Muokkaa tuotetta</button>
         
     </form>
 {% endblock %}

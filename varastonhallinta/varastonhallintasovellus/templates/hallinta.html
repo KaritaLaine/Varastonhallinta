@@ -7,13 +7,22 @@
 {% block content %}
     <h1 class="iso_otsikko">Hallinta</h1>
     <p>Hallitse tietokannassa olevia tuotteita</p>
+    <p>
+        {% if messages %}
+            {% for message in messages %}
+                {{ message }}
+            {% endfor %}
+        {% endif %}
+    </p>
     <ul>
         {% for tuote in tuotteet %}
             <li>Tuotteen viivakoodi - {{ tuote.viivakoodi }}</li>
             <li>Tuotteen nimike - {{ tuote.nimike }}</li>
             <li>Tuotteen valmistaja - {{ tuote.valmistaja }}</li>
             <li>Tuotteen kappalemäärä - {{ tuote.kappalemaara }}</li>
-            <li>Tuotteen tuotekuva - <img src="{{ tuote.tuotekuva.url }}"></li>
+            {% if tuote.tuotekuva.url is not null %}
+                <li>Tuotteen tuotekuva - <img src="{{ tuote.tuotekuva.url }}"></li>
+            {% endif %}
             {% if request.user.rooli == 'hallinto' or request.user.rooli == 'opettaja' %}
                 <li>Tuotteen tuoteryhmä - {{ tuote.tuoteryhma }}</li>
                 <li>Tuotteen hankintapaikka - {{ tuote.hankintapaikka }}</li>
