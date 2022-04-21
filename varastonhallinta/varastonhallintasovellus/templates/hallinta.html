@@ -21,7 +21,7 @@
             <li>Tuotteen valmistaja - {{ tuote.valmistaja }}</li>
             <li>Tuotteen kappalemäärä - {{ tuote.kappalemaara }}</li>
             {% if tuote.tuotekuva.url is not null %}
-                <li>Tuotteen tuotekuva - <img src="{{ tuote.tuotekuva.url }}"></li>
+                <li>Tuotteen tuotekuva - <img src="{{ tuote.tuotekuva.url }}" alt="Tuotekuva"></li>
             {% endif %}
             {% if request.user.rooli == 'hallinto' or request.user.rooli == 'opettaja' %}
                 <li>Tuotteen tuoteryhmä - {{ tuote.tuoteryhma }}</li>
