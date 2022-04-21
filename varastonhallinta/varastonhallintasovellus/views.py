@@ -10,9 +10,12 @@ from django.contrib.auth import authenticate, login, logout
 # LÖYTYVÄT --> settings.py!
 
 from django.contrib.auth.decorators import login_required
+
+# "messages" avulla voimme näyttää kustomoituja viestejä käyttäjille
+# + näyttää ne templeiteissä.
 from django.contrib import messages
 
-# Importit testeille joiden käyttäjien on läpäistävä jotta he pääsevät tietyille sivulle 
+# Importit "testeille joiden käyttäjien on läpäistävä" jotta he pääsevät tietyille sivulle 
 from django.contrib.auth.mixins import UserPassesTestMixin
 
 # Importit class näkymän parametrille joka vaatii käyttäjää
@@ -22,23 +25,25 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 # Importit class näkymä tyypeille
 from django.views.generic import ListView, UpdateView
 from django.views.generic.base import TemplateView
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, DeleteView
 
 # Models importit
 from .models import Tuote
 
+# Lomakkeen import --> "forms.py"
 from .forms import TuoteForm
 
 
 def kirjautuminen(request):
     """
     Funktio sisäänkirjautumista varten, sekä uudelleenohjaus etusivulle jos
-    käyttäjä on jo kirjautunut ja uudelleenohjaus kirjautumissivulle jos
+    käyttäjä on jo kirjautunut tai uudelleenohjaus kirjautumissivulle jos
     käyttäjän antamat todentamistiedot ovat virheelliset.
     """
     if request.user.is_authenticated:
         return redirect('/')
     else:
+        # Jos lomake lähetetään (submit) metodi on POST
         if request.method == 'POST':
             username = request.POST['käyttäjätunnus']
             password = request.POST['salasana']
@@ -47,9 +52,12 @@ def kirjautuminen(request):
                 login(request, user)
                 return redirect('/')
             else:
+                # Kirjautumistiedot ovat väärät, näytä viesti
+                # ja uudelleenohjaa kirjautumissivulle.
                 messages.success(request, ('Antamasi salasana tai käyttäjätunnus on väärä!'))
                 return redirect('kirjautuminen')
         else:
+            # Jos metodi on GET renderöidään kirjautumissivu
             return render(request, 'kirjautuminen.html')
 
 
@@ -108,11 +116,6 @@ class EtusivuView(KaikkiKayttajatUserMixin, TemplateView):
     template_name = 'etusivu.html'
 
 
-#@login_required
-# def tuotehaku(request):
-    # return HttpResponse('tuotehaku')
-
-
 @login_required
 def lainaus(request):
     tuotteet = Tuote.objects.all()
@@ -121,7 +124,7 @@ def lainaus(request):
 
 
 def tuotehaku(request):
-    if request.method=='POST':
+    if request.method == 'POST':
         # Hakuun syötettävät asiat muutetaan python dictionaryksi
         haku_str = json.loads(request.body).get('hakuteksti')
         # Tallentaa tuotteet-muuttujaan haut, jotka vastaavat haun sisältöä
@@ -158,11 +161,6 @@ class HallintaView(PaakayttajatUserMixin, ListView):
     context_object_name = "tuotteet"
 
 
-#@login_required
-# def lisaaminen(request):
-#     return HttpResponse('tuotteiden lisääminen')
-
-
 class LisaaTuoteView(PaakayttajatUserMixin, CreateView):
 
     model = Tuote
@@ -194,3 +192,9 @@ class MuokkaaTuotettaView(PaakayttajatUserMixin, UpdateView):
     def form_valid(self, form):
         messages.success(self.request, f'Tuotetta on nyt muokattu!')
         return super().form_valid(form)
+
+
+class PoistaTuoteView(PaakayttajatUserMixin, DeleteView):
+    model = Tuote
+    template_name = 'poista-tuote.html'
+    success_url = '/hallinta/'
