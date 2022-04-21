@@ -34,4 +34,5 @@ urlpatterns = [
     #path('palautus', views.palautus, name='palautus'),
     path('lisaa-tuote/', views.LisaaTuoteView.as_view(), name='lisaaminen'),
     path('muokkaa-tuotetta/<int:pk>/', views.MuokkaaTuotettaView.as_view(), name='muokkaaminen'),
+    path('poista-tuote/<int:pk>/', views.PoistaTuoteView.as_view(), name='poistaminen'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
