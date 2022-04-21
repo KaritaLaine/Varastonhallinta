@@ -9,7 +9,7 @@
 
 {% block content %}
     <h1>Lisää Tuote</h1>
-    <form method="POST">
+    <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
 
         {% if messages %}
