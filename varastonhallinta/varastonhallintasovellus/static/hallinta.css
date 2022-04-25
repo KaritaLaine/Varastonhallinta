@@ -1,13 +1,16 @@
 #lisaa-tuotteita {
     background-color: #00FF00;
+    cursor: pointer;
 }
 
 #muokkaa-nappi {
     background-color: #4bbcc5;
+    cursor: pointer;
 }
 
 #poista-nappi {
     background-color: #FF0000;
+    cursor: pointer;
 }
 
 #muokkaa-linkki,
