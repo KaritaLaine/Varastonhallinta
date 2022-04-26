@@ -26,8 +26,11 @@ from django.conf import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.EtusivuView.as_view(), name='etusivu'),
+    path('rekisteroityminen/', views.RekisteroityminenView.as_view(), name='rekisteroityminen'),
     path('kirjautuminen/', views.kirjautuminen, name='kirjautuminen'),
     path('uloskirjautuminen/', views.uloskirjautuminen, name='uloskirjautuminen'),
+    path('muokkaa-kayttajaa/', views.MuokkaaKayttajaaView.as_view(), name='muokkaa-kayttajaa'),
+    path('vaihda-salasana/', views.VaihdaSalasanaView.as_view(), name='vaihda-salasana'),
     path('hallinta/', views.HallintaView.as_view(), name='hallinta'),
     path('tuotehaku/', csrf_exempt(views.tuotehaku), name="tuotehaku"),
     path('lainaus/', views.lainaus, name='lainaus'),
