@@ -4,3 +4,6 @@ h1 {
     font-size: 2em;
 }
 
+#lisaa-nappi {
+    cursor: pointer;
+}

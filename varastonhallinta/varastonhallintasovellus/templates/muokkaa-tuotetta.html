@@ -4,7 +4,7 @@
 
 {% block css %}
 {% load static %}
-    <link rel="stylesheet"  type="text/css" href="{% static "lisaa-tuote.css" %}">
+    <link rel="stylesheet"  type="text/css" href="{% static "muokkaa-tuotetta.css" %}">
 {% endblock %}
 
 {% block content %}
@@ -20,7 +20,7 @@
             </div>
         {% endfor %}
 
-        <button type="submit">Muokkaa tuotetta</button>
+        <button id="muokkaa-nappi" type="submit">Muokkaa tuotetta</button>
         
     </form>
 {% endblock %}

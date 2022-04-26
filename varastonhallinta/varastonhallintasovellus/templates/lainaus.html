@@ -42,14 +42,14 @@
                         </thead>
                     </div>
                         <tbody>
-                            {%for tuote in tuotteet%}
+                            {% for tuote in tuotteet %}
                                 <tr>
-                                    <td>{{tuote.tuotekuva}}</td>
+                                    <td><img src="{% if tuote.tuotekuva.url is not null %}{{ tuote.tuotekuva.url }}{% endif %}" alt="Tuotekuva" width="70" height="70"></td>
                                     <td>{{tuote.nimike}}</td>
                                     <td>{{tuote.kappalemaara}}</td>
                                     <td class="lainaus-nappi"> - </td> <!-- BUG: lainaus-toiminto -->
                                 </tr>
-                            {%endfor%}
+                            {% endfor %}
                         </tbody>
                 </table>
             </div>
@@ -87,6 +87,6 @@
 
 <!-- Ladataan staattiset tiedostot ja linkataan hakukentta.js -->
 {% load static %}
-{%block scripts%}
+{% block scripts %}
     <script src="{% static 'hakukentta.js' %}"></script>
-{%endblock scripts%}
+{% endblock scripts %}
