@@ -146,12 +146,13 @@ def search_results(request):
             for pos in qs:
                 item = {
                     'nimike': pos.nimike,
-                    'tuotekuva': str(pos.tuotekuva.url)
+                    'tuotekuva': str(pos.tuotekuva.url),
+                    'kappalemaara': pos.kappalemaara
                 }
                 data.append(item)
             res = data
         else:
-            res = 'No games found ...'
+            res = 'Ei hakutulosta..'
         return JsonResponse({'data': res})
     return JsonResponse({})
 

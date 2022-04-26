@@ -16,8 +16,10 @@ const sendSearchData = (game) => {
                 data.forEach(game=> {
                     resultsBox.innerHTML += `
                         <tr>
-                            <td> <h1> ${game.nimike}</h1> </td>
-                            <td> <img src="${game.tuotekuva}" class="game-img"> </td>
+                            <td> <img src="${game.tuotekuva}" class="tuotekuva"> </td>
+                            <td> ${game.nimike} </td>
+                            <td> ${game.kappalemaara} </td>
+                            <td> - </td>
                         </tr>
                         `
                 })
