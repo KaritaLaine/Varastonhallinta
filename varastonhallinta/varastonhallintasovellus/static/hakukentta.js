@@ -1,3 +1,5 @@
+// EPÄTOIMIVA HAKUKENTTÄ, YRITYS SAADA KUVIA NÄKYMÄÄN..
+
 const sendSearchData = (game) => {
     $.ajax({
         type: 'POST',
@@ -49,6 +51,9 @@ searchInput.addEventListener('keyup', e=>{
 
     sendSearchData(e.target.value)
 });
+
+
+// TOIMIVA HAKUKENTTÄ
 
 
 // hakukenttä-muuttujaan tallennetaan document.querySelector:n avulla
