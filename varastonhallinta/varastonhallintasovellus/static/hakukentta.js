@@ -1,3 +1,56 @@
+const sendSearchData = (game) => {
+    $.ajax({
+        type: 'POST',
+        url: '/search/',
+        data: {
+            'csrfmiddlewaretoken': csrf,
+            'game': game,
+        },
+        success: (res)=> {
+            console.log(res)
+            const data = res.data 
+            if (Array.isArray(data)) {
+                resultsBox.innerHTML = ""
+                data.forEach(game=> {
+                    resultsBox.innerHTML += `
+                        <img src="${game.tuotekuva}/>
+                        <h1> ${game.nimike} </h1>
+                        `
+                })
+            } else {
+                if (searchInput.value.length > 0) {
+                    resultsBox.innerHTML = `<b>${data}</b>`
+                } else {
+                    resultsBox.classList.add('not-visible')
+                }
+            }
+        },
+        error: (err) => {
+            console.log(err)
+        },
+    })
+}
+
+const url = window.location.href
+const searchForm = document.getElementById('search-form')
+const searchInput = document.getElementById('search-input')
+const resultsBox = document.getElementById('results-box')
+
+const csrf = document.getElementsByName('csrfmiddlewaretoken')[0].value
+console.log(csrf)
+
+
+searchInput.addEventListener('keyup', e=>{
+    console.log(e.target.value)
+    
+    if (resultsBox.classList.contains('not-visible')){
+        resultsBox.classList.remove('not-visible')
+    }
+
+    sendSearchData(e.target.value)
+});
+
+
 // hakukenttä-muuttujaan tallennetaan document.querySelector:n avulla
 //   lainaus.html:ssä sijaitsevan hakukenttä-id:n tiedot
 const hakukentta = document.querySelector('#hakukentta');
@@ -21,7 +74,7 @@ hakukentta.addEventListener('keyup', (e) => {
     //    tarkistetaan onko sen pituus isompi kuin 0.
     if(hakuarvo.trim().length > 0) {      
         // Tyhjennetään tbody-classin sisältö
-        tbody.innerHTML = "";  
+        tbody.innerHTML = "";
 
         // Tehdään api-pyyntö fetch()-menetelmän avulla, joka pyytää tiedot
         //    palvelimelle ja lataa ne verkkosivulle
@@ -52,7 +105,7 @@ hakukentta.addEventListener('keyup', (e) => {
                     data.forEach((tuote) => {
                         tbody.innerHTML += `
                         <tr>
-                            <td>${tuote.tuotekuva}</td>
+                            <td>${tuote.tuotekuva.url}</td>
                             <td>${tuote.nimike}</td>
                             <td>${tuote.kappalemaara}</td>
                             <td> - </td>

@@ -133,6 +133,27 @@ def tuotehaku(request):
     return JsonResponse(list(data), safe=False)
 
 
+def is_ajax(request):
+    return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
+
+def search_results(request):
+    if is_ajax(request=request):
+        res = None
+        game = request.POST.get('game')
+        qs = Tuote.objects.filter(nimike__icontains=game)
+        if len(qs) > 0 and len(game) > 0:
+            data = []
+            for pos in qs:
+                item = {
+                    'nimike': pos.nimike,
+                    'tuotekuva': str(pos.tuotekuva.url)
+                }
+                data.append(item)
+            res = data
+        else:
+            res = 'No games found ...'
+        return JsonResponse({'data': res})
+    return JsonResponse({})
 
 #@login_required
 # def palautus(request):

@@ -9,6 +9,17 @@
 {% block content %}
 <body>
     <div class = "lainaus-keskita">
+
+        <!-- kokeilua.. -->
+        <form id="search-form" autocomplete = "off">
+            {% csrf_token %}
+            <input type="text" id="search-input" placeholder="Hae"/>
+
+            
+        </form>
+        <div class="not-visible" id="results-box"></div>
+
+
         <!-- "lorem ipsum | title" muuttaa jokaisen sanan ekan kirjaimen isoksi 
             esim. tässä tapauksessa "lorem ipsum" >> "Lorem Ipsum" !-->
         <h1 class="iso_otsikko" id="lainaus-otsikko">Tervetuloa, {{ user.get_full_name | title }}</h1>
@@ -44,7 +55,10 @@
                         <tbody>
                             {%for tuote in tuotteet%}
                                 <tr>
-                                    <td>{{tuote.tuotekuva}}</td>
+                                    {% if tuote.tuotekuva.url is not null %}
+                                        <td id="kuva"><img src="{{ tuote.tuotekuva.url }}" class="tuotekuva"></td>
+                                        {% else %} <td> </td> 
+                                    {% endif %}
                                     <td>{{tuote.nimike}}</td>
                                     <td>{{tuote.kappalemaara}}</td>
                                     <td class="lainaus-nappi"> - </td> <!-- BUG: lainaus-toiminto -->
