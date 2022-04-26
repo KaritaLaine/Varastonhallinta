@@ -15,8 +15,10 @@ const sendSearchData = (game) => {
                 resultsBox.innerHTML = ""
                 data.forEach(game=> {
                     resultsBox.innerHTML += `
-                        <img src="${game.tuotekuva}/>
-                        <h1> ${game.nimike} </h1>
+                        <tr>
+                            <td> <h1> ${game.nimike}</h1> </td>
+                            <td> <img src="${game.tuotekuva}" class="game-img"> </td>
+                        </tr>
                         `
                 })
             } else {
@@ -53,7 +55,7 @@ searchInput.addEventListener('keyup', e=>{
 });
 
 
-// TOIMIVA HAKUKENTTÄ
+/* // TOIMIVA HAKUKENTTÄ
 
 
 // hakukenttä-muuttujaan tallennetaan document.querySelector:n avulla
@@ -126,3 +128,4 @@ hakukentta.addEventListener('keyup', (e) => {
         eiTulosta.style.display = "none";
     }
 });
+ */
