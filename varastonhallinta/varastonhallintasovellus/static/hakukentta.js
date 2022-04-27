@@ -11,6 +11,7 @@ const sendSearchData = (game) => {
         success: (res)=> {
             console.log(res)
             const data = res.data 
+            
             if (Array.isArray(data)) {
                 resultsBox.innerHTML = ""
                 data.forEach(game=> {
