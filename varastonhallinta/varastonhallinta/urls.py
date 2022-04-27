@@ -33,7 +33,6 @@ urlpatterns = [
     path('vaihda-salasana/', views.VaihdaSalasanaView.as_view(), name='vaihda-salasana'),
     path('hallinta/', views.HallintaView.as_view(), name='hallinta'),
     path('tuotehaku/', csrf_exempt(views.tuotehaku), name="tuotehaku"),
-    path('search/', views.search_results, name='search'),
     path('lainaus/', views.lainaus, name='lainaus'),
     #path('palautus', views.palautus, name='palautus'),
     path('lisaa-tuote/', views.LisaaTuoteView.as_view(), name='lisaaminen'),
