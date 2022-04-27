@@ -170,40 +170,27 @@ def lainaus(request):
     context = {'tuotteet':tuotteet,}
     return render(request, 'lainaus.html', context)
 
-
-def tuotehaku(request):
-    if request.method == 'POST':
-        # Hakuun syötettävät asiat muutetaan python dictionaryksi
-        haku_str = json.loads(request.body).get('hakuteksti')
-        # Tallentaa tuotteet-muuttujaan haut, jotka vastaavat haun sisältöä
-        tuotteet = Tuote.objects.filter(
-            nimike__icontains=haku_str) | Tuote.objects.filter(
-            viivakoodi__icontains=haku_str)
-    data = tuotteet.values()
-    # Palauttaa tulokset JSON-muodossa
-    return JsonResponse(list(data), safe=False)
-
 def is_ajax(request):
     return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
 
-def search_results(request):
+def haku_tulokset(request):
     if is_ajax(request=request):
-        res = None
-        game = request.POST.get('game')
-        qs = Tuote.objects.filter(nimike__icontains=game)
-        if len(qs) > 0 and len(game) > 0:
+        response = None
+        tuote = request.POST.get('tuote')
+        tuotteet = Tuote.objects.filter(nimike__icontains=tuote)
+        if len(tuotteet) > 0 and len(tuote) > 0:
             data = []
-            for pos in qs:
-                item = {
-                    'nimike': pos.nimike,
-                    'tuotekuva': str(pos.tuotekuva.url),
-                    'kappalemaara': pos.kappalemaara
+            for objekti in tuotteet:
+                iteemit = {
+                    'nimike': objekti.nimike,
+                    'tuotekuva': str(objekti.tuotekuva.url),
+                    'kappalemaara': objekti.kappalemaara
                 }
-                data.append(item)
-            res = data
+                data.append(iteemit)
+            response = data
         else:
-            res = 'Ei hakutulosta..'
-        return JsonResponse({'data': res})
+            response = '</br> <b>Ei hakutulosta..</b>'
+        return JsonResponse({'data': response})
     return JsonResponse({})
 
 #@login_required
