@@ -1,0 +1,92 @@
+<!-- Lainaussivu -->
+
+{% extends "base.html" %}
+
+{% block title %}
+    Varastonhallinta - Lainaussivu
+{% endblock title %}
+
+{% block content %}
+<body>
+    <div class = "lainaus-keskita">
+        <!-- "lorem ipsum | title" muuttaa jokaisen sanan ekan kirjaimen isoksi 
+            esim. tässä tapauksessa "lorem ipsum" >> "Lorem Ipsum" !-->
+        <h1 class="iso_otsikko" id="lainaus-otsikko">Tervetuloa, {{ user.get_full_name | title }}</h1>
+        <p class="lainaus-ohjeteksti"> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do 
+            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut <br> 
+            enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut 
+            aliquip ex ea commodo consequat.<br>
+        
+        <!-- Hakukenttä -->
+        <div class = "hakukentta-wrap">
+            <div class="vasen-hakukentta">
+                <p><b> Hae tuotteita </b></p>
+            </div>
+            <div class="oikea-hakukentta">
+                <input type="text" class="haku" id="hakukentta" placeholder="Hae"/>
+            </div>
+        </div>
+
+        <!-- Taulukon perusnäkymä -->
+        <div class="taulukko-perus">
+            <div class="scroll-wrap">
+                <table class="lainaus-taulu">
+                    <div class="lainaus-otsikot">
+                        <thead>
+                            <tr>
+                                <th>Tuotekuva</th>
+                                <th>Nimike</th>
+                                <th>Kappalemäärä</th>
+                                <th>Tila</th>
+                            </tr>
+                        </thead>
+                    </div>
+                        <tbody>
+                            {% for tuote in tuotteet %}
+                                <tr>
+                                    <td><img src="{% if tuote.tuotekuva.url is not null %}{{ tuote.tuotekuva.url }}{% endif %}" alt="Tuotekuva" width="70" height="70"></td>
+                                    <td>{{tuote.nimike}}</td>
+                                    <td>{{tuote.kappalemaara}}</td>
+                                    <td class="lainaus-nappi"> - </td> <!-- BUG: lainaus-toiminto -->
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Taulukon tulosnäkymä -->
+        <div class="taulukko-tulos">
+            <div class="scroll-wrap">
+                <table class="lainaus-taulu">
+                    <div class="lainaus-otsikot">
+                        <thead>
+                            <tr>
+                                <th>Tuotekuva</th>
+                                <th>Nimike</th>
+                                <th>Kappalemäärä</th>
+                                <th>Tila</th>
+                            </tr>
+                        </thead>
+                    </div>
+                    <tbody class="table-body">
+                        <!-- Tänne tulostuu hakukentta.js-tiedostosta 
+                            taulurivejä -->
+                    </tbody>
+                </table>
+
+                <!-- Ei tulosta -näkymä -->
+                <div class="ei-tulosta">
+                    </br><p><b> Ei hakutulosta </b></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+{% endblock content%}
+
+<!-- Ladataan staattiset tiedostot ja linkataan hakukentta.js -->
+{% load static %}
+{% block scripts %}
+    <script src="{% static 'hakukentta.js' %}"></script>
+{% endblock scripts %}

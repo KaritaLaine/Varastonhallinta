@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- Tarvittavat meta-tägit. Viewport asettaa eri laitteille sopivan skaalauksen -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Lataa staattiset tiedostot ja yhdistetään css-tiedostoon -->
+        {% load static %}
+        {% block css %}{% endblock %}
+        <link rel="stylesheet" href="{% static 'base.css'%}"> 
+        <!-- Rasekon favicon -->
+        <link rel="shortcut icon" href="{% static 'favicon.svg' %}"/>
+        <!-- Lisätty Rasekon fontit Nunito Sans Light, Kanit Extrabold, Caveat Brush
+            Nunito Sans Semibold -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Caveat+Brush&family=Kanit:wght@800&family=Nunito+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    </head>    
+
+    <header>
+        <title>{% block title %}Varastonhallinta{% endblock %}</title>
+        <div class="vasen-header">
+            <a href="{% url 'etusivu' %}"> <img class="logo" src="{% static 'Raseko-logo-vaaka_VÄRI.png' %}" alt="Raseko Logo"/>
+            <nav>   
+            <ul class="nav-links">
+                {% if request.user.rooli == 'varastonhoitaja' %}
+                    <li {% if request.resolver_match.url_name == 'varastonhoitaja' %}class="active"{% else %} class="inactive" {% endif %}><a href="#">Varastonhoitaja</a></li>
+                    <li {% if request.resolver_match.url_name == 'lainaus' %}class="active"{% else %} class="inactive" {% endif %}><a href="{% url 'lainaus' %}">Lainaus / Palautus</a></li>
+                    <li {% if request.resolver_match.url_name == 'lisaaminen' %}class="active"{% else %} class="inactive" {% endif %}><a href="{% url 'lisaaminen' %}">Lisää Tuote</a></li>
+                    <li {% if request.resolver_match.url_name == 'hallinta' %}class="active"{% else %} class="inactive" {% endif %}><a href="{% url 'hallinta' %}">Tuotteiden Hallinta</a></li>
+                {% elif request.user.rooli == 'opettaja' %}
+                    <li {% if request.resolver_match.url_name == 'opettaja' %}class="active"{% else %} class="inactive" {% endif %}><a href="#">Opettaja</a></li>
+                    <li {% if request.resolver_match.url_name == 'lainaus' %}class="active"{% else %} class="inactive" {% endif %}><a href="{% url 'lainaus' %}">Lainaus / Palautus</a></li>
+                    <li {% if request.resolver_match.url_name == 'lisaaminen' %}class="active"{% else %} class="inactive" {% endif %}><a href="{% url 'lisaaminen' %}">Lisää Tuote</a></li>
+                    <li {% if request.resolver_match.url_name == 'hallinta' %}class="active"{% else %} class="inactive" {% endif %}><a href="{% url 'hallinta' %}">Tuotteiden Hallinta</a></li>
+                {% elif request.user.rooli == 'hallinto' %}
+                    <li {% if request.resolver_match.url_name == 'hallinto' %}class="active"{% else %} class="inactive" {% endif %}><a href="#">Hallinto</a></li>
+                    <li {% if request.resolver_match.url_name == 'lisaaminen' %}class="active"{% else %} class="inactive" {% endif %}><a href="{% url 'lisaaminen' %}">Lisää Tuote</a></li>
+                    <li {% if request.resolver_match.url_name == 'hallinta' %}class="active"{% else %} class="inactive" {% endif %}><a href="{% url 'hallinta' %}">Tuotteiden Hallinta</a></li>
+                {% else %}
+                    <li {% if request.resolver_match.url_name == 'lainaus' %}class="active"{% else %} class="inactive" {% endif %}><a href="#">Oppilas</a></li>
+                {% endif %}
+        </div>
+        <div class="oikea-header">
+                <li class="right"><a href="{% url 'uloskirjautuminen' %}">Kirjaudu ulos</a></li>
+            </ul>
+        </nav>
+        </div>
+    </header>
+
+    <!-- Wrapper on vähän niinkuin pussi, jonka sisälle kaikki elementit tulee. 
+        Sen avulla on helppo optimoida esim. sivun kokoa ja muita laajia asetuksia.-->
+    <div class="container"
+    <div class="wrapper">
+        {%block content%} {%endblock content%}
+    </div>
+    </div>
+
+    <!-- Script varten -->
+    {%block scripts%} {%endblock scripts%}
+
+
+<!-- WIP Footer? jos sellainen halutaan lisätä -->
+
+    <footer>
+
+    </footer>
+</html>

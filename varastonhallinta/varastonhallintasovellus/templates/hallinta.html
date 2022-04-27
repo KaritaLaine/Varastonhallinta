@@ -1,0 +1,92 @@
+<!-- Hallintasivu -->
+
+{% extends "base.html" %}
+
+{% block title %}Tuotteiden Hallinta{% endblock title %}
+
+{% block css %}
+{% load static %}
+    <link rel="stylesheet"  type="text/css" href="{% static "hallinta.css" %}">
+{% endblock %}
+
+{% block content %}
+
+    <h1 class="iso_otsikko">Hallinta</h1>
+    <p>Hallitse tietokannassa olevia tuotteita</p>
+    <button type="button" id="lisaa-tuotteita" onclick="location.href='{% url "lisaaminen" %}'">Lisää tuotteita</button>
+    <p>
+        {% if messages %}
+            {% for message in messages %}
+                {{ message }}
+            {% endfor %}
+        {% endif %}
+    </p>
+
+
+    <table>
+        <thead>
+            <tr>
+                <th>Tuotekuva</th>
+                <th>Nimike</th>
+                <th>Tuoteryhma</th>
+                <th>Valmistaja</th>
+                <th>Kappalemäärä</th>
+                {% if request.user.rooli == 'hallinto' or request.user.rooli == 'opettaja' %}
+                    <th>Hankintapaikka</th>
+                    <th>Hankintapäivä</th>
+                    <th>Hankintahinta</th>
+                    <th>Laskun numero</th>
+                    <th>Kustannuspaikka</th>
+                    <th>Takuuaika</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for tuote in tuotteet %}
+                <tr>
+                    <td><img src="{% if tuote.tuotekuva.url is not null %}{{ tuote.tuotekuva.url }}{% endif %}" alt="Tuotekuva" width="70" height="70"></td>
+                    <td>{{ tuote.nimike }}</td>
+                    <td>{{ tuote.tuoteryhma }}</td>
+                    <td>{{ tuote.valmistaja | default_if_none:"-" }}</td>
+                    <td>{{ tuote.kappalemaara }}</td>
+                    {% if request.user.rooli == 'hallinto' or request.user.rooli == 'opettaja' %}
+                        <td>{{ tuote.hankintapaikka | default_if_none:"-" }}</td>
+                        <td>{{ tuote.hankintapaiva | default_if_none:"-" }}</td>
+                        <td>{{ tuote.hankintahinta | default_if_none:"-" }}</td>
+                        <td>{{ tuote.laskun_numero | default_if_none:"-" }}</td>
+                        <td>{{ tuote.kustannuspaikka | default_if_none:"-" }}</td>
+                        <td>{{ tuote.takuuaika | default_if_none:"-" }}</td>
+                    {% endif %}
+                    <td><button type="button" id="muokkaa-nappi"><a id="muokkaa-linkki" href="{% url "muokkaaminen" tuote.id %}">Muokkaa</a></button></td>
+                    <td><button type="button" id="poista-nappi"><a id="poista-linkki" href="{% url "poistaminen" tuote.id %}">Poista</a></button></td>
+            {% empty %}
+                <p>Vaikuttaa siltä että tietokannassa ei ole tällä hetkellä tuotteita. Käydäänpä lisäämässä niitä ylhäällä olevasta napista</p>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% comment %} <ul>
+        {% for tuote in tuotteet %}
+            <li>Tuotteen viivakoodi - {{ tuote.viivakoodi }}</li>
+            <li>Tuotteen nimike - {{ tuote.nimike }}</li>
+            <li>Tuotteen valmistaja - {{ tuote.valmistaja }}</li>
+            <li>Tuotteen kappalemäärä - {{ tuote.kappalemaara }}</li>
+            {% if tuote.tuotekuva.url is not null %}
+                <li>Tuotteen tuotekuva - <img src="{{ tuote.tuotekuva.url }}" alt="Tuotekuva"></li>
+            {% endif %}
+            <li>Tuotteen tuoteryhmä - {{ tuote.tuoteryhma }}</li>
+            {% if request.user.rooli == 'hallinto' or request.user.rooli == 'opettaja' %}
+                <li>Tuotteen hankintapaikka - {{ tuote.hankintapaikka }}</li>
+                <li>Tuotteen hankintapäivä - {{ tuote.hankintapaiva }}</li>
+                <li>Tuotteen hankintahinta - {{ tuote.hankintahinta }}</li>
+                <li>Tuotteen laskun numero - {{ tuote.laskun_numero }}</li>
+                <li>Tuotteen kustannuspaikka - {{ tuote.kustannuspaikka }}</li>
+                <li>Tuotteen takuuaika - {{ tuote.takuuaika }}</li>
+            {% endif %}
+            <button type="button" id="muokkaa-nappi"><a id="muokkaa-linkki" href="{% url "muokkaaminen" tuote.id %}">Muokkaa</a></button>
+            <button type="button" id="poista-nappi"><a id="poista-linkki" href="{% url "poistaminen" tuote.id %}">Poista</a></button>
+        {% empty %}
+            <p>Vaikuttaa siltä että tietokannassa ei ole tällä hetkellä tuotteita. Käydäänpä lisäämässä niitä ylhäällä olevasta napista</p>
+        {% endfor %}
+    </ul> {% endcomment %}
+{% endblock %}

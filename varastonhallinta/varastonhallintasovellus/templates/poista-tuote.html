@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Poista {{ tuote.nimike }}{% endblock title %}
+
+{% block css %}
+{% load static %}
+    <link rel="stylesheet"  type="text/css" href="{% static "poista-tuote.css" %}">
+{% endblock %}
+
+{% block content %}
+    <h1>Oletko varma...</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <p>Oletko varma että haluat poistaa tuotteen "{{ tuote.nimike }}"?</p>
+    
+        <input id="poista-nappi" type="submit" value="Poista">
+        <button id="peruuta-nappi" type="button" onclick="location.href='{% url "hallinta" %}'">Peruuta</button>
+    </form>
+{% endblock %}

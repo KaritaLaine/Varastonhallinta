@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Lisää Tuote{% endblock %}
+
+{% block css %}
+{% load static %}
+    <link rel="stylesheet"  type="text/css" href="{% static "lisaa-tuote.css" %}">
+{% endblock %}
+
+{% block content %}
+    <h1>Lisää Tuote</h1>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        {% if messages %}
+            {% for message in messages %}
+                {{ message }}
+            {% endfor %}
+        {% endif %}
+
+        {% for field in form %}
+            <div class="form-control {% if field.error %}errors{% endif %}">
+                {{ field.label_tag }}
+                {{ field }}
+                {{ field.errors }}
+            </div>
+        {% endfor %}
+
+        <button id="lisaa-nappi" type="submit">Lisää tuote</button>
+        
+    </form>
+{% endblock %}

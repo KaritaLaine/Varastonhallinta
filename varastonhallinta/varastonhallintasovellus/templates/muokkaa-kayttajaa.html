@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Muokkaa Omia Tietojasi{% endblock %}
+
+{% block content %}
+    <main>
+        <h2>Muokkaa omia tietojasi...</h2>
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Muokkaa</button>
+        </form>
+        <p>Jos haluat vaihtaa salasanasi, tee se <a href="{% url "vaihda-salasana" %}">TÄÄLTÄ</a>.</p>
+    </main>
+    <p>
+        {% if messages %}
+            {% for message in messages %}
+                {{ message }}
+            {% endfor %}
+        {% endif %}
+    </p>
+{% endblock %}
