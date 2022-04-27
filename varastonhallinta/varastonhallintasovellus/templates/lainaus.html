@@ -9,7 +9,6 @@
 {% block content %}
 <body>
     <div class = "lainaus-keskita">
-
         <!-- "lorem ipsum | title" muuttaa jokaisen sanan ekan kirjaimen isoksi 
             esim. tässä tapauksessa "lorem ipsum" >> "Lorem Ipsum" !-->
         <h1 class="iso_otsikko" id="lainaus-otsikko">Tervetuloa, {{ user.get_full_name | title }}</h1>
@@ -24,11 +23,7 @@
                 <p><b> Hae tuotteita </b></p>
             </div>
             <div class="oikea-hakukentta">
-                <!-- <input type="text" class="haku" id="hakukentta" placeholder="Hae"/> !-->
-                <form id="search-form" autocomplete = "off">
-                    {% csrf_token %}
-                    <input type="text" id="search-input" placeholder="Hae"/>
-                </form>
+                <input type="text" class="haku" id="hakukentta" placeholder="Hae"/>
             </div>
         </div>
 
@@ -49,10 +44,7 @@
                         <tbody>
                             {% for tuote in tuotteet %}
                                 <tr>
-                                    {% if tuote.tuotekuva.url is not null %}
-                                        <td><img src="{{ tuote.tuotekuva.url }}" class="tuotekuva" alt="Tuotekuva"></td>
-                                        {% else %} <td> </td> 
-                                    {% endif %}
+                                    <td><img src="{% if tuote.tuotekuva.url is not null %}{{ tuote.tuotekuva.url }}{% endif %}" alt="Tuotekuva" width="70" height="70"></td>
                                     <td>{{tuote.nimike}}</td>
                                     <td>{{tuote.kappalemaara}}</td>
                                     <td class="lainaus-nappi"> - </td> <!-- BUG: lainaus-toiminto -->
@@ -77,19 +69,16 @@
                             </tr>
                         </thead>
                     </div>
-                    <tbody class="results-card not-visible" id="results-box">
+                    <tbody class="table-body">
                         <!-- Tänne tulostuu hakukentta.js-tiedostosta 
                             taulurivejä -->
-                            
                     </tbody>
                 </table>
 
-                {% comment %}
-                    <!-- Ei tulosta -näkymä -->
-                    <div class="ei-tulosta">
-                        </br><p><b> Ei hakutulosta </b></p>
-                    </div> 
-                {% endcomment %}
+                <!-- Ei tulosta -näkymä -->
+                <div class="ei-tulosta">
+                    </br><p><b> Ei hakutulosta </b></p>
+                </div>
             </div>
         </div>
     </div>
