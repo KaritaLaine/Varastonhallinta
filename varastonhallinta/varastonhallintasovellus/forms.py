@@ -1,9 +1,8 @@
 from django import forms
 
-from .models import Tuote
+from .models import Henkilo, Tuote
 
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from .models import Henkilo
 
 
 
@@ -89,3 +88,11 @@ class TuoteForm(forms.ModelForm):
                 "required"      : "Sinun on lisättävä tuotteen tuoteryhmä johon tuote kuuluu."
             }
         }
+
+
+class LainausForm(forms.ModelForm):
+    pass
+
+
+# class PalautusForm(forms.ModelForm):
+#     pass
