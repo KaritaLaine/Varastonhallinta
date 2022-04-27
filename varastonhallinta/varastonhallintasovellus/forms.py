@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Henkilo, Tuote
+from .models import Henkilo, Tuote, Varastotapahtuma
 
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
@@ -91,7 +91,13 @@ class TuoteForm(forms.ModelForm):
 
 
 class LainausForm(forms.ModelForm):
-    pass
+    class Meta:
+        model = Varastotapahtuma
+        fields = '__all__'
+        widgets = {
+            'aikaleima'         : forms.DateInput(format=('%Y-%m-%d'), attrs={'type': 'date'}),
+            'palautuspaiva'     : forms.DateInput(format=('%Y-%m-%d'), attrs={'type': 'date'}),
+        }
 
 
 # class PalautusForm(forms.ModelForm):
