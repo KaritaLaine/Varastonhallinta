@@ -26,13 +26,16 @@ from django.conf import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.EtusivuView.as_view(), name='etusivu'),
+    path('rekisteroityminen/', views.RekisteroityminenView.as_view(), name='rekisteroityminen'),
     path('kirjautuminen/', views.kirjautuminen, name='kirjautuminen'),
     path('uloskirjautuminen/', views.uloskirjautuminen, name='uloskirjautuminen'),
+    path('muokkaa-kayttajaa/', views.MuokkaaKayttajaaView.as_view(), name='muokkaa-kayttajaa'),
+    path('vaihda-salasana/', views.VaihdaSalasanaView.as_view(), name='vaihda-salasana'),
     path('hallinta/', views.HallintaView.as_view(), name='hallinta'),
     path('tuotehaku/', csrf_exempt(views.tuotehaku), name="tuotehaku"),
-    path('search/', views.search_results, name='search'),
     path('lainaus/', views.lainaus, name='lainaus'),
     #path('palautus', views.palautus, name='palautus'),
     path('lisaa-tuote/', views.LisaaTuoteView.as_view(), name='lisaaminen'),
     path('muokkaa-tuotetta/<int:pk>/', views.MuokkaaTuotettaView.as_view(), name='muokkaaminen'),
+    path('poista-tuote/<int:pk>/', views.PoistaTuoteView.as_view(), name='poistaminen'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

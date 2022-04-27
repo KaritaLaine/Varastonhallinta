@@ -84,7 +84,7 @@ hakukentta.addEventListener('keyup', (e) => {
     //    tarkistetaan onko sen pituus isompi kuin 0.
     if(hakuarvo.trim().length > 0) {      
         // Tyhjennetään tbody-classin sisältö
-        tbody.innerHTML = "";
+        tbody.innerHTML = "";  
 
         // Tehdään api-pyyntö fetch()-menetelmän avulla, joka pyytää tiedot
         //    palvelimelle ja lataa ne verkkosivulle
@@ -115,7 +115,7 @@ hakukentta.addEventListener('keyup', (e) => {
                     data.forEach((tuote) => {
                         tbody.innerHTML += `
                         <tr>
-                            <td>${tuote.tuotekuva.url}</td>
+                            <td>${tuote.tuotekuva}</td>
                             <td>${tuote.nimike}</td>
                             <td>${tuote.kappalemaara}</td>
                             <td> - </td>
@@ -131,4 +131,3 @@ hakukentta.addEventListener('keyup', (e) => {
         eiTulosta.style.display = "none";
     }
 });
- */
