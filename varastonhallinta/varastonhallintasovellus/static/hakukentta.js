@@ -131,5 +131,4 @@ hakukentta.addEventListener('keyup', (e) => {
         eiTulosta.style.display = "none";
     }
 });
-
 */
