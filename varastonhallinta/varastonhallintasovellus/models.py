@@ -73,7 +73,7 @@ class Tuote(models.Model):
     nimike = models.CharField(max_length=100)
     valmistaja = models.CharField(max_length=100, null=True, blank=True)
     kappalemaara = models.IntegerField(validators=[MinValueValidator(1)], default=1, verbose_name="kappalemäärä")
-    tuotekuva = models.ImageField(upload_to="tuotekuvat", null=True, blank=True)
+    tuotekuva = models.ImageField(upload_to="tuotekuvat", blank=True, default="default.png")
     tuoteryhma = models.ForeignKey(Tuoteryhma, on_delete=models.RESTRICT)
     hankintapaikka = models.CharField(max_length=100, null=True, blank=True)
     hankintapaiva = models.DateField(null=True, blank=True, validators=[hankintapaiva_validaattori], verbose_name="hankintapäivä")
