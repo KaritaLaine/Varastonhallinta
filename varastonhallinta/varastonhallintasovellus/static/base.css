@@ -148,7 +148,7 @@ footer {
 /* LAINAUSTAULU */
 
 .lainaus-keskita {
-    width: 1400px;
+    width: 85%;
     margin: auto;
 }
 
@@ -242,6 +242,7 @@ footer {
     display: flex;
     justify-content: center;
     align-items: center;
+    gap: 10px;
 }
 
 .haku {
@@ -269,4 +270,110 @@ footer {
 
 .piilossa {
     display: none;
+}
+
+/* HALLINTA SIVU - NAPIT */
+
+#lisaa-tuotteita {
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0px 5px;
+    height: 40px;
+    border-radius: 3px;
+    border: 3px black;
+    padding: 10px;
+    font-weight: bold;
+}
+
+#muokkaa-nappi {
+    background-color: #4bbcc5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0px 5px;
+    height: 40px;
+    border-radius: 3px;
+    border: 3px black;
+    padding: 10px;
+}
+
+#poista-nappi {
+    background-color: #df2070;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0px 5px;
+    height: 40px;
+    border-radius: 3px;
+    border: 3px black;
+    padding: 10px;
+}
+
+#lisaa-tuotteita:hover {
+    background-color: #e7e7e7;
+    transition: 0,25ms;
+    cursor: pointer;
+}
+
+#muokkaa-nappi:hover {
+    background-color: #41a3aa;
+    transition: 0,25ms;
+    cursor: pointer;
+}
+
+#poista-nappi:hover {
+    background-color: #b31e5c;
+    transition: 0,25ms;
+    cursor: pointer;
+}
+
+#muokkaa-linkki,
+#poista-linkki {
+    text-decoration: none;
+    color: white;
+}
+
+/* HALLINTA-TAULU */
+
+.hallinta-taulu {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+}
+
+.hallinta-taulu td, .hallinta-taulu th {
+    text-align: left;
+    height: 100px;
+    padding: 0.5rem;
+    border-bottom: 2pt solid #d6d6d6;
+}
+
+.hallinta-taulu td {
+    border-bottom: 2pt solid #efefef;
+}
+
+.hallinta-taulu th {
+    background-color: white;
+    font-family: 'Nunito Sans semibold', sans-serif;
+    color: #424242;
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0;
+}
+
+.hallinta-taulu tr:nth-child(odd){
+    background-color: #1b32590a;
+}
+
+.scroll-hallinta-wrap {
+    max-height: 600px;
+    overflow-y: auto;
+    width: 100%;
+}
+
+.hallinta-keskita {
+    width: 85%;
+    margin: auto;
 }
