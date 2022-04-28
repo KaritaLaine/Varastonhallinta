@@ -72,6 +72,7 @@ class Tuote(models.Model):
     viivakoodi = models.CharField(max_length=30)
     nimike = models.CharField(max_length=100)
     valmistaja = models.CharField(max_length=100, null=True, blank=True)
+    # kappalemaara = models.PositiveIntegerField(default=1,verbose_name="kappalemäärä")
     kappalemaara = models.IntegerField(validators=[MinValueValidator(1)], default=1, verbose_name="kappalemäärä")
     tuotekuva = models.ImageField(upload_to="tuotekuvat", null=True, blank=True)
     tuoteryhma = models.ForeignKey(Tuoteryhma, on_delete=models.RESTRICT)
