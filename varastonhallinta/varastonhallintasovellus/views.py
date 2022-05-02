@@ -1,41 +1,32 @@
-from django.shortcuts import render, redirect
-
 # Tarvittavat json-importit hakukentän toimimiseen
 import json
-from django.http import JsonResponse
-
-# Djangon autentikaatiot sisään- ja uloskirjautumiseen
-from django.contrib.auth import authenticate, login, logout
-# MUUT KIRJAUTUMISEEN / ULOSKIRJAUTUMISEEN TARVITTAVAT ASETUKSET
-# LÖYTYVÄT --> settings.py!
-
-from django.contrib.auth.decorators import login_required
 
 # "messages" avulla voimme näyttää kustomoituja viestejä käyttäjille
 # + näyttää ne templeiteissä.
 from django.contrib import messages
-
-# Importit "testeille joiden käyttäjien on läpäistävä" jotta he pääsevät tietyille sivulle 
-from django.contrib.auth.mixins import UserPassesTestMixin
-
+# Djangon autentikaatiot sisään- ja uloskirjautumiseen
+from django.contrib.auth import authenticate, login, logout
 # Importit class näkymän parametrille joka vaatii käyttäjää
 # olemaan sisäänkirjautuneena nähdäkseen sivun
-from django.contrib.auth.mixins import LoginRequiredMixin
-
+from django.contrib.auth.decorators import login_required
+# Importit "testeille joiden käyttäjien on läpäistävä" jotta he pääsevät tietyille sivulle 
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+# Import class näkymä tyypille jonka avulla käyttäjä voi vaihtaa salasanansa
+from django.contrib.auth.views import PasswordChangeView
+from django.http import JsonResponse
+from django.shortcuts import redirect, render
 # Importit class näkymä tyypeille
 from django.views.generic import ListView, UpdateView
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import CreateView, DeleteView
 
-# Import class näkymä tyypille jonka avulla käyttäjä voi vaihtaa salasanansa
-from django.contrib.auth.views import PasswordChangeView
-
+# Lomakkeiden importit --> "forms.py"
+from .forms import MuokkaaKayttajaaForm, RekisteroityminenForm, TuoteForm
 # Models importit
 from .models import Tuote
 
-# Lomakkeen import --> "forms.py"
-from .forms import RekisteroityminenForm, MuokkaaKayttajaaForm, TuoteForm
-
+# MUUT KIRJAUTUMISEEN / ULOSKIRJAUTUMISEEN TARVITTAVAT ASETUKSET
+# LÖYTYVÄT --> settings.py!
 
 
 class EiOikeuttaUserMixin(LoginRequiredMixin, UserPassesTestMixin):
@@ -46,6 +37,7 @@ class EiOikeuttaUserMixin(LoginRequiredMixin, UserPassesTestMixin):
     """
 
     def handle_no_permission(self):
+        # NÄYTÄ MIELUMMIN 403 SIVU
         return redirect('kirjautuminen')
 
 
@@ -233,6 +225,7 @@ class LisaaTuoteView(PaakayttajatUserMixin, CreateView):
     template_name = 'lisaa-tuote.html'
     success_url = '/lisaa-tuote/'
 
+    # Tehdään roolimixin --> parametrina tähän classiin
     def get_form_kwargs(self):
         kwargs = super(LisaaTuoteView, self).get_form_kwargs()
         kwargs['kayttajan_rooli'] = self.request.user.rooli
@@ -253,6 +246,7 @@ class MuokkaaTuotettaView(PaakayttajatUserMixin, UpdateView):
     template_name = 'muokkaa-tuotetta.html'
     success_url = '/hallinta/'
 
+    # Tehdään roolimixin --> parametrina tähän classiin
     def get_form_kwargs(self):
         kwargs = super(MuokkaaTuotettaView, self).get_form_kwargs()
         kwargs['kayttajan_rooli'] = self.request.user.rooli
