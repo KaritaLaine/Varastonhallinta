@@ -1,3 +1,5 @@
+import datetime
+
 from django import forms
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
 
@@ -41,13 +43,11 @@ class MuokkaaKayttajaaForm(UserChangeForm):
 
 
 class TuoteForm(forms.ModelForm):
-    # def hankintapaiva_validaattori(arvo):
-    #     if arvo > datetime.date.today():
-    #         raise ValidationError("Hankintapäivä ei voi olla tulevaisuudessa")
-    #     return arvo
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('kayttajan_rooli')
         super(TuoteForm, self).__init__(*args, **kwargs)
+        self.fields['hankintapaiva'].required = False
+
         if self.user == 'varastonhoitaja':
             for kentta in ['hankintapaikka', 'hankintapaiva', 'hankintahinta', 'laskun_numero', 'kustannuspaikka', 'takuuaika']:
                 del self.fields[kentta]
@@ -90,6 +90,12 @@ class TuoteForm(forms.ModelForm):
                 "required"      : "Sinun on lisättävä tuotteen tuoteryhmä johon tuote kuuluu."
             }
         }
+
+    def clean_hankintapaiva(self):
+        hankintapaiva = self.cleaned_data['hankintapaiva']
+        if hankintapaiva > datetime.date.today():
+            raise forms.ValidationError('Hankintapäivä ei voi olla tulevaisuudessa!')
+        return hankintapaiva
 
 
 class LainausForm(forms.ModelForm):
