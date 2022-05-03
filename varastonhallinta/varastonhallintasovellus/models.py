@@ -63,7 +63,7 @@ class Tuote(models.Model):
     kappalemaara = models.PositiveIntegerField(
         validators=[MinValueValidator(1)],
         default=1, verbose_name="kappalemäärä")
-    tuotekuva = models.ImageField(upload_to="tuotekuvat", null=True, blank=True)
+    tuotekuva = models.ImageField(upload_to="tuotekuvat", default="default.png", null=True, blank=True)
     tuoteryhma = models.ForeignKey(Tuoteryhma, on_delete=models.RESTRICT)
     hankintapaikka = models.CharField(max_length=100, null=True, blank=True)
     hankintapaiva = models.DateField(null=True, blank=True, verbose_name="hankintapäivä")

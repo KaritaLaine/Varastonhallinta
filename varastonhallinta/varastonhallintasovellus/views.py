@@ -1,21 +1,26 @@
 # Tarvittavat json-importit hakukentän toimimiseen
 import json
+from unicodedata import lookup
 
 # "messages" avulla voimme näyttää kustomoituja viestejä käyttäjille
-# + näyttää ne templeiteissä.
+# + näyttää ne templeteissä.
 from django.contrib import messages
 # Djangon autentikaatiot sisään- ja uloskirjautumiseen
 from django.contrib.auth import authenticate, login, logout
 # Importit class näkymän parametrille joka vaatii käyttäjää
-# olemaan sisäänkirjautuneena nähdäkseen sivun
+# olemaan sisäänkirjautuneena nähdäkseen sivun (funktionäkymät)
 from django.contrib.auth.decorators import login_required
-# Importit "testeille joiden käyttäjien on läpäistävä" jotta he pääsevät tietyille sivulle 
+# Importit "testeille joiden käyttäjien on läpäistävä" jotta he pääsevät tietyille sivulle (class näkymät)
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 # Import class näkymä tyypille jonka avulla käyttäjä voi vaihtaa salasanansa
 from django.contrib.auth.views import PasswordChangeView
-from django.http import JsonResponse
+# Importit "toimenpiteille" joita tehdään jos käyttäjällä ei ole oikeutta sivuun
+from django.core.exceptions import PermissionDenied
+# Import 404 (sivua ei löydy) näkymään
+from django.http import Http404, JsonResponse
 from django.shortcuts import redirect, render
 # Importit class näkymä tyypeille
+from django.views import View
 from django.views.generic import ListView, UpdateView
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import CreateView, DeleteView
@@ -23,7 +28,7 @@ from django.views.generic.edit import CreateView, DeleteView
 # Lomakkeiden importit --> "forms.py"
 from .forms import MuokkaaKayttajaaForm, RekisteroityminenForm, TuoteForm
 # Models importit
-from .models import Tuote
+from .models import Henkilo, Tuote
 
 # MUUT KIRJAUTUMISEEN / ULOSKIRJAUTUMISEEN TARVITTAVAT ASETUKSET
 # LÖYTYVÄT --> settings.py!
@@ -32,13 +37,20 @@ from .models import Tuote
 class EiOikeuttaUserMixin(LoginRequiredMixin, UserPassesTestMixin):
     """
     Kun käyttäjällä ei ole oikeutta johonkin sivuun...
-    1. Käyttäjällä ei ole oikeutta johonkin sivuun uudelleenohjaus --> 'kirjautuminen'
-    2. tai jos käyttäjä on kirjautunut mutta ei oikeutta --> 'kirjautuminen' -> 'etusivu'
+    1. Käyttäjällä ei ole oikeutta johonkin sivuun --> näytä '403.html'
+    2. tai jos ei ole kirjautuneena ja yrittää päästä sivulle --> näytä 'kirjautuminen.html'
     """
 
     def handle_no_permission(self):
-        # NÄYTÄ MIELUMMIN 403 SIVU
-        return redirect('kirjautuminen')
+        if self.request.user.is_authenticated:
+            raise PermissionDenied()
+        else:
+            return redirect('kirjautuminen/')
+
+
+class ErrorView(View):
+    def index(self):
+        raise Http404
 
 
 kaikki_kayttajatyypit = ['oppilas', 'varastonhoitaja', 'opettaja', 'hallinto']
@@ -185,10 +197,6 @@ def haku_tulokset(request):
         return JsonResponse({'data': response})
     return JsonResponse({})
 
-#@login_required
-# def palautus(request):
-#     return HttpResponse('palautussivu')
-
 
 class HallintaView(PaakayttajatUserMixin, ListView):
     """
@@ -212,7 +220,7 @@ class LisaaTuoteView(PaakayttajatUserMixin, CreateView):
     template_name = 'lisaa-tuote.html'
     success_url = '/lisaa-tuote/'
 
-    # Tehdään roolimixin --> parametrina tähän classiin
+    #Tehdään roolimixin --> parametrina tähän classiin
     def get_form_kwargs(self):
         kwargs = super(LisaaTuoteView, self).get_form_kwargs()
         kwargs['kayttajan_rooli'] = self.request.user.rooli
