@@ -9,13 +9,8 @@
 {% block content %}
 <body>
     <div class = "lainaus-keskita">
-        <!-- "lorem ipsum | title" muuttaa jokaisen sanan ekan kirjaimen isoksi 
-            esim. tässä tapauksessa "lorem ipsum" >> "Lorem Ipsum" !-->
-        <h1 class="iso_otsikko" id="lainaus-otsikko">Tervetuloa, {{ user.get_full_name | title }}</h1>
-        <p class="lainaus-ohjeteksti"> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do 
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut <br> 
-            enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut 
-            aliquip ex ea commodo consequat.<br>
+        <h1 class="iso_otsikko" id="lainaus-otsikko">Lainaus / Palautus</h1>
+        <p class="lainaus-ohjeteksti"> Lainaa tai palauta tietokannassa näkyviä tuotteita. </br> </br>
         
         <!-- Hakukenttä -->
         <div class = "hakukentta-wrap">
@@ -24,9 +19,9 @@
             </div>
             <div class="oikea-hakukentta">
                 <!-- <input type="text" class="haku" id="hakukentta" placeholder="Hae"/> !-->
-                <form id="search-form" autocomplete = "off">
+                <form id="haku-form" autocomplete = "off">
                     {% csrf_token %}
-                    <input type="text" id="search-input" placeholder="Hae"/>
+                    <input type="text" class="haku" id="hakusyote" placeholder="Hae"/>
                 </form>
             </div>
         </div>
@@ -48,11 +43,7 @@
                         <tbody>
                             {% for tuote in tuotteet %}
                                 <tr>
-                                    {% if tuote.tuotekuva.url is not null %}
-                                        <td><img src="{{ tuote.tuotekuva.url }}" class="tuotekuva" alt="Tuotekuva"></td>
-                                    {% else %} 
-                                        <td> </td> 
-                                    {% endif %}
+                                    <td><img src="{{ tuote.tuotekuva.url }}" class="tuotekuva" alt="Tuotekuva"></td>
                                     <td>{{tuote.nimike}}</td>
                                     <td>{{tuote.kappalemaara}}</td>
                                     <td class="lainaus-nappi"> - </td> <!-- BUG: lainaus-toiminto -->
@@ -64,9 +55,9 @@
         </div>
         
         <!-- Taulukon tulosnäkymä -->
-        <div class="taulukko-tulos">
+        <div class="taulukko-tulos ">
             <div class="scroll-wrap">
-                <table class="lainaus-taulu">
+                <table class="lainaus-taulu" >
                     <div class="lainaus-otsikot">
                         <thead>
                             <tr>
@@ -77,7 +68,7 @@
                             </tr>
                         </thead>
                     </div>
-                    <tbody class="results-card not-visible" id="results-box">
+                    <tbody class="piilossa" id="tulos-taulukko">
                         <!-- Tänne tulostuu hakukentta.js-tiedostosta 
                             taulurivejä -->
                     </tbody>
