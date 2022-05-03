@@ -14,27 +14,31 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
-
-from django.conf.urls.static import static
-
 from varastonhallintasovellus import views
-
-from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+
     path('', views.EtusivuView.as_view(), name='etusivu'),
     path('rekisteroityminen/', views.RekisteroityminenView.as_view(), name='rekisteroityminen'),
     path('kirjautuminen/', views.kirjautuminen, name='kirjautuminen'),
     path('uloskirjautuminen/', views.uloskirjautuminen, name='uloskirjautuminen'),
+
     path('muokkaa-kayttajaa/', views.MuokkaaKayttajaaView.as_view(), name='muokkaa-kayttajaa'),
     path('vaihda-salasana/', views.VaihdaSalasanaView.as_view(), name='vaihda-salasana'),
+
     path('hallinta/', views.HallintaView.as_view(), name='hallinta'),
+    
     path('haku/', views.haku_tulokset, name='haku'),
+
     path('lainaus/', views.lainaus, name='lainaus'),
-    #path('palautus', views.palautus, name='palautus'),
+    #path('lainaa', views.palauta, name='lainaa'),
+    #path('palauta', views.palauta, name='palauta'),
+    
     path('lisaa-tuote/', views.LisaaTuoteView.as_view(), name='lisaaminen'),
     path('muokkaa-tuotetta/<int:pk>/', views.MuokkaaTuotettaView.as_view(), name='muokkaaminen'),
     path('poista-tuote/<int:pk>/', views.PoistaTuoteView.as_view(), name='poistaminen'),

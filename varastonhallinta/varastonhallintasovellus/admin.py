@@ -1,7 +1,8 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
-from .models import Varastotyyppi, Varasto, Henkilo, Tuoteryhma, Tuote, Varastotapahtuma
+from .models import (Henkilo, Tuote, Tuoteryhma, Varasto, Varastotapahtuma,
+                     Varastotyyppi)
 
 
 class HenkiloAdmin(UserAdmin):

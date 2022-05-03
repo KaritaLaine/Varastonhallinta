@@ -92,20 +92,24 @@ class Varastotapahtuma(models.Model):
     maara = models.IntegerField(
         verbose_name="määrä",
         help_text="Lainauksille ja poistoille negatiivinen, lisäyksille ja palautuksille positiivinen")
-    arkistotunnus = models.CharField(max_length=50)
+    arkistotunnus = models.CharField(max_length=50, null=True, blank=True)
     varasto = models.ForeignKey(Varasto, on_delete=models.RESTRICT)
-    aikaleima = models.DateField(default=datetime.date.today)
-    asiakas = models.ForeignKey(Henkilo, related_name="asiakas", on_delete=models.RESTRICT)
+    aikaleima = models.DateField(auto_now_add=True)
+    asiakas = models.ForeignKey(Henkilo, related_name="asiakas", on_delete=models.RESTRICT, null=True, blank=True)
     varastonhoitaja = models.ForeignKey(Henkilo, related_name="varastonhoitaja", on_delete=models.RESTRICT)
+    palautuspaiva = models.DateField(
+        verbose_name="palautuspäivä",
+        help_text="Päivä jona tuote tulisi viimeistään palauttaa", null=True, blank=True)
 
     class Meta:
         verbose_name_plural = "Varastotapahtumat"
 
-
-class Lainaus(models.Model):
-    tuote = models.ForeignKey(Tuote, on_delete=models.RESTRICT)
-    lainaaja = models.ForeignKey(Henkilo, on_delete=models.RESTRICT)
-    lainaustapahtuma = models.ForeignKey(Varastotapahtuma, on_delete=models.RESTRICT)
-    palautuspaiva = models.DateField(
-        verbose_name="palautuspäivä",
-        help_text="Päivä jona tuote tulisi viimeistään palauttaa")
+    def __str__(self):
+        if self.tyyppi == 'lainaus':
+            return f"{self.asiakas} lainasi tuotteen {self.tuote}"
+        elif self.tyyppi == 'palautus':
+            return f"{self.asiakas} palautti tuotteen {self.tuote}"
+        elif self.tyyppi == 'poistot':
+            return f"{self.varastonhoitaja} poisti tuotteen {self.tuote}"
+        else:
+            return f"{self.varastonhoitaja} lisäsi tuotteen {self.tuote}"
