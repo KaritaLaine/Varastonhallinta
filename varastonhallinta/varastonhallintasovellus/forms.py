@@ -1,9 +1,7 @@
 from django import forms
+from django.contrib.auth.forms import UserChangeForm, UserCreationForm
 
-from .models import Henkilo, Tuote
-
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-
+from .models import Henkilo, Tuote, Varastotapahtuma
 
 
 class RekisteroityminenForm(UserCreationForm):
@@ -43,6 +41,10 @@ class MuokkaaKayttajaaForm(UserChangeForm):
 
 
 class TuoteForm(forms.ModelForm):
+    # def hankintapaiva_validaattori(arvo):
+    #     if arvo > datetime.date.today():
+    #         raise ValidationError("Hankintapäivä ei voi olla tulevaisuudessa")
+    #     return arvo
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('kayttajan_rooli')
         super(TuoteForm, self).__init__(*args, **kwargs)
@@ -91,7 +93,13 @@ class TuoteForm(forms.ModelForm):
 
 
 class LainausForm(forms.ModelForm):
-    pass
+    class Meta:
+        model = Varastotapahtuma
+        fields = '__all__'
+        widgets = {
+            'aikaleima'         : forms.DateInput(format=('%Y-%m-%d'), attrs={'type': 'date'}),
+            'palautuspaiva'     : forms.DateInput(format=('%Y-%m-%d'), attrs={'type': 'date'}),
+        }
 
 
 # class PalautusForm(forms.ModelForm):
