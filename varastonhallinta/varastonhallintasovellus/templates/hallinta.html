@@ -5,7 +5,9 @@
 {% block content %}
 
 <body>
-    <div class = "hallinta-keskita">
+    <!-- Napataan  rooli ja muutetaan se json scriptiksi -->
+    {{ request.user.rooli|json_script:"user_rooli" }}
+    <div class = "lainaus-keskita">
         <h1 class="iso_otsikko" id="lainaus-otsikko">Hallinta</h1>
         <p>Lisää, muokkaa tai poista tietokannassa olevia tuotteita.</p>
         </br> </br>
@@ -30,33 +32,31 @@
         </div>
 
         <div class="taulukko-perus">
-            <div class="scroll-hallinta-wrap">
+            <div class="scroll-wrap">
                 <table class="hallinta-taulu">
-                    <div class="hallinta-otsikot">
-                        <thead>
-                            <tr>
-                                <th>Tuotekuva</th>
-                                <th>Nimike</th>
-                                <th>Tuoteryhma</th>
-                                <th>Valmistaja</th>
-                                <th>Kappalemäärä</th>
-                                {% if request.user.rooli == 'hallinto' or request.user.rooli == 'opettaja' %}
-                                    <th>Hankintapaikka</th>
-                                    <th>Hankintapäivä</th>
-                                    <th>Hankintahinta</th>
-                                    <th>Laskun numero</th>
-                                    <th>Kustannuspaikka</th>
-                                    <th>Takuuaika</th>
-                                {% endif %}
-                                <th></th>
-                                <th></th>
-                            </tr>  
-                        </thead>
-                    <div>
+                    <thead>
+                        <tr>
+                            <th>Tuotekuva</th>
+                            <th>Nimike</th>
+                            <th>Tuoteryhma</th>
+                            <th>Valmistaja</th>
+                            <th>Kappalemäärä</th>
+                            {% if request.user.rooli == 'hallinto' or request.user.rooli == 'opettaja' %}
+                                <th>Hankintapaikka</th>
+                                <th>Hankintapäivä</th>
+                                <th>Hankintahinta</th>
+                                <th>Laskun numero</th>
+                                <th>Kustannuspaikka</th>
+                                <th>Takuuaika</th>
+                            {% endif %}
+                            <th></th>
+                            <th></th>
+                        </tr>  
+                    </thead>  
                     <tbody>
                         {% for tuote in tuotteet %}
                             <tr>
-                                <td><img src="{% if tuote.tuotekuva.url is not null %}{{ tuote.tuotekuva.url }}{% endif %}" alt="Tuotekuva" width="70" height="70"></td>
+                                <td><img src="{{ tuote.tuotekuva.url }}" class="tuotekuva" alt="Tuotekuva"></td>
                                 <td>{{ tuote.nimike }}</td>
                                 <td>{{ tuote.tuoteryhma }}</td>
                                 <td>{{ tuote.valmistaja | default_if_none:"-" }}</td>
@@ -76,13 +76,43 @@
                                 <p><b>Vaikuttaa siltä ettei tietokannassa ole tällä hetkellä tuotteita. </br> 
                                     Voit lisätä niitä yläpuolella olevasta, valkoisesta Lisää tuotteita-napista. </b></p>
                             {% endfor %}
-                            </tbody>
-                    </table>
-                </div>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="taulukko-tulos">
+            <div class="scroll-wrap">
+                <table class="hallinta-taulu">
+                    <thead>
+                        <tr>
+                            <th>Tuotekuva</th>
+                            <th>Nimike</th>
+                            <th>Tuoteryhma</th>
+                            <th>Valmistaja</th>
+                            <th>Kappalemäärä</th>
+                            {% if request.user.rooli == 'hallinto' or request.user.rooli == 'opettaja' %}
+                                <th>Hankintapaikka</th>
+                                <th>Hankintapäivä</th>
+                                <th>Hankintahinta</th>
+                                <th>Laskun numero</th>
+                                <th>Kustannuspaikka</th>
+                                <th>Takuuaika</th>
+                            {% endif %}
+                            <th></th>
+                            <th></th>
+                        </tr>  
+                    </thead>
+                    <tbody class="piilossa" id="tulos-taulukko">
+                        <!-- Tänne tulostuu roolin mukaan hakukentta.js-tiedostosta 
+                            taulurivejä -->
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 </body>
+
 
     {% comment %} <ul>
         {% for tuote in tuotteet %}
@@ -108,10 +138,10 @@
             <p>Vaikuttaa siltä että tietokannassa ei ole tällä hetkellä tuotteita. Käydäänpä lisäämässä niitä ylhäällä olevasta napista</p>
         {% endfor %}
     </ul> {% endcomment %}
-{% endblock %}
+{% endblock content %}
 
 <!-- Ladataan staattiset tiedostot ja linkataan hakukentta.js -->
 {% load static %}
 {% block scripts %}
-    <script src="{% static 'hakukentta.js' %}"></script>
+    <script src="{% static 'hallinto-hakukentta.js' %}"></script>
 {% endblock scripts %}
