@@ -162,7 +162,7 @@ footer {
     text-align: left;
     height: 100px;
     padding: 0.5rem;
-    min-width: 270px ;
+    min-width: 270px;
 }
 
 .lainaus-taulu td {
@@ -187,6 +187,7 @@ footer {
     overflow-y:scroll;
     height: 600px;
     position: relative;
+    width: 100%;
 }
 
 
@@ -262,7 +263,7 @@ footer {
 /* TUOTEKUVA */
 
 .tuotekuva {
-    max-height: 100%;
+    width: 70px;
     image-rendering: auto;
 }
 
@@ -337,6 +338,11 @@ footer {
 
 /* HALLINTA-TAULU */
 
+.hallinta-keskita {
+    width: 85%;
+    margin: auto;
+}
+
 .hallinta-taulu {
     border-collapse: separate;
     border-spacing: 0;
@@ -347,7 +353,7 @@ footer {
     text-align: left;
     height: 100px;
     padding: 0.5rem;
-    border-bottom: 2pt solid #d6d6d6;
+    min-width: 120px;
 }
 
 .hallinta-taulu td {
@@ -356,6 +362,7 @@ footer {
 
 .hallinta-taulu th {
     background-color: white;
+    border-bottom: 2pt solid #d6d6d6;
     font-family: 'Nunito Sans semibold', sans-serif;
     color: #424242;
     position: sticky;
@@ -365,15 +372,4 @@ footer {
 
 .hallinta-taulu tr:nth-child(odd){
     background-color: #1b32590a;
-}
-
-.scroll-hallinta-wrap {
-    max-height: 600px;
-    overflow-y: auto;
-    width: 100%;
-}
-
-.hallinta-keskita {
-    width: 85%;
-    margin: auto;
 }
