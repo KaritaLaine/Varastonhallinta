@@ -11,16 +11,16 @@ const lahetaHakuData = (tuote) => {
             
             if (Array.isArray(data)) {
                 tulosTaulukko.innerHTML = ""
-                data.forEach(tuote=> {
-                    tulosTaulukko.innerHTML += `
-                        <tr>
-                            <td> <img src="${tuote.tuotekuva}" class="tuotekuva"> </td>
-                            <td> ${tuote.nimike} </td>
-                            <td> ${tuote.kappalemaara} </td>
-                            <td> - </td>
-                        </tr>
-                    `
-                })
+                    data.forEach(tuote=> {
+                        tulosTaulukko.innerHTML += `
+                            <tr>
+                                <td> <img src="${tuote.tuotekuva}" class="tuotekuva" alt="Tuotekuva"> </td>
+                                <td> ${tuote.nimike} </td>
+                                <td> ${tuote.kappalemaara} </td>
+                                <td> - </td>
+                            </tr>
+                        `
+                    })
             } else {
                 if (hakusyote.value.length > 0) {
                     tulosTaulukko.innerHTML = `<b>${data}</b>`
