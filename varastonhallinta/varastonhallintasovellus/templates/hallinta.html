@@ -7,7 +7,7 @@
 <body>
     <!-- Napataan  rooli ja muutetaan se json scriptiksi -->
     {{ request.user.rooli|json_script:"user_rooli" }}
-    <div class = "lainaus-keskita">
+    <div class = "lainaus-keskita"  id="hallinta-koko">
         <h1 class="iso_otsikko" id="lainaus-otsikko">Hallinta</h1>
         <p>Lisää, muokkaa tai poista tietokannassa olevia tuotteita.</p>
         </br> </br>
@@ -112,7 +112,6 @@
         </div>
     </div>
 </body>
-
 
     {% comment %} <ul>
         {% for tuote in tuotteet %}

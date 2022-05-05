@@ -38,7 +38,7 @@ const lahetaHakuData = (tuote) => {
                                 <td> ${tuote.hankintapaiva|| "-"}</td>
                                 <td> ${tuote.hankintahinta|| "-"}</td>
                                 <td> ${tuote.laskun_numero|| "-"} </td>
-                                <td> ${tuote.kustannuspaikka|| "-"}</td>
+                                <td> ${tuote.kustannuspaikka || "-"}</td>
                                 <td> ${tuote.takuuaika|| "-"}</td>
                                 <td><button type="button" id="muokkaa-nappi"><a id="muokkaa-linkki" href="{% url "muokkaaminen" tuote.id %}">Muokkaa</a></button></td>
                                 <td><button type="button" id="poista-nappi"><a id="poista-linkki" href="{% url "poistaminen" tuote.id %}">Poista</a></button></td>
@@ -63,8 +63,6 @@ const lahetaHakuData = (tuote) => {
     })
 }
 
-const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-
 const taulukkoTulos = document.querySelector('.taulukko-tulos');
 const lainausTaulukko = document.querySelector('.taulukko-perus');
 taulukkoTulos.style.display = "none";
@@ -85,3 +83,13 @@ hakusyote.addEventListener('keyup', e=>{
     }
     lahetaHakuData(e.target.value)
 })
+
+
+
+// Lisätään classeja, jotta eri näkymien cssää voisi muuttaa.
+
+if (rooli == "opettaja" || rooli == "hallinto") {
+    $('#hallinta-koko').addClass('hallinto');
+} else {
+    $('#hallinta-koko').addClass('varastonhoitaja');
+}

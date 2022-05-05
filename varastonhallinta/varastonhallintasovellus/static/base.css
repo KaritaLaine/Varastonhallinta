@@ -148,7 +148,7 @@ footer {
 /* LAINAUSTAULU */
 
 .lainaus-keskita {
-    width: 85%;
+    width: 65%;
     margin: auto;
 }
 
@@ -158,15 +158,27 @@ footer {
     border-spacing: 0;
 }
 
+.lainaus-taulu td {
+    border-bottom: 2pt solid #efefef;
+    max-width: 120px;
+    line-clamp: 2; 
+    overflow:hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.lainaus-taulu td:hover {
+    overflow: visible;
+    word-break: break-all;
+    white-space: normal;
+    height:auto;
+}
+
 .lainaus-taulu td, .lainaus-taulu th {
     text-align: left;
     height: 100px;
     padding: 0.5rem;
     min-width: 270px;
-}
-
-.lainaus-taulu td {
-    border-bottom: 2pt solid #efefef;
 }
 
 .lainaus-taulu th {
@@ -185,6 +197,7 @@ footer {
 
 .scroll-wrap {
     overflow-y:scroll;
+    overflow-x: visible;
     height: 600px;
     position: relative;
     width: 100%;
@@ -205,6 +218,7 @@ footer {
   
 *::-webkit-scrollbar {
     width: 12px;
+    height: 12px;
 }
 
 *::-webkit-scrollbar-track {
@@ -339,7 +353,6 @@ footer {
 /* HALLINTA-TAULU */
 
 .hallinta-keskita {
-    width: 85%;
     margin: auto;
 }
 
@@ -353,17 +366,29 @@ footer {
     text-align: left;
     height: 100px;
     padding: 0.5rem;
-    min-width: 120px;
 }
 
 .hallinta-taulu td {
     border-bottom: 2pt solid #efefef;
+    max-width: 120px;
+    line-clamp: 2; 
+    overflow:hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.hallinta-taulu td:hover {
+    overflow: visible;
+    word-break: break-all;
+    white-space: normal;
+    height:auto;
 }
 
 .hallinta-taulu th {
     background-color: white;
     border-bottom: 2pt solid #d6d6d6;
     font-family: 'Nunito Sans semibold', sans-serif;
+    min-width: 120px;
     color: #424242;
     position: sticky;
     position: -webkit-sticky;
@@ -372,4 +397,12 @@ footer {
 
 .hallinta-taulu tr:nth-child(odd){
     background-color: #1b32590a;
+}
+
+.hallinto {
+    width: 86%;
+}
+
+.varastonhoitaja #muokkaa-nappi, .varastonhoitaja #poista-nappi {
+    width: 60%;
 }
