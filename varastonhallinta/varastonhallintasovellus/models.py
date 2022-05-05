@@ -1,6 +1,5 @@
-import datetime
-
 from django.contrib.auth.models import AbstractUser
+from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
 from django.db import models
 from django.db.models import Q
@@ -63,6 +62,7 @@ class Tuote(models.Model):
     kappalemaara = models.PositiveIntegerField(
         validators=[MinValueValidator(1)],
         default=1, verbose_name="kappalemäärä")
+    kappalemaara_lainassa = models.PositiveIntegerField(default=0, verbose_name="kappalemäärä lainassa")
     tuotekuva = models.ImageField(upload_to="tuotekuvat", default="default.png", null=True, blank=True)
     tuoteryhma = models.ForeignKey(Tuoteryhma, on_delete=models.RESTRICT)
     hankintapaikka = models.CharField(max_length=100, null=True, blank=True)
@@ -73,6 +73,14 @@ class Tuote(models.Model):
     laskun_numero = models.IntegerField(null=True, blank=True)
     kustannuspaikka = models.CharField(max_length=30, null=True, blank=True)
     takuuaika = models.DateField(null=True, blank=True, verbose_name="takuun päättymispäivä")
+
+    def validoi_kappalemaarat(self):
+        if self.kappalemaara_lainassa > self.kappalemaara:
+            raise ValidationError("Varastossa ei ole tarpeeksi tätä tuotetta lainausta varten!")
+
+    def save(self, *args, **kwargs):
+        self.validoi_kappalemaarat()
+        return super().save(*args, **kwargs)
 
     class Meta:
         verbose_name_plural = "Tuotteet"
@@ -106,10 +114,10 @@ class Varastotapahtuma(models.Model):
 
     def __str__(self):
         if self.tyyppi == 'lainaus':
-            return f"{self.asiakas} lainasi tuotteen {self.tuote}"
+            return f'"{self.asiakas}" lainasi tuotteen "{self.tuote}" päivämäärällä {self.aikaleima.strftime("%d.%m.%Y")}'
         elif self.tyyppi == 'palautus':
-            return f"{self.asiakas} palautti tuotteen {self.tuote}"
+            return f'"{self.asiakas}" palautti tuotteen "{self.tuote}" päivämäärällä {self.aikaleima.strftime("%d.%m.%Y")}'
         elif self.tyyppi == 'poistot':
-            return f"{self.varastonhoitaja} poisti tuotteen {self.tuote}"
+            return f'"{self.varastonhoitaja}" poisti tuotteen "{self.tuote}" päivämäärällä {self.aikaleima.strftime("%d.%m.%Y")}'
         else:
-            return f"{self.varastonhoitaja} lisäsi tuotteen {self.tuote}"
+            return f'"{self.varastonhoitaja}" lisäsi tuotteen "{self.tuote}" päivämäärällä {self.aikaleima.strftime("%d.%m.%Y")}'
