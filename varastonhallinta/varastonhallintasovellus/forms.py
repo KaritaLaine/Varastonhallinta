@@ -98,15 +98,54 @@ class TuoteForm(forms.ModelForm):
         return hankintapaiva
 
 
-class LainausForm(forms.ModelForm):
+class LainaaTuoteForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(LainaaTuoteForm, self).__init__(*args, **kwargs)
+
+        self.fields['asiakas'].required = True
+        self.fields['palautuspaiva'].required = True
+
+        self.fields['tuote'].disabled = True
+        self.fields['arkistotunnus'].disabled = True
+
+        self.piilota_label = ('tyyppi', 'varastonhoitaja', 'varasto',)
+        for field in self.piilota_label:
+            self.fields[field].label = ''
+
     class Meta:
         model = Varastotapahtuma
         fields = '__all__'
         widgets = {
-            'aikaleima'         : forms.DateInput(format=('%Y-%m-%d'), attrs={'type': 'date'}),
-            'palautuspaiva'     : forms.DateInput(format=('%Y-%m-%d'), attrs={'type': 'date'}),
+            'tyyppi': forms.HiddenInput(),
+            'varastonhoitaja': forms.HiddenInput(),
+            'varasto': forms.HiddenInput(),
+            'palautuspaiva' : forms.DateInput(format=('%Y-%m-%d'), attrs={'type' : 'date'}),
         }
 
+    def clean_maara(self):
+        maara = self.cleaned_data['maara']
+        if maara <= 0:
+            raise forms.ValidationError('Tämän arvon on oltava vähintään 1!')
+        return maara
 
-# class PalautusForm(forms.ModelForm):
-#     pass
+
+class PalautaTuoteForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(PalautaTuoteForm, self).__init__(*args, **kwargs)
+
+        self.fields['tuote'].disabled = True
+        self.fields['arkistotunnus'].disabled = True
+
+        self.piilota_label = ('tyyppi', 'varastonhoitaja', 'varasto', 'palautuspaiva',)
+        for field in self.piilota_label:
+            self.fields[field].label = ''
+
+    class Meta:
+        model = Varastotapahtuma
+        fields = '__all__'
+        widgets = {
+            'tyyppi': forms.HiddenInput(),
+            'varastonhoitaja': forms.HiddenInput(),
+            'varasto': forms.HiddenInput(),
+            'palautuspaiva' : forms.HiddenInput(),
+        }
