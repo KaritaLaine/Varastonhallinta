@@ -36,8 +36,8 @@ urlpatterns = [
     path('haku/', views.haku_tulokset, name='haku'),
 
     path('lainaus/', views.lainaus, name='lainaus'),
-    #path('lainaa', views.palauta, name='lainaa'),
-    #path('palauta', views.palauta, name='palauta'),
+    path('suorita-lainaus/<int:pk>/', views.LainaaTuoteView.as_view(), name='suorita-lainaus'),
+    path('suorita-palautus/<int:pk>/', views.PalautaTuoteView.as_view(), name='suorita-palautus'),
     
     path('lisaa-tuote/', views.LisaaTuoteView.as_view(), name='lisaaminen'),
     path('muokkaa-tuotetta/<int:pk>/', views.MuokkaaTuotettaView.as_view(), name='muokkaaminen'),
