@@ -81,7 +81,7 @@ class TuoteryhmaAdmin(admin.ModelAdmin):
 
 @admin.register(Tuote)
 class TuoteAdmin(admin.ModelAdmin):
-    pass
+    readonly_fields = ["kappalemaara_lainassa"]
 
 
 @admin.register(Varastotapahtuma)
