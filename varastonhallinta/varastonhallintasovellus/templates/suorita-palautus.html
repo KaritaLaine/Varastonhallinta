@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Suorita Palautus{% endblock %}
+
+{% comment %} {% block css %}
+{% load static %}
+    <link rel="stylesheet"  type="text/css" href="{% static "lisaa-tuote.css" %}">
+{% endblock %}{% endcomment %}
+
+{% block content %}
+    <h1>Suorita Palautus</h1>
+    <form method="POST">
+        {% csrf_token %}
+
+        {% if messages %}
+            {% for message in messages %}
+                {{ message }}
+            {% endfor %}
+        {% endif %}
+
+        {% for field in form %}
+            <div class="form-control {% if field.error %}errors{% endif %}">
+                {{ field.label_tag }}
+                {{ field }}
+                {{ field.errors }}
+            </div>
+        {% endfor %}
+
+        <button type="submit">Vahvista</button>
+        
+    </form>
+{% endblock %}
