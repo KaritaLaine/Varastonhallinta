@@ -1,6 +1,5 @@
 # Tarvittavat json-importit hakukentän toimimiseen
 import json
-from unicodedata import lookup
 
 # "messages" avulla voimme näyttää kustomoituja viestejä käyttäjille
 # + näyttää ne templeteissä.
@@ -15,10 +14,11 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 # Import class näkymä tyypille jonka avulla käyttäjä voi vaihtaa salasanansa
 from django.contrib.auth.views import PasswordChangeView
 # Importit "toimenpiteille" joita tehdään jos käyttäjällä ei ole oikeutta sivuun
-from django.core.exceptions import PermissionDenied
+from django.core.exceptions import PermissionDenied, ValidationError
 # Import 404 (sivua ei löydy) näkymään
-from django.http import Http404, JsonResponse
-from django.shortcuts import redirect, render
+from django.http import Http404, HttpResponseRedirect, JsonResponse
+from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
 # Importit class näkymä tyypeille
 from django.views import View
 from django.views.generic import ListView, UpdateView
@@ -26,9 +26,10 @@ from django.views.generic.base import TemplateView
 from django.views.generic.edit import CreateView, DeleteView
 
 # Lomakkeiden importit --> "forms.py"
-from .forms import MuokkaaKayttajaaForm, RekisteroityminenForm, TuoteForm
+from .forms import (LainaaTuoteForm, MuokkaaKayttajaaForm, PalautaTuoteForm,
+                    RekisteroityminenForm, TuoteForm)
 # Models importit
-from .models import Henkilo, Tuote
+from .models import Tuote, Varasto, Varastotapahtuma
 
 # MUUT KIRJAUTUMISEEN / ULOSKIRJAUTUMISEEN TARVITTAVAT ASETUKSET
 # LÖYTYVÄT --> settings.py!
@@ -45,7 +46,7 @@ class EiOikeuttaUserMixin(LoginRequiredMixin, UserPassesTestMixin):
         if self.request.user.is_authenticated:
             raise PermissionDenied()
         else:
-            return redirect('kirjautuminen/')
+            return redirect('/kirjautuminen/')
 
 
 class ErrorView(View):
@@ -55,6 +56,7 @@ class ErrorView(View):
 
 kaikki_kayttajatyypit = ['oppilas', 'varastonhoitaja', 'opettaja', 'hallinto']
 paakayttajat = ['varastonhoitaja', 'opettaja', 'hallinto']
+varastonhoitajat = ['varastonhoitaja', 'opettaja']
 henkilokunta = ['opettaja', 'hallinto']
 
 
@@ -77,6 +79,17 @@ class PaakayttajatUserMixin(EiOikeuttaUserMixin, UserPassesTestMixin):
     
     def test_func(self):
         if self.request.user.rooli in paakayttajat:
+            return True
+
+
+class VarastonhoitajatUserMixin(EiOikeuttaUserMixin, UserPassesTestMixin):
+    """
+    Pääsyoikeidet henkilökunnalle --> opettajat, hallinto.
+    --> Tätä classia käytetään parametrina tietyissä class näkymissä.
+    """
+    
+    def test_func(self):
+        if self.request.user.rooli in varastonhoitajat:
             return True
 
 
@@ -129,25 +142,21 @@ def kirjautuminen(request):
     käyttäjä on jo kirjautunut tai uudelleenohjaus kirjautumissivulle jos
     käyttäjän antamat todentamistiedot ovat virheelliset.
     """
-    if request.user.is_authenticated:
-        return redirect('/')
-    else:
-        # Jos lomake lähetetään (submit) metodi on POST
-        if request.method == 'POST':
-            username = request.POST['käyttäjätunnus']
-            password = request.POST['salasana']
-            user = authenticate(request, username=username, password=password)
-            if user is not None:
-                login(request, user)
-                return redirect('/')
-            else:
-                # Kirjautumistiedot ovat väärät, näytä viesti
-                # ja uudelleenohjaa kirjautumissivulle.
-                messages.success(request, ('Antamasi salasana tai käyttäjätunnus on väärä!'))
-                return redirect('kirjautuminen')
+    if request.method == 'POST':
+        username = request.POST['käyttäjätunnus']
+        password = request.POST['salasana']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('/')
         else:
-            # Jos metodi on GET renderöidään kirjautumissivu
-            return render(request, 'kirjautuminen.html')
+            # Kirjautumistiedot ovat väärät, näytä viesti
+            # ja uudelleenohjaa kirjautumissivulle.
+            messages.success(request, ('Antamasi salasana tai käyttäjätunnus on väärä!'))
+            return redirect('kirjautuminen')
+    else:
+        # Jos metodi on GET renderöidään kirjautumissivu
+        return render(request, 'kirjautuminen.html')
 
 
 def uloskirjautuminen(request):
@@ -269,3 +278,63 @@ class PoistaTuoteView(PaakayttajatUserMixin, DeleteView):
     model = Tuote
     template_name = 'poista-tuote.html'
     success_url = '/hallinta/'
+
+
+class LainaaTuoteView(VarastonhoitajatUserMixin, CreateView):
+    model = Varastotapahtuma
+    form_class = LainaaTuoteForm
+    template_name = 'suorita-lainaus.html'
+    success_url = '/lainaus/'
+
+    def get_initial(self):
+        varastonhoitaja = self.request.user
+        tuote = get_object_or_404(Tuote, pk=self.kwargs.get('pk'))
+        varasto = Varasto.objects.get(nimi="Lainassa")
+        return {
+            'tyyppi' : 'lainaus',
+            'tuote' : tuote,
+            'maara' : 1,
+            'varasto' : varasto,
+            'arkistotunnus' : "Arkistotunnus Tähän!",
+            'varastonhoitaja' : varastonhoitaja,
+        }
+
+    def form_valid(self, form):
+        try:
+            tuote = get_object_or_404(Tuote, pk=self.kwargs.get('pk'))
+            maara = form.cleaned_data['maara']
+            tuote.kappalemaara_lainassa += maara
+            tuote.save()
+            messages.success(self.request, f'Lainaus tehty!')
+            return super().form_valid(form)
+        except ValidationError:
+            messages.error(self.request, f'Varastossa ei ole tarpeeksi tätä tuotetta lainausta varten!')
+            return self.render_to_response(self.get_context_data(form=form))
+
+
+class PalautaTuoteView(VarastonhoitajatUserMixin, CreateView):
+    model = Varastotapahtuma
+    form_class = PalautaTuoteForm
+    template_name = 'suorita-palautus.html'
+    success_url = '/lainaus/'
+
+    def get_initial(self):
+        varastonhoitaja = self.request.user
+        tuote = get_object_or_404(Tuote, pk=self.kwargs.get('pk'))
+        varasto = Varasto.objects.get(nimi="Koululla")
+        return {
+            'tyyppi' : 'palautus',
+            'tuote' : tuote,
+            'maara' : 1,
+            'varasto' : varasto,
+            'arkistotunnus' : "Arkistotunnus Tähän!",
+            'varastonhoitaja' : varastonhoitaja,
+        }
+
+    def form_valid(self, form):
+        tuote = get_object_or_404(Tuote, pk=self.kwargs.get('pk'))
+        maara = form.cleaned_data['maara']
+        tuote.kappalemaara_lainassa -= maara
+        tuote.save()
+        messages.success(self.request, f'Palautus tehty!')
+        return super().form_valid(form)
