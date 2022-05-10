@@ -197,8 +197,17 @@ def haku_tulokset(request):
                 iteemit = {
                     'nimike': objekti.nimike,
                     'tuotekuva': str(objekti.tuotekuva.url),
-                    'kappalemaara': objekti.kappalemaara
+                    'kappalemaara': objekti.kappalemaara,
+                    'tuoteryhma': str(objekti.tuoteryhma),
+                    'valmistaja': objekti.valmistaja,
+                    'hankintapaikka': objekti.hankintapaikka,
+                    'hankintapaiva' : objekti.hankintapaiva,
+                    'hankintahinta': objekti.hankintahinta,
+                    'laskun_numero': objekti.laskun_numero,
+                    'kustannuspaikka': objekti.kustannuspaikka,
+                    'takuuaika': (objekti.takuuaika),
                 }
+
                 data.append(iteemit)
             response = data
         else:
