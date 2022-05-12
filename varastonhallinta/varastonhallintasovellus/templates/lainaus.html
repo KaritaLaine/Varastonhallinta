@@ -12,6 +12,7 @@
         <h1 class="iso_otsikko" id="lainaus-otsikko">Lainaus / Palautus</h1>
         <p class="lainaus-ohjeteksti"> Lainaa tai palauta tietokannassa näkyviä tuotteita. </br> </br>
         
+
         <!-- Hakukenttä -->
         <div class = "hakukentta-wrap">
             <div class="vasen-hakukentta">
@@ -25,6 +26,7 @@
                 </form>
             </div>
         </div>
+
 
         <!-- Taulukon perusnäkymä -->
         <div class="taulukko-perus">
@@ -41,11 +43,11 @@
                         </thead>
                     </div>
                         <tbody>
-                            {% for tuote in tuotteet %}
+                            {% for tuotteett in tuotteet %}
                                 <tr>
-                                    <td><img src="{{ tuote.tuotekuva.url }}" class="tuotekuva" alt="Tuotekuva"></td>
-                                    <td>{{tuote.nimike}}</td>
-                                    <td>{{tuote.kappalemaara}}</td>
+                                    <td><img src="{{ tuotteett.tuotekuva.url }}" class="tuotekuva" alt="Tuotekuva"></td>
+                                    <td>{{tuotteett.nimike}}</td>
+                                    <td>{{tuotteett.kappalemaara}}</td>
                                     <td class="lainaus-nappi"> - </td> <!-- BUG: lainaus-toiminto -->
                                 </tr>
                             {% endfor %}
@@ -53,6 +55,7 @@
                 </table>
             </div>
         </div>
+
         
         <!-- Taulukon tulosnäkymä -->
         <div class="taulukko-tulos ">
@@ -82,6 +85,30 @@
                 {% endcomment %}
             </div>
         </div>
+
+
+        <!-- Pagination, eli sivutus -->
+        <nav>
+            <div class="p-wrapper container">
+                <ul class="pagination">
+                    {% if tuotteet.has_previous %}
+                        <li class="sivu eka"><a class="edellinen" href="?sivu={{ tuotteet.previous_page_number }}"> &laquo Edellinen </a></li>
+                    {% endif %}
+
+                    {% for i in paginator.page_range %}
+                        {% if i == sivunumero %}
+                            <li class="is-active"> <a class="sivu-linkki {% if maara <= per_page %} hidden {%endif%}" href="?sivu={{ i }}"> {{i}} </a> </li>
+                        {% else %}
+                            <li class="sivu"> <a class="sivu-linkki" href="?sivu={{ i }}"> {{i}} </a> </li>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if tuotteet.has_next %}
+                        <li class="sivu vika"><a class="seuraava" href="?sivu={{ tuotteet.next_page_number }}">Seuraava &raquo</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </nav>
     </div>
 </body>
 {% endblock content%}

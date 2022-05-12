@@ -30,6 +30,9 @@ from .forms import MuokkaaKayttajaaForm, RekisteroityminenForm, TuoteForm
 # Models importit
 from .models import Henkilo, Tuote
 
+# Pagination, eli sivutus importit
+from django.core.paginator import Paginator
+
 # MUUT KIRJAUTUMISEEN / ULOSKIRJAUTUMISEEN TARVITTAVAT ASETUKSET
 # LÖYTYVÄT --> settings.py!
 
@@ -171,12 +174,26 @@ class EtusivuView(KaikkiKayttajatUserMixin, TemplateView):
 @login_required
 def lainaus(request):
     tuotteet = Tuote.objects.all()
-    context = {'tuotteet':tuotteet,}
+    maara = Tuote.objects.all().count()
+    # Asetetaan pagination eli sivutus
+    per_page = 5
+    paginator = Paginator(tuotteet, per_page)
+    sivunumero = request.GET.get('sivu', 1)
+    sivu_obj = paginator.get_page(sivunumero)
+    context = {
+        'tuotteet':sivu_obj, 
+        'paginator':paginator,
+        'sivunumero': int(sivunumero),
+        'maara':int(maara),
+        'per_page': int(per_page)
+        }
     return render(request, 'lainaus.html', context)
+
 
 def is_ajax(request):
     return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
 
+# Ajax hakuominaisuus
 def haku_tulokset(request):
     if is_ajax(request=request):
         response = None
