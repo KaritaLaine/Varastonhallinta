@@ -14,8 +14,8 @@
         {% endfor %}
     {% endif %}
     <div class = "lainaus-keskita">
-        <h1 class="iso_otsikko" id="lainaus-otsikko">Lainaus / Palautus</h1>
-        <p class="lainaus-ohjeteksti"> Lainaa tai palauta tietokannassa näkyviä tuotteita. </br> </br>
+        <h1 class="iso_otsikko" id="lainaus-otsikko">Lainaa Tuote</h1>
+        <p class="lainaus-ohjeteksti"> Lainaa tietokannassa näkyviä tuotteita.</br> </br>
         
         <!-- Hakukenttä -->
         <div class = "hakukentta-wrap">
@@ -42,7 +42,6 @@
                                 <th>Nimike</th>
                                 <th>Kappalemäärä</th>
                                 <th>Lainaa</th>
-                                <th>Palauta</th>
                             </tr>
                         </thead>
                     </div>
@@ -53,7 +52,6 @@
                                     <td>{{tuote.nimike}}</td>
                                     <td>{{tuote.kappalemaara}}</td>
                                     <td class="lainaus-nappi"><button type="button"><a href="{% url 'suorita-lainaus' tuote.id %}">Lainaa</a></button></td> <!-- BUG: lainaus-toiminto -->
-                                    <td class="lainaus-nappi"><button type="button"><a href="{% url 'suorita-palautus' tuote.id %}">Palauta</a></button></td> <!-- BUG: lainaus-toiminto -->
                                 </tr>
                             {% endfor %}
                         </tbody>
