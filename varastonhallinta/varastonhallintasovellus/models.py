@@ -73,6 +73,10 @@ class Tuote(models.Model):
     laskun_numero = models.IntegerField(null=True, blank=True)
     kustannuspaikka = models.CharField(max_length=30, null=True, blank=True)
     takuuaika = models.DateField(null=True, blank=True, verbose_name="takuun päättymispäivä")
+    # tila = models.CharField(default='varastossa', max_length=10, choices=[
+    #     ('varastossa', 'Varastossa'),
+    #     ('lainassa', 'Lainassa')
+    # ])
 
     def validoi_kappalemaarat(self):
         if self.kappalemaara_lainassa > self.kappalemaara:
@@ -98,6 +102,7 @@ class Varastotapahtuma(models.Model):
         ])
     tuote = models.ForeignKey(Tuote, on_delete=models.RESTRICT)
     maara = models.IntegerField(
+        default=1,
         verbose_name="määrä",
         help_text="Lainauksille ja poistoille negatiivinen, lisäyksille ja palautuksille positiivinen")
     arkistotunnus = models.CharField(max_length=50, null=True, blank=True)
@@ -108,6 +113,7 @@ class Varastotapahtuma(models.Model):
     palautuspaiva = models.DateField(
         verbose_name="palautuspäivä",
         help_text="Päivä jona tuote tulisi viimeistään palauttaa", null=True, blank=True)
+    #palautettu = models.BooleanField(default=False, null=True, blank=True)
 
     class Meta:
         verbose_name_plural = "Varastotapahtumat"
