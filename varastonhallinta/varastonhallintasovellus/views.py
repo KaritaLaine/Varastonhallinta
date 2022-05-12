@@ -178,10 +178,10 @@ class EtusivuView(KaikkiKayttajatUserMixin, TemplateView):
 
 
 @login_required
-def lainaus(request):
+def lainattavat(request):
     tuotteet = Tuote.objects.all()
-    context = {'tuotteet':tuotteet,}
-    return render(request, 'lainaus.html', context)
+    context = {'tuotteet' : tuotteet}
+    return render(request, 'lainattavat.html', context)
 
 def is_ajax(request):
     return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
@@ -284,7 +284,7 @@ class LainaaTuoteView(VarastonhoitajatUserMixin, CreateView):
     model = Varastotapahtuma
     form_class = LainaaTuoteForm
     template_name = 'suorita-lainaus.html'
-    success_url = '/lainaus/'
+    success_url = '/lainattavat/'
 
     def get_initial(self):
         varastonhoitaja = self.request.user
@@ -312,29 +312,34 @@ class LainaaTuoteView(VarastonhoitajatUserMixin, CreateView):
             return self.render_to_response(self.get_context_data(form=form))
 
 
-class PalautaTuoteView(VarastonhoitajatUserMixin, CreateView):
+@login_required
+def palautettavat(request):
+    varastotapahtumat = Varastotapahtuma.objects.filter(tyyppi='lainaus')
+    context = {'varastotapahtumat' : varastotapahtumat}
+    return render(request, 'palautettavat.html', context)
+
+
+class PalautaTuoteView(VarastonhoitajatUserMixin, UpdateView):
     model = Varastotapahtuma
     form_class = PalautaTuoteForm
     template_name = 'suorita-palautus.html'
-    success_url = '/lainaus/'
+    success_url = '/palautettavat/'
 
     def get_initial(self):
-        varastonhoitaja = self.request.user
-        tuote = get_object_or_404(Tuote, pk=self.kwargs.get('pk'))
         varasto = Varasto.objects.get(nimi="Koululla")
         return {
             'tyyppi' : 'palautus',
-            'tuote' : tuote,
-            'maara' : 1,
             'varasto' : varasto,
-            'arkistotunnus' : "Arkistotunnus Tähän!",
-            'varastonhoitaja' : varastonhoitaja,
         }
 
     def form_valid(self, form):
-        tuote = get_object_or_404(Tuote, pk=self.kwargs.get('pk'))
-        maara = form.cleaned_data['maara']
-        tuote.kappalemaara_lainassa -= maara
-        tuote.save()
-        messages.success(self.request, f'Palautus tehty!')
-        return super().form_valid(form)
+        try:
+            tuote = get_object_or_404(Tuote, nimike=form.cleaned_data['tuote'])
+            maara = form.cleaned_data['maara']
+            tuote.kappalemaara_lainassa -= maara
+            tuote.save()
+            messages.success(self.request, f'Palautus tehty!')
+            return super().form_valid(form)
+        except ValidationError:
+            messages.error(self.request, f'Jokin meni pieleen!')
+            return self.render_to_response(self.get_context_data(form=form))
