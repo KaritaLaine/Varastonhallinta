@@ -89,26 +89,22 @@
 
         <!-- Pagination, eli sivutus -->
         <nav>
-            <div class="pagination-w" id="pagination">
-                    <div class = "p-item"> 
-                        {% if tuotteet.has_previous %}
-                            <a class="edellinen eka" href="?sivu={{ tuotteet.previous_page_number }}"> &laquo</a>
-                        {% endif %}
-                    </div>
-                    <div class = "p-item"> 
-                        {% for i in paginator.page_range %}
-                            {% if i == sivunumero %}
-                                <a class="is-active sivu-linkki {% if maara <= per_page %} hidden {%endif%}" href="?sivu={{ i }}"> {{i}} </a>
-                            {% else %}
-                                <a class="numero" href="?sivu={{ i }}"> {{i}} </a>
-                            {% endif %}
-                        {% endfor %}
-                    </div>
-                    <div class = "p-item"> 
-                        {% if tuotteet.has_next %}
-                            <a class="seuraava vika" href="?sivu={{ tuotteet.next_page_number }}">&raquo</a>
-                        {% endif %}
-                    </div>
+            <div id="pagination">
+                {% if tuotteet.has_previous %}
+                    <a class="edellinen eka" href="?sivu={{ tuotteet.previous_page_number }}"> &laquo</a>
+                {% endif %}
+
+                {% for i in paginator.page_range %}
+                    {% if i == sivunumero %}
+                        <a class="is-active sivu-linkki {% if maara <= per_page %} hidden {%endif%}" href="?sivu={{ i }}"> {{i}} </a>
+                    {% else %}
+                        <a class="numero" href="?sivu={{ i }}"> {{i}} </a>
+                    {% endif %}
+                {% endfor %}
+
+                {% if tuotteet.has_next %}
+                    <a class="seuraava vika" href="?sivu={{ tuotteet.next_page_number }}">&raquo</a>
+                {% endif %}
             </div>
         </nav>
     </div>
