@@ -391,50 +391,44 @@ header {
 
 /* PAGINATION */
 
-/* nav {
+.pagination-w {
     display: flex;
-} */
-
-/* .container {
+    flex-direction: row;
+    justify-content: center;
     width: 100%;
-    margin: 0 auto;
-    position: relative;
-    text-align: center;
-} */
+}
 
-.eka a, .vika a, .is-active a {
-    background-color: #df2070;
+.pagination-w {
+    color: white;
+    font-size: 30px;
+    padding: 50px 0;
+}
+
+.pagination-w a {
+    padding: 10px 18px;
+    text-decoration: none;
+    color: black;
+    box-sizing: border-box;
+    width: 100px;
+    height: 100px;
+}
+
+.numero {
+    box-shadow: inset 0 0 0 1px #df2070, inset 0 0 0 1px white;
+    font-weight: bold;
+}
+
+.eka, .vika, .is-active {
+    background-color: #df2070 !important;
     color: white !important;
     font-weight: bold;
 }
 
-.pagination {
-    padding: 60px;
-    text-align: center;
-    color: white;
-    font-size: 30px;
-}
-
-  
-
-.pagination a {
-    padding: 10px 18px;
-    text-decoration: none;
-    color: black;
-}
-
-.container li {
-
-    vertical-align: middle;
-    margin: auto;
-    display: inline-block;
-
-}
-
-.container a {
-    display: block;
-}
-
 .hidden {
     display: none !important;
+}
+
+.tulos-wrap {
+    overflow-y: scroll;
+    height: 600px;
 }

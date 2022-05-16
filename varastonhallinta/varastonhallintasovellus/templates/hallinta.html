@@ -110,6 +110,29 @@
                 </table>
             </div>
         </div>
+
+        <!-- Pagination, eli sivutus. WIP: Ei ole lisätty mitään viewsiin, jonka takia ei toimi -->
+        <nav>
+            <div class="p-wrapper container">
+                <ul class="pagination">
+                    {% if tuotteet.has_previous %}
+                        <li class="sivu eka"><a class="edellinen" href="?sivu={{ tuotteet.previous_page_number }}"> &laquo Edellinen </a></li>
+                    {% endif %}
+
+                    {% for i in paginator.page_range %}
+                        {% if i == sivunumero %}
+                            <li class="is-active"> <a class="sivu-linkki {% if maara <= per_page %} hidden {%endif%}" href="?sivu={{ i }}"> {{i}} </a> </li>
+                        {% else %}
+                            <li class="sivu"> <a class="sivu-linkki" href="?sivu={{ i }}"> {{i}} </a> </li>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if tuotteet.has_next %}
+                        <li class="sivu vika"><a class="seuraava" href="?sivu={{ tuotteet.next_page_number }}">Seuraava &raquo</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </nav>
     </div>
 </body>
 
