@@ -8,6 +8,11 @@
 
 {% block content %}
 <body>
+    {% if messages %}
+        {% for message in messages %}
+            {{ message }}
+        {% endfor %}
+    {% endif %}
     <div class = "lainaus-keskita">
         <h1 class="iso_otsikko" id="lainaus-otsikko">Lainaus / Palautus</h1>
         <p class="lainaus-ohjeteksti"> Lainaa tai palauta tietokannassa näkyviä tuotteita. </br> </br>
@@ -38,17 +43,19 @@
                                 <th>Tuotekuva</th>
                                 <th>Nimike</th>
                                 <th>Kappalemäärä</th>
-                                <th>Tila</th>
+                                <th>Lainaa</th>
+                                <th>Palauta</th>
                             </tr>
                         </thead>
                     </div>
                         <tbody>
                             {% for tuotteett in tuotteet %}
                                 <tr>
-                                    <td><img src="{{ tuotteett.tuotekuva.url }}" class="tuotekuva" alt="Tuotekuva"></td>
-                                    <td>{{tuotteett.nimike}}</td>
-                                    <td>{{tuotteett.kappalemaara}}</td>
-                                    <td class="lainaus-nappi"> - </td> <!-- BUG: lainaus-toiminto -->
+                                    <td><img src="{{ tuote.tuotekuva.url }}" class="tuotekuva" alt="Tuotekuva"></td>
+                                    <td>{{tuote.nimike}}</td>
+                                    <td>{{tuote.kappalemaara}}</td>
+                                    <td class="lainaus-nappi"><button type="button"><a href="{% url 'suorita-lainaus' tuote.id %}">Lainaa</a></button></td> <!-- BUG: lainaus-toiminto -->
+                                    <td class="lainaus-nappi"><button type="button"><a href="{% url 'suorita-palautus' tuote.id %}">Palauta</a></button></td> <!-- BUG: lainaus-toiminto -->
                                 </tr>
                             {% endfor %}
                         </tbody>

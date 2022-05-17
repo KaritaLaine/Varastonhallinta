@@ -1,7 +1,8 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
-from .models import Varastotyyppi, Varasto, Henkilo, Tuoteryhma, Tuote, Varastotapahtuma
+from .models import (Henkilo, Tuote, Tuoteryhma, Varasto, Varastotapahtuma,
+                     Varastotyyppi)
 
 
 class HenkiloAdmin(UserAdmin):
@@ -80,7 +81,7 @@ class TuoteryhmaAdmin(admin.ModelAdmin):
 
 @admin.register(Tuote)
 class TuoteAdmin(admin.ModelAdmin):
-    pass
+    readonly_fields = ["kappalemaara_lainassa"]
 
 
 @admin.register(Varastotapahtuma)
