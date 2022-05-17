@@ -180,6 +180,7 @@ class EtusivuView(KaikkiKayttajatUserMixin, TemplateView):
     template_name = 'etusivu.html'
 
 
+
 @login_required
 def lainattavat(request):
     tuotteet = Tuote.objects.all()
@@ -231,6 +232,51 @@ def haku_tulokset(request):
             response = '</br> <b>Ei hakutulosta..</b>'
         return JsonResponse({'data': response})
     return JsonResponse({})
+
+
+
+@login_required
+def palautettavat(request):
+    varastotapahtuma = Varastotapahtuma.objects.filter(tyyppi='lainaus')
+    varastotapahtumat = Varastotapahtuma.objects.all()
+    maara = Varastotapahtuma.objects.all().count()
+    # Asetetaan pagination eli sivutus
+    per_page = 1
+    paginator = Paginator(varastotapahtumat, per_page)
+    sivunumero = request.GET.get('sivu', 1)
+    sivu_obj = paginator.get_page(sivunumero)
+    context = {
+        'varastotapahtuma' : varastotapahtuma,
+        'varastotapahtumat':sivu_obj, 
+        'paginator':paginator,
+        'sivunumero': int(sivunumero),
+        'maara':int(maara),
+        'per_page': int(per_page)
+        }
+    return render(request, 'palautettavat.html', context)
+
+def varastotapahtuma_hakutulokset(request):
+    if is_ajax(request=request):
+        response = None
+        varastotapahtuma = request.POST.get('varastotapahtuma')
+        # nimike = Varastotapahtuma.tuote.objects.filter(nimike__icontains=varastotapahtuma)
+        varastotapahtumat = Varastotapahtuma.objects.filter(tuote__icontains=varastotapahtuma)
+        if len(varastotapahtumat) > 0 and len(varastotapahtuma) > 0:
+            data = []
+            for objekti in varastotapahtumat:
+                iteemit = {
+                    'nimike': objekti.tuote.nimike,
+                    'tuotekuva': str(objekti.tuote.varastotapahtumakuva.url),
+                    'kappalemaara': objekti.tuote.kappalemaara_lainassa,
+                    'lainaaja': str(objekti.asiakas),
+                }
+                data.append(iteemit)
+            response = data
+        else:
+            response = '</br> <b>Ei hakutulosta..</b>'
+        return JsonResponse({'data': response})
+    return JsonResponse({})
+
 
 
 class HallintaView(PaakayttajatUserMixin, ListView):
@@ -327,13 +373,6 @@ class LainaaTuoteView(VarastonhoitajatUserMixin, CreateView):
         except ValidationError:
             messages.error(self.request, f'Varastossa ei ole tarpeeksi tätä tuotetta lainausta varten!')
             return self.render_to_response(self.get_context_data(form=form))
-
-
-@login_required
-def palautettavat(request):
-    varastotapahtumat = Varastotapahtuma.objects.filter(tyyppi='lainaus')
-    context = {'varastotapahtumat' : varastotapahtumat}
-    return render(request, 'palautettavat.html', context)
 
 
 class PalautaTuoteView(VarastonhoitajatUserMixin, UpdateView):
