@@ -1,4 +1,42 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="fi">
+    <head>
+        {% load static %}
+        {% comment %} <link rel="stylesheet" type="text/css" href="{% static 'kirjautuminen.css' %}"> {% endcomment %}
+    </head>
+    <body>
+        <form action="" method="post">
+            {% csrf_token %}
+            <img id="raseko-logo" src="{% static 'Raseko-logo-vaaka_VÄRI.png' %}" alt="RASEKO-Logo"/>
+            <h1>Rekisteröidy</h1>
+            <p>Rekisteröityminen tapahtuu henkilökohtaisella, koulun tarjoamilla tiedoilla</p>
+            <section>
+                <p>
+                    {% if messages %}
+                        {% for message in messages %}
+                            {{ message }}
+                        {% endfor %}
+                    {% endif %}
+                </p>
+            </section>
+            {{ form.as_p }}
+            <button type="submit">Luo käyttäjä</button>
+        </form>
+    </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+{% comment %} {% extends "base.html" %}
 
 {% block title %}Luo Käyttäjä{% endblock %}
 
@@ -18,4 +56,4 @@
             {% endfor %}
         {% endif %}
     </p>
-{% endblock %}
+{% endblock %} {% endcomment %}

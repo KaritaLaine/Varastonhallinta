@@ -15,6 +15,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.views import PasswordChangeView
 # Importit "toimenpiteille" joita tehdään jos käyttäjällä ei ole oikeutta sivuun
 from django.core.exceptions import PermissionDenied, ValidationError
+from django.db.models import F
 # Import 404 (sivua ei löydy) näkymään
 from django.http import Http404, HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
@@ -104,20 +105,31 @@ class HenkilokuntaUserMixin(EiOikeuttaUserMixin, UserPassesTestMixin):
             return True
 
 
-class RekisteroityminenView(HenkilokuntaUserMixin, CreateView):
+class RekisteroityminenView(CreateView):
     form_class = RekisteroityminenForm
     success_url = '/rekisteroityminen/'
-    template_name = "rekisteroityminen.html"
+    template_name = 'rekisteroityminen.html'
+    etusivu_url = '/'
+
+    def get(self, request):
+        if self.request.user.is_authenticated:
+            return HttpResponseRedirect(self.etusivu_url)
+        else:
+            data = {'email': '@edu.raseko.fi'}
+            return render(request, 'rekisteroityminen.html', {'form' : self.form_class(initial=data)})
 
     def form_valid(self, form):
-        messages.success(self.request, f'Käyttäjä on nyt lisätty! Lisätäänkö saman tien toinen?')
+        messages.success(
+            self.request,
+            f'Käyttäjätunnuksesi on nyt luotu, vahvistusviesti on lähetetty sähköpostiisi'
+        )
         return super().form_valid(form)
 
 
 class MuokkaaKayttajaaView(KaikkiKayttajatUserMixin, UpdateView):
     form_class = MuokkaaKayttajaaForm
     success_url = '/muokkaa-kayttajaa/'
-    template_name = "muokkaa-kayttajaa.html"
+    template_name = 'muokkaa-kayttajaa.html'
 
     def get_object(self):
       return self.request.user
@@ -129,7 +141,7 @@ class MuokkaaKayttajaaView(KaikkiKayttajatUserMixin, UpdateView):
 
 class VaihdaSalasanaView(KaikkiKayttajatUserMixin, PasswordChangeView):
     success_url = '/muokkaa-kayttajaa/'
-    template_name = "vaihda-salasana.html"
+    template_name = 'vaihda-salasana.html'
 
     def form_valid(self, form):
         messages.success(self.request, f'Salasanasi on nyt vaihdettu!')
@@ -179,7 +191,7 @@ class EtusivuView(KaikkiKayttajatUserMixin, TemplateView):
 
 @login_required
 def lainattavat(request):
-    tuotteet = Tuote.objects.all()
+    tuotteet = Tuote.objects.filter(kappalemaara__gt=F('kappalemaara_lainassa'))
     context = {'tuotteet' : tuotteet}
     return render(request, 'lainattavat.html', context)
 
@@ -190,7 +202,7 @@ def haku_tulokset(request):
     if is_ajax(request=request):
         response = None
         tuote = request.POST.get('tuote')
-        tuotteet = Tuote.objects.filter(nimike__icontains=tuote)
+        tuotteet = Tuote.objects.filter(nimike__icontains=tuote).filter(kappalemaara__gt=F('kappalemaara_lainassa'))
         if len(tuotteet) > 0 and len(tuote) > 0:
             data = []
             for objekti in tuotteet:
@@ -326,7 +338,7 @@ class PalautaTuoteView(VarastonhoitajatUserMixin, UpdateView):
     success_url = '/palautettavat/'
 
     def get_initial(self):
-        varasto = Varasto.objects.get(nimi="Koululla")
+        varasto = Varasto.objects.get(nimi='Koululla')
         return {
             'tyyppi' : 'palautus',
             'varasto' : varasto,
