@@ -49,7 +49,7 @@
                         </thead>
                     </div>
                         <tbody>
-                            {% for tuotteett in tuotteet %}
+                            {% for tuote in tuotteet %}
                                 <tr>
                                     <td><img src="{{ tuote.tuotekuva.url }}" class="tuotekuva" alt="Tuotekuva"></td>
                                     <td>{{tuote.nimike}}</td>
@@ -91,7 +91,7 @@
                     </div> 
                 {% endcomment %}
             </div>
-        </div>
+        </div> </br>
 
 
         <!-- Pagination, eli sivutus -->
