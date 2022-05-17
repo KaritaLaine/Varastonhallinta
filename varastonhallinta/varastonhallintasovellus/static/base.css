@@ -89,6 +89,7 @@ header {
 .right:hover {
     background-color: #b31e5c;
     transition: 0.5s;
+    cursor: pointer;
 }
 
 .right a {
@@ -178,10 +179,8 @@ header {
 .scroll-wrap {
     overflow-y: visible;
     overflow-x: visible;
-    height: 600px;
     position: relative;
     width: 100%;
-    height: 600px;
 }
 
 
@@ -268,7 +267,34 @@ header {
     display: none;
 }
 
-/* HALLINTA SIVU - NAPIT */
+
+/* LAINAUSNAPPI JA PALAUTUSNAPPI */
+
+.lainaus-nappi, .palautus-nappi {
+    background-color: #4bbcc5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80px;
+    height: 40px;
+    border-radius: 3px;
+    border: 3px black;
+    padding: 10px;
+}
+
+.lainaus-nappi a, .palautus-nappi a {
+    text-decoration: none;
+    color: white;
+}
+
+.lainaus-nappi:hover, .palautus-nappi:hover {
+    background-color: #41a3aa;
+    transition: 0.25s;
+    cursor: pointer;
+}
+
+
+/* HALLINTASIVUN NAPIT */
 
 #lisaa-tuotteita {
     background-color: white;
@@ -410,10 +436,23 @@ header {
     font-weight: bold;
 }
 
+.numero:hover {
+    background-color: #efefef;
+    transition: 0.25s;
+    cursor: pointer;
+}
+
+
 .eka, .vika, .is-active {
     background-color: #df2070;
     color: white !important;
     font-weight: bold;
+}
+
+.eka:hover, .vika:hover, .is-active:hover {
+    background-color: #b31e5c;
+    transition: 0.25s;
+    cursor: pointer;
 }
 
 .hidden {
