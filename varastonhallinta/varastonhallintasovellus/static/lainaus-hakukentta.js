@@ -28,6 +28,7 @@ const lahetaHakuData = (tuote) => {
                     tulosTaulukko.classList.add('piilossa')
                     taulukkoTulos.style.display = "none";
                     lainausTaulukko.style.display = "block";
+                    pagination.style.display = "block";
                 }
             }
         },
@@ -40,13 +41,14 @@ const lahetaHakuData = (tuote) => {
 const taulukkoTulos = document.querySelector('.taulukko-tulos');
 const lainausTaulukko = document.querySelector('.taulukko-perus');
 taulukkoTulos.style.display = "none";
-const url = window.location.href
-const hakuForm = document.getElementById('haku-form')
-const hakusyote = document.getElementById('hakusyote')
-const tulosTaulukko = document.getElementById('tulos-taulukko')
+const url = window.location.href;
+const hakuForm = document.getElementById('haku-form');
+const hakusyote = document.getElementById('hakusyote');
+const tulosTaulukko = document.getElementById('tulos-taulukko');
+const pagination = document.getElementById('pagination');
 
-const csrf = document.getElementsByName('csrfmiddlewaretoken')[0].value
-console.log(csrf)
+const csrf = document.getElementsByName('csrfmiddlewaretoken')[0].value;
+console.log(csrf);
 
 
 hakusyote.addEventListener('keyup', e=>{
@@ -54,6 +56,7 @@ hakusyote.addEventListener('keyup', e=>{
         tulosTaulukko.classList.remove('piilossa')
         taulukkoTulos.style.display = "block";
         lainausTaulukko.style.display = "none";
+        pagination.style.display = "none";
     }
-    lahetaHakuData(e.target.value)
+    lahetaHakuData(e.target.value);
 })
