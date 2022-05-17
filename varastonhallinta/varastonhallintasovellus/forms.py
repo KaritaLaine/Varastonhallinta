@@ -21,8 +21,8 @@ class RekisteroityminenForm(UserCreationForm):
 
         labels = {
             "username"          : "Anna käyttäjätunnus",
-            "email"             : "Anna sähköpostiosoite",
-            "first_name"        : "Anna etunimi",
+            "email"             : "Sähköpostiosoite",
+            "first_name"        : "Etunimesi",
             "last_name"         : "Anna sukunimi",
             "vastuuopettaja"    : "Vastuuopettaja",
         }
@@ -32,6 +32,16 @@ class RekisteroityminenForm(UserCreationForm):
             "email"             : "Anna koulun tarjoama sähköpostiosoite",
             "vastuuopettaja"    : "Jos luot käyttäjää oppilaalle, valitse hänen vastuuopettajansa"
         }
+
+        widgets = {
+            'vastuuopettaja': forms.HiddenInput(),
+        }
+
+    def clean_email(self):
+        sahkopostiosoite = self.cleaned_data['email']
+        if sahkopostiosoite.find('@edu.raseko.fi') == -1:
+            raise forms.ValidationError('Syötä henkilökohtainen RASEKON tarjoama sähköpostiosoite!')
+        return sahkopostiosoite
 
 
 class MuokkaaKayttajaaForm(UserChangeForm):
@@ -139,7 +149,9 @@ class PalautaTuoteForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(PalautaTuoteForm, self).__init__(*args, **kwargs)
 
+        self.fields['tuote'].disabled = True
         self.fields['arkistotunnus'].disabled = True
+        self.fields['asiakas'].disabled = True
 
         self.piilota_label = ('tyyppi', 'varastonhoitaja', 'varasto', 'palautuspaiva',)
         for field in self.piilota_label:
