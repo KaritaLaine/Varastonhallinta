@@ -1,6 +1,9 @@
 # Tarvittavat json-importit hakukentän toimimiseen
 import json
 
+# Pagination, eli sivutus importit
+from django.core.paginator import Paginator
+
 # "messages" avulla voimme näyttää kustomoituja viestejä käyttäjille
 # + näyttää ne templeteissä.
 from django.contrib import messages
@@ -180,12 +183,26 @@ class EtusivuView(KaikkiKayttajatUserMixin, TemplateView):
 @login_required
 def lainattavat(request):
     tuotteet = Tuote.objects.all()
-    context = {'tuotteet' : tuotteet}
+    maara = Tuote.objects.all().count()
+    # Asetetaan pagination eli sivutus
+    per_page = 1
+    paginator = Paginator(tuotteet, per_page)
+    sivunumero = request.GET.get('sivu', 1)
+    sivu_obj = paginator.get_page(sivunumero)
+    context = {
+        'tuotteet':sivu_obj, 
+        'paginator':paginator,
+        'sivunumero': int(sivunumero),
+        'maara':int(maara),
+        'per_page': int(per_page)
+        }
     return render(request, 'lainattavat.html', context)
+
 
 def is_ajax(request):
     return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
 
+# Ajax hakuominaisuus
 def haku_tulokset(request):
     if is_ajax(request=request):
         response = None
