@@ -1,0 +1,40 @@
+<!-- Lainaussivu -->
+
+{% extends "base.html" %}
+
+{% block title %}
+    Varastonhallinta - Palautussivu
+{% endblock title %}
+
+{% block content %}
+
+    {% if messages %}
+        {% for message in messages %}
+            {{ message }}
+        {% endfor %}
+    {% endif %}
+
+    <table>
+        <thead>
+            <tr>
+                <th>Tuotekuva</th>
+                <th>Nimike</th>
+                <th>Kappalemäärä</th>
+                <th>Lainaaja</th>
+                <th>Palauta</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for varastotapahtuma in varastotapahtumat %}
+                <tr>
+                    <td><img src="{{ varastotapahtuma.tuote.tuotekuva.url }}" class="tuotekuva" alt="Tuotekuva"></td>
+                    <td><p>{{ varastotapahtuma.tuote.nimike }}</p></td>
+                    <td><p>{{ varastotapahtuma.tuote.kappalemaara_lainassa }}</p></td>
+                    <td><p>{{ varastotapahtuma.asiakas }}</p></td>
+                    <td class="lainaus-nappi"><button type="button"><a href="{% url 'suorita-palautus' varastotapahtuma.id %}">Palauta</a></button></td> <!-- BUG: lainaus-toiminto -->
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock content%}

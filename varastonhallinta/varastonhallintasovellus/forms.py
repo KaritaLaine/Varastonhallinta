@@ -108,7 +108,7 @@ class LainaaTuoteForm(forms.ModelForm):
         self.fields['tuote'].disabled = True
         self.fields['arkistotunnus'].disabled = True
 
-        self.piilota_label = ('tyyppi', 'varastonhoitaja', 'varasto',)
+        self.piilota_label = ('tyyppi', 'maara', 'varastonhoitaja', 'varasto', 'palautuspaiva')
         for field in self.piilota_label:
             self.fields[field].label = ''
 
@@ -128,12 +128,17 @@ class LainaaTuoteForm(forms.ModelForm):
             raise forms.ValidationError('Tämän arvon on oltava vähintään 1!')
         return maara
 
+    def clean_palautuspaiva(self):
+        palautuspaiva = self.cleaned_data['palautuspaiva']
+        if palautuspaiva < datetime.date.today():
+            raise forms.ValidationError('Palautuspäivä ei voi olla menneisyydessä!')
+        return palautuspaiva
+
 
 class PalautaTuoteForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(PalautaTuoteForm, self).__init__(*args, **kwargs)
 
-        self.fields['tuote'].disabled = True
         self.fields['arkistotunnus'].disabled = True
 
         self.piilota_label = ('tyyppi', 'varastonhoitaja', 'varasto', 'palautuspaiva',)
