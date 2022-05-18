@@ -10,6 +10,9 @@ const lahetaHakuData = (tuote) => {
             const data = response.data 
             
             if (Array.isArray(data)) {
+                if (window.location.href.indexOf("sivu") > -1) {
+                    document.location.href = 'http://127.0.0.1:8000/lainattavat/';
+                }
                 tulosTaulukko.innerHTML = ""
                     data.forEach(tuote=> {
                         tulosTaulukko.innerHTML += `
@@ -17,7 +20,7 @@ const lahetaHakuData = (tuote) => {
                                 <td> <img src="${tuote.tuotekuva}" class="tuotekuva" alt="Tuotekuva"> </td>
                                 <td> ${tuote.nimike} </td>
                                 <td> ${tuote.kappalemaara} </td>
-                                <td> - </td>
+                                <td> <button type="button" class="palautus-nappi"><a href="${url}suorita-lainaus/${tuote.pk}"> Lainaa </a></button> </td>
                             </tr>
                         `
                     })

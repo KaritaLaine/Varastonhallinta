@@ -10,6 +10,9 @@ const lahetaHakuData = (tapahtuma) => {
             const data = response.data 
             
             if (Array.isArray(data)) {
+                if (window.location.href.indexOf("sivu") > -1) {
+                    document.location.href = 'http://127.0.0.1:8000/palautettavat/';
+                }
                 tulosTaulukko.innerHTML = ""
                     data.forEach(tapahtuma => {
                         tulosTaulukko.innerHTML += `

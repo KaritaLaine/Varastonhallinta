@@ -186,7 +186,7 @@ def lainattavat(request):
     tuotteet = Tuote.objects.all()
     maara = Tuote.objects.all().count()
     # Asetetaan pagination eli sivutus
-    per_page = 1
+    per_page = 5
     paginator = Paginator(tuotteet, per_page)
     sivunumero = request.GET.get('sivu', 1)
     sivu_obj = paginator.get_page(sivunumero)
@@ -213,6 +213,7 @@ def haku_tulokset(request):
             data = []
             for objekti in tuotteet:
                 iteemit = {
+                    'pk': objekti.pk,
                     'nimike': objekti.nimike,
                     'tuotekuva': str(objekti.tuotekuva.url),
                     'kappalemaara': objekti.kappalemaara,
