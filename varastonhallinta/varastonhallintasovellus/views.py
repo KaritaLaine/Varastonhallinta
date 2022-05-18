@@ -115,8 +115,7 @@ class RekisteroityminenView(CreateView):
         if self.request.user.is_authenticated:
             return HttpResponseRedirect(self.etusivu_url)
         else:
-            data = {'email': '@edu.raseko.fi'}
-            return render(request, 'rekisteroityminen.html', {'form' : self.form_class(initial=data)})
+            return render(request, 'rekisteroityminen.html', {'form' : self.form_class})
 
     def form_valid(self, form):
         messages.success(
@@ -167,7 +166,10 @@ def kirjautuminen(request):
             messages.success(request, ('Antamasi salasana tai käyttäjätunnus on väärä!'))
             return redirect('kirjautuminen')
     else:
-        # Jos metodi on GET renderöidään kirjautumissivu
+        # Jos metodi on GET tarkistetaan onko käyttäjä kirjautunut ja renderöidään etusivu
+        # jos ei, renderöidään kirjautumissivu.
+        if request.user.is_authenticated:
+            return redirect('etusivu')
         return render(request, 'kirjautuminen.html')
 
 
