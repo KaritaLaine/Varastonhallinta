@@ -1,24 +1,24 @@
-const lahetaHakuData = (varastotapahtuma) => {
+const lahetaHakuData = (tapahtuma) => {
     $.ajax({
         type: 'POST',
         url: '/hakuu/',
         data: {
             'csrfmiddlewaretoken': csrf,
-            'varastotapahtuma': varastotapahtuma,
+            'tapahtuma': tapahtuma,
         },
         success: (response)=> {
             const data = response.data 
             
             if (Array.isArray(data)) {
                 tulosTaulukko.innerHTML = ""
-                    data.forEach(varastotapahtuma => {
+                    data.forEach(tapahtuma => {
                         tulosTaulukko.innerHTML += `
                             <tr>
-                                <td> <img src="${varastotapahtuma.tuote.varastotapahtumakuva.url}" class="varastotapahtumakuva" alt="varastotapahtumakuva"> </td>
-                                <td> ${varastotapahtuma.tuote.nimike} </td>
-                                <td> ${varastotapahtuma.tuote.kappalemaara_lainassa} </td>
-                                <td> ${varastotapahtuma.asiakas} </td>
-                                <td> - </td>
+                                <td> <img src="${tapahtuma.tuotekuva}" class="tuotekuva" alt="varastotapahtumakuva"> </td>
+                                <td> ${tapahtuma.nimike} </td>
+                                <td> ${tapahtuma.kappalemaara} </td>
+                                <td> ${tapahtuma.lainaaja} </td>
+                                <td><button type="button" class="palautus-nappi"><a href="${url}suorita-palautus/${tapahtuma.pk}"> Palauta </a></button></td>
                             </tr>
                         `
                     })

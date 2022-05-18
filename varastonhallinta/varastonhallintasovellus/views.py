@@ -241,7 +241,7 @@ def palautettavat(request):
     varastotapahtumat = Varastotapahtuma.objects.all()
     maara = Varastotapahtuma.objects.all().count()
     # Asetetaan pagination eli sivutus
-    per_page = 1
+    per_page = 5
     paginator = Paginator(varastotapahtumat, per_page)
     sivunumero = request.GET.get('sivu', 1)
     sivu_obj = paginator.get_page(sivunumero)
@@ -258,15 +258,15 @@ def palautettavat(request):
 def varastotapahtuma_hakutulokset(request):
     if is_ajax(request=request):
         response = None
-        varastotapahtuma = request.POST.get('varastotapahtuma')
-        # nimike = Varastotapahtuma.tuote.objects.filter(nimike__icontains=varastotapahtuma)
-        varastotapahtumat = Varastotapahtuma.objects.filter(tuote__icontains=varastotapahtuma)
-        if len(varastotapahtumat) > 0 and len(varastotapahtuma) > 0:
+        tapahtuma = request.POST.get('tapahtuma')
+        varastotapahtumat = Varastotapahtuma.objects.filter(tuote__nimike__icontains=tapahtuma)
+        if len(varastotapahtumat) > 0 and len(tapahtuma) > 0:
             data = []
             for objekti in varastotapahtumat:
                 iteemit = {
+                    'pk':objekti.pk,
                     'nimike': objekti.tuote.nimike,
-                    'tuotekuva': str(objekti.tuote.varastotapahtumakuva.url),
+                    'tuotekuva': str(objekti.tuote.tuotekuva.url),
                     'kappalemaara': objekti.tuote.kappalemaara_lainassa,
                     'lainaaja': str(objekti.asiakas),
                 }
@@ -278,7 +278,7 @@ def varastotapahtuma_hakutulokset(request):
     return JsonResponse({})
 
 
-
+    
 class HallintaView(PaakayttajatUserMixin, ListView):
     """
     Vain pääkäyttäjät (varastonhoitaja', 'opettaja', 'hallinto) pääsevät hallinta
