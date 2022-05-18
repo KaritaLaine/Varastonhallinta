@@ -1,0 +1,45 @@
+html,
+body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    background-color: #1b3259;
+}
+
+body {
+    display: flex;
+}
+
+form {
+    margin: auto;
+    background-color: #ffffff;
+    width: 40%;
+    height: 100%;
+    text-align: center;
+}
+
+#raseko-logo {
+    width: 40%;
+    display: block;
+    margin: auto;
+    padding-top: 20px;
+}
+
+input {
+    width: 70%;
+    height: 5%;
+    padding: 10px;
+    border-radius: 7px;
+    border: 1px solid;
+}
+
+button {
+    width: 70%;
+    height: 8%;
+    margin: 5px;
+    border-radius: 7px;
+    border: 1px solid;
+    color: #ffffff;
+    font-weight: bold;
+    background-color: #df2070;
+}

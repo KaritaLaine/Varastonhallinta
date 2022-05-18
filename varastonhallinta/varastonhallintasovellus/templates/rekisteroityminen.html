@@ -2,14 +2,15 @@
 <html lang="fi">
     <head>
         {% load static %}
-        {% comment %} <link rel="stylesheet" type="text/css" href="{% static 'kirjautuminen.css' %}"> {% endcomment %}
+        <link rel="stylesheet" type="text/css" href="{% static 'rekisteroityminen.css' %}">
     </head>
     <body>
         <form action="" method="post">
             {% csrf_token %}
             <img id="raseko-logo" src="{% static 'Raseko-logo-vaaka_VÄRI.png' %}" alt="RASEKO-Logo"/>
             <h1>Rekisteröidy</h1>
-            <p>Rekisteröityminen tapahtuu henkilökohtaisella, koulun tarjoamilla tiedoilla</p>
+            <p><em>Tai <strong><a href="{% url 'kirjautuminen' %}">kirjaudu sisään</a></strong> jos sinulla on jo tunnukset.</em></p>
+            <p>Rekisteröityminen tapahtuu, koulun tarjoamalla sähköpostiosoitteella ja opiskelijanumerosi toimii käyttäjätunnuksena.</p>
             <section>
                 <p>
                     {% if messages %}
@@ -24,36 +25,3 @@
         </form>
     </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-{% comment %} {% extends "base.html" %}
-
-{% block title %}Luo Käyttäjä{% endblock %}
-
-{% block content %}
-    <main>
-        <h2>Luo Käyttäjä</h2>
-        <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Luo käyttäjä</button>
-        </form>
-    </main>
-    <p>
-        {% if messages %}
-            {% for message in messages %}
-                {{ message }}
-            {% endfor %}
-        {% endif %}
-    </p>
-{% endblock %} {% endcomment %}
