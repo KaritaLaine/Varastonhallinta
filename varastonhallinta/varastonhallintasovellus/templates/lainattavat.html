@@ -14,8 +14,8 @@
         {% endfor %}
     {% endif %}
     <div class = "lainaus-keskita">
-        <h1 class="iso_otsikko" id="lainaus-otsikko">Lainaa Tuote</h1>
-        <p class="lainaus-ohjeteksti"> Lainaa tietokannassa näkyviä tuotteita.</br> </br>
+        <h1 class="iso_otsikko" id="lainaus-otsikko">Lainaa tuote</h1>
+        <p class="lainaus-ohjeteksti"> Lainaa alla olevia tuotteita sinisen Lainaa-napin avulla.</br> </br>
         
         <!-- Hakukenttä -->
         <div class = "hakukentta-wrap">
@@ -41,7 +41,7 @@
                                 <th>Tuotekuva</th>
                                 <th>Nimike</th>
                                 <th>Kappalemäärä</th>
-                                <th>Lainaa</th>
+                                <th></th>
                             </tr>
                         </thead>
                     </div>
@@ -51,7 +51,7 @@
                                     <td><img src="{{ tuote.tuotekuva.url }}" class="tuotekuva" alt="Tuotekuva"></td>
                                     <td>{{tuote.nimike}}</td>
                                     <td>{{tuote.kappalemaara}}</td>
-                                    <td class="lainaus-nappi"><button type="button"><a href="{% url 'suorita-lainaus' tuote.id %}">Lainaa</a></button></td> <!-- BUG: lainaus-toiminto -->
+                                    <td><button type="button" class="lainaus-nappi"><a href="{% url 'suorita-lainaus' tuote.id %}">Lainaa</a></button></td>
                                 </tr>
                             {% endfor %}
                         </tbody>
@@ -69,7 +69,7 @@
                                 <th>Tuotekuva</th>
                                 <th>Nimike</th>
                                 <th>Kappalemäärä</th>
-                                <th>Tila</th>
+                                <th></th>
                             </tr>
                         </thead>
                     </div>
@@ -86,11 +86,11 @@
                     </div> 
                 {% endcomment %}
             </div>
-        </div> </br>
+        </div> </br> </br>
 
 
         <!-- Pagination, eli sivutus -->
-        <nav>
+        <nav>   
             <div id="pagination">
                 {% if tuotteet.has_previous %}
                     <a class="edellinen eka" href="?sivu={{ tuotteet.previous_page_number }}"> &laquo</a>

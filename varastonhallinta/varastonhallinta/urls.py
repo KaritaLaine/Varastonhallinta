@@ -34,6 +34,7 @@ urlpatterns = [
     path('hallinta/', views.HallintaView.as_view(), name='hallinta'),
     
     path('haku/', views.haku_tulokset, name='haku'),
+    path('hakuu/', views.varastotapahtuma_hakutulokset, name='hakuu'),
 
     path('lainattavat/', views.lainattavat, name='lainattavat'),
     path('lainattavat/suorita-lainaus/<int:pk>/', views.LainaaTuoteView.as_view(), name='suorita-lainaus'),
