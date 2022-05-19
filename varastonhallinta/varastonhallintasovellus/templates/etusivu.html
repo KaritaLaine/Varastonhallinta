@@ -3,8 +3,41 @@
 {% block title %}Etusivu{% endblock %}
 
 {% block content %}
-    <main>
-        <h1>Tervetuloa {{ user.get_full_name }}</h1>
-        <p>Kirjautumisen jälkeinen sivu -> ETUSIVU</p>
-    </main>
+<body>
+    <div class = "keskita"> 
+        <div class = "otsikko">
+            </br></br></br><h1 class="iso_otsikko">Tervetuloa {{ user.get_full_name | title }}</h1> </br> </br>
+        </div>
+
+        {% load static %}
+        <div class = "kortit">
+            <div class = "lainauskortti">
+                <a href="{%url 'lainattavat' %}"> <img src="{% static 'lainaus.png' %}"/></a>
+                <div>
+                    <h2 class="valiotsikko k-otsikko"> Lainaus </h2>
+                    </br><p> Lainaa varastossa olevia tuotteita. </p>
+                </div>
+                <button type="button" class="s-nappi"><a class = "linkki" href="{% url 'lainattavat' %}"> Lainaamaan </a></button>
+            </div>
+
+            <div class = "lainauskortti">
+                <a href="{%url 'palautettavat' %}"><img src="{% static 'palautus.png' %}"/></a>
+                <div>
+                    <h2 class="valiotsikko k-otsikko"> Palautus </h2>
+                    </br><p> Palauta lainattuja tuotteita varastoon. </p>
+                </div>
+                <button type="button" class="p-nappi"><a class = "linkki" href="{% url 'palautettavat' %}"> Palauttamaan </a></button>
+            </div>
+
+            <div class = "lainauskortti">
+                <a href="{%url 'hallinta' %}"><img src="{% static 'hallinta.png' %}"/></a>
+                <div>
+                    <h2 class="valiotsikko k-otsikko"> Hallinta </h2>
+                    </br><p> Muokkaa, lisää tai poista varastossa olevia tuotteita. </p>
+                </div>
+                <button type="button" class="h-nappi"><a href="{% url 'hallinta' %}"> Hallintaan </a></button>
+            </div>
+        </div>
+    </div>
+</body>
 {% endblock %}
