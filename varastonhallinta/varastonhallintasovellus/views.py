@@ -1,6 +1,9 @@
 # Tarvittavat json-importit hakukentän toimimiseen
 import json
 
+# Pagination, eli sivutus importit
+from django.core.paginator import Paginator
+
 # "messages" avulla voimme näyttää kustomoituja viestejä käyttäjille
 # + näyttää ne templeteissä.
 from django.contrib import messages
@@ -177,15 +180,30 @@ class EtusivuView(KaikkiKayttajatUserMixin, TemplateView):
     template_name = 'etusivu.html'
 
 
+
 @login_required
-def lainaus(request):
+def lainattavat(request):
     tuotteet = Tuote.objects.all()
-    context = {'tuotteet':tuotteet,}
-    return render(request, 'lainaus.html', context)
+    maara = Tuote.objects.all().count()
+    # Asetetaan pagination eli sivutus
+    per_page = 5
+    paginator = Paginator(tuotteet, per_page)
+    sivunumero = request.GET.get('sivu', 1)
+    sivu_obj = paginator.get_page(sivunumero)
+    context = {
+        'tuotteet':sivu_obj, 
+        'paginator':paginator,
+        'sivunumero': int(sivunumero),
+        'maara':int(maara),
+        'per_page': int(per_page)
+        }
+    return render(request, 'lainattavat.html', context)
+
 
 def is_ajax(request):
     return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
 
+# Ajax hakuominaisuus
 def haku_tulokset(request):
     if is_ajax(request=request):
         response = None
@@ -195,6 +213,7 @@ def haku_tulokset(request):
             data = []
             for objekti in tuotteet:
                 iteemit = {
+                    'pk': objekti.pk,
                     'nimike': objekti.nimike,
                     'tuotekuva': str(objekti.tuotekuva.url),
                     'kappalemaara': objekti.kappalemaara,
@@ -216,6 +235,51 @@ def haku_tulokset(request):
     return JsonResponse({})
 
 
+
+@login_required
+def palautettavat(request):
+    varastotapahtuma = Varastotapahtuma.objects.filter(tyyppi='lainaus')
+    varastotapahtumat = Varastotapahtuma.objects.all()
+    maara = Varastotapahtuma.objects.all().count()
+    # Asetetaan pagination eli sivutus
+    per_page = 5
+    paginator = Paginator(varastotapahtumat, per_page)
+    sivunumero = request.GET.get('sivu', 1)
+    sivu_obj = paginator.get_page(sivunumero)
+    context = {
+        'varastotapahtuma' : varastotapahtuma,
+        'varastotapahtumat':sivu_obj, 
+        'paginator':paginator,
+        'sivunumero': int(sivunumero),
+        'maara':int(maara),
+        'per_page': int(per_page)
+        }
+    return render(request, 'palautettavat.html', context)
+
+def varastotapahtuma_hakutulokset(request):
+    if is_ajax(request=request):
+        response = None
+        tapahtuma = request.POST.get('tapahtuma')
+        varastotapahtumat = Varastotapahtuma.objects.filter(tuote__nimike__icontains=tapahtuma)
+        if len(varastotapahtumat) > 0 and len(tapahtuma) > 0:
+            data = []
+            for objekti in varastotapahtumat:
+                iteemit = {
+                    'pk':objekti.pk,
+                    'nimike': objekti.tuote.nimike,
+                    'tuotekuva': str(objekti.tuote.tuotekuva.url),
+                    'kappalemaara': objekti.tuote.kappalemaara_lainassa,
+                    'lainaaja': str(objekti.asiakas),
+                }
+                data.append(iteemit)
+            response = data
+        else:
+            response = '</br> <b>Ei hakutulosta..</b>'
+        return JsonResponse({'data': response})
+    return JsonResponse({})
+
+
+    
 class HallintaView(PaakayttajatUserMixin, ListView):
     """
     Vain pääkäyttäjät (varastonhoitaja', 'opettaja', 'hallinto) pääsevät hallinta
@@ -284,7 +348,7 @@ class LainaaTuoteView(VarastonhoitajatUserMixin, CreateView):
     model = Varastotapahtuma
     form_class = LainaaTuoteForm
     template_name = 'suorita-lainaus.html'
-    success_url = '/lainaus/'
+    success_url = '/lainattavat/'
 
     def get_initial(self):
         varastonhoitaja = self.request.user
@@ -312,29 +376,27 @@ class LainaaTuoteView(VarastonhoitajatUserMixin, CreateView):
             return self.render_to_response(self.get_context_data(form=form))
 
 
-class PalautaTuoteView(VarastonhoitajatUserMixin, CreateView):
+class PalautaTuoteView(VarastonhoitajatUserMixin, UpdateView):
     model = Varastotapahtuma
     form_class = PalautaTuoteForm
     template_name = 'suorita-palautus.html'
-    success_url = '/lainaus/'
+    success_url = '/palautettavat/'
 
     def get_initial(self):
-        varastonhoitaja = self.request.user
-        tuote = get_object_or_404(Tuote, pk=self.kwargs.get('pk'))
         varasto = Varasto.objects.get(nimi="Koululla")
         return {
             'tyyppi' : 'palautus',
-            'tuote' : tuote,
-            'maara' : 1,
             'varasto' : varasto,
-            'arkistotunnus' : "Arkistotunnus Tähän!",
-            'varastonhoitaja' : varastonhoitaja,
         }
 
     def form_valid(self, form):
-        tuote = get_object_or_404(Tuote, pk=self.kwargs.get('pk'))
-        maara = form.cleaned_data['maara']
-        tuote.kappalemaara_lainassa -= maara
-        tuote.save()
-        messages.success(self.request, f'Palautus tehty!')
-        return super().form_valid(form)
+        try:
+            tuote = get_object_or_404(Tuote, nimike=form.cleaned_data['tuote'])
+            maara = form.cleaned_data['maara']
+            tuote.kappalemaara_lainassa -= maara
+            tuote.save()
+            messages.success(self.request, f'Palautus tehty!')
+            return super().form_valid(form)
+        except ValidationError:
+            messages.error(self.request, f'Jokin meni pieleen!')
+            return self.render_to_response(self.get_context_data(form=form))
