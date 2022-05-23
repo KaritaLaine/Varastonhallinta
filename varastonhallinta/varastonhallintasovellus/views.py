@@ -186,7 +186,7 @@ def lainattavat(request):
     tuotteet = Tuote.objects.all()
     maara = Tuote.objects.all().count()
     # Asetetaan pagination eli sivutus
-    per_page = 5
+    per_page = 20
     paginator = Paginator(tuotteet, per_page)
     sivunumero = request.GET.get('sivu', 1)
     sivu_obj = paginator.get_page(sivunumero)
@@ -242,7 +242,7 @@ def palautettavat(request):
     varastotapahtumat = Varastotapahtuma.objects.all()
     maara = Varastotapahtuma.objects.all().count()
     # Asetetaan pagination eli sivutus
-    per_page = 5
+    per_page = 20
     paginator = Paginator(varastotapahtumat, per_page)
     sivunumero = request.GET.get('sivu', 1)
     sivu_obj = paginator.get_page(sivunumero)

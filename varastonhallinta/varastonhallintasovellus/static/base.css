@@ -162,7 +162,7 @@ header {
     overflow:hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    
+
     min-width: 60px;
     max-width: 60px;
 }
@@ -409,6 +409,7 @@ header {
     overflow:hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    border-bottom: 2pt solid #efefef
 }
 
 .hallinta-taulu td:last-child, .hallinta-taulu th:last-child {
@@ -448,7 +449,7 @@ header {
 }
 
 .varastonhoitaja #muokkaa-nappi, .varastonhoitaja #poista-nappi {
-    width: 60%;
+    width: 100px;
 }
 
 
