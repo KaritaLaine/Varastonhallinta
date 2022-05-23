@@ -9,6 +9,7 @@
             {% csrf_token %}
             <img id="raseko-logo" src="{% static 'Raseko-logo-vaaka_VÄRI.png' %}" alt="RASEKO-Logo"/>
             <h1>Kirjaudu Sisään</h1>
+            <p><em>Tai <strong><a href="{% url 'rekisteroityminen' %}">rekisteröidy</a></strong> jos sinulla ei vielä ole tunnuksia.</em></p>
             <p>Kirjautuminen tapahtuu oppilaan henkilökohtaisella, koulun tarjoamalla opiskelijatunnuksella ja salasanalla</p>
             <section>
                 <p>
