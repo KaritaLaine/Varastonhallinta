@@ -1,9 +1,6 @@
 # Tarvittavat json-importit hakukentän toimimiseen
 import json
 
-# Pagination, eli sivutus importit
-from django.core.paginator import Paginator
-
 # "messages" avulla voimme näyttää kustomoituja viestejä käyttäjille
 # + näyttää ne templeteissä.
 from django.contrib import messages
@@ -18,6 +15,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.views import PasswordChangeView
 # Importit "toimenpiteille" joita tehdään jos käyttäjällä ei ole oikeutta sivuun
 from django.core.exceptions import PermissionDenied, ValidationError
+# Pagination, eli sivutus importit
+from django.core.paginator import Paginator
 from django.db.models import F
 # Import 404 (sivua ei löydy) näkymään
 from django.http import Http404, HttpResponseRedirect, JsonResponse
@@ -252,8 +251,7 @@ def haku_tulokset(request):
 
 @login_required
 def palautettavat(request):
-    varastotapahtuma = Varastotapahtuma.objects.filter(tyyppi='lainaus')
-    varastotapahtumat = Varastotapahtuma.objects.all()
+    varastotapahtumat = Varastotapahtuma.objects.filter(tyyppi='lainaus')
     maara = Varastotapahtuma.objects.all().count()
     # Asetetaan pagination eli sivutus
     per_page = 5
@@ -261,7 +259,7 @@ def palautettavat(request):
     sivunumero = request.GET.get('sivu', 1)
     sivu_obj = paginator.get_page(sivunumero)
     context = {
-        'varastotapahtuma' : varastotapahtuma,
+        'varastotapahtuma' : varastotapahtumat,
         'varastotapahtumat':sivu_obj, 
         'paginator':paginator,
         'sivunumero': int(sivunumero),
