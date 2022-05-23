@@ -196,8 +196,8 @@ class EtusivuView(KaikkiKayttajatUserMixin, TemplateView):
 
 @login_required
 def lainattavat(request):
-    tuotteet = Tuote.objects.all()
-    maara = Tuote.objects.all().count()
+    tuotteet = Tuote.objects.filter(kappalemaara__gt=F('kappalemaara_lainassa'))
+    maara = tuotteet.count()
     # Asetetaan pagination eli sivutus
     per_page = 5
     paginator = Paginator(tuotteet, per_page)
