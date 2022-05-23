@@ -49,6 +49,8 @@ class TuoteForm(forms.ModelForm):
         super(TuoteForm, self).__init__(*args, **kwargs)
         self.fields['hankintapaiva'].required = False
 
+        del self.fields['kappalemaara_lainassa']
+
         if self.user == 'varastonhoitaja':
             for kentta in ['hankintapaikka', 'hankintapaiva', 'hankintahinta', 'laskun_numero', 'kustannuspaikka', 'takuuaika']:
                 del self.fields[kentta]
@@ -109,7 +111,7 @@ class LainaaTuoteForm(forms.ModelForm):
         self.fields['tuote'].disabled = True
         self.fields['arkistotunnus'].disabled = True
 
-        self.piilota_label = ('tyyppi', 'maara', 'varastonhoitaja', 'varasto', 'palautuspaiva')
+        self.piilota_label = ('tyyppi', 'maara', 'varastonhoitaja', 'varasto')
         for field in self.piilota_label:
             self.fields[field].label = ''
 
