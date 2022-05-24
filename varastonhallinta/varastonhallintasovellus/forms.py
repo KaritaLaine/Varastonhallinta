@@ -36,11 +36,24 @@ class RekisteroityminenForm(UserCreationForm):
 
 
 class MuokkaaKayttajaaForm(UserChangeForm):
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('kayttajan_rooli')
+        super(MuokkaaKayttajaaForm, self).__init__(*args, **kwargs)
+        if self.user != 'oppilas':
+            del self.fields['vastuuopettaja']
+
     password = None
 
     class Meta:
         model = Henkilo
-        fields = ("username", "email", "first_name", "last_name")
+        fields = ("username", "email", "first_name", "last_name", "vastuuopettaja",)
+
+    def clean_email(self):
+        sahkopostiosoite = self.cleaned_data['email']
+        if sahkopostiosoite.find('@edu.raseko.fi') == -1:
+            raise forms.ValidationError('Syötä henkilökohtainen RASEKON tarjoama sähköpostiosoite!')
+        return sahkopostiosoite
 
 
 class TuoteForm(forms.ModelForm):

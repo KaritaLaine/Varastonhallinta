@@ -8,7 +8,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 # Importit class näkymän parametrille joka vaatii käyttäjää
 # olemaan sisäänkirjautuneena nähdäkseen sivun (funktionäkymät)
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 # Importit "testeille joiden käyttäjien on läpäistävä" jotta he pääsevät tietyille sivulle (class näkymät)
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 # Import class näkymä tyypille jonka avulla käyttäjä voi vaihtaa salasanansa
@@ -21,7 +21,6 @@ from django.db.models import F
 # Import 404 (sivua ei löydy) näkymään
 from django.http import Http404, HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
-from django.urls import reverse
 # Importit class näkymä tyypeille
 from django.views import View
 from django.views.generic import ListView, UpdateView
@@ -107,6 +106,13 @@ class HenkilokuntaUserMixin(EiOikeuttaUserMixin, UserPassesTestMixin):
             return True
 
 
+def role_check(user):
+    if user.rooli != 'oppilas':
+        return True
+    
+    raise PermissionDenied()
+
+
 class RekisteroityminenView(CreateView):
     form_class = RekisteroityminenForm
     success_url = '/rekisteroityminen/'
@@ -133,7 +139,12 @@ class MuokkaaKayttajaaView(KaikkiKayttajatUserMixin, UpdateView):
     template_name = 'muokkaa-kayttajaa.html'
 
     def get_object(self):
-      return self.request.user
+        return self.request.user
+
+    def get_form_kwargs(self):
+        kwargs = super(MuokkaaKayttajaaView, self).get_form_kwargs()
+        kwargs['kayttajan_rooli'] = self.request.user.rooli
+        return kwargs
 
     def form_valid(self, form):
         messages.success(self.request, f'Tietojasi on nyt muokattu!')
@@ -193,8 +204,8 @@ class EtusivuView(KaikkiKayttajatUserMixin, TemplateView):
     template_name = 'etusivu.html'
 
 
-
 @login_required
+@user_passes_test(role_check)
 def lainattavat(request):
     tuotteet = Tuote.objects.filter(kappalemaara__gt=F('kappalemaara_lainassa'))
     maara = tuotteet.count()
@@ -217,6 +228,7 @@ def is_ajax(request):
     return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
 
 # Ajax hakuominaisuus
+@user_passes_test(role_check)
 def haku_tulokset(request):
     if is_ajax(request=request):
         response = None
@@ -248,8 +260,8 @@ def haku_tulokset(request):
     return JsonResponse({})
 
 
-
 @login_required
+@user_passes_test(role_check)
 def palautettavat(request):
     varastotapahtumat = Varastotapahtuma.objects.filter(tyyppi='lainaus')
     maara = Varastotapahtuma.objects.all().count()
@@ -268,6 +280,7 @@ def palautettavat(request):
         }
     return render(request, 'palautettavat.html', context)
 
+@user_passes_test(role_check)
 def varastotapahtuma_hakutulokset(request):
     if is_ajax(request=request):
         response = None
@@ -289,7 +302,6 @@ def varastotapahtuma_hakutulokset(request):
             response = '</br> <b>Ei hakutulosta..</b>'
         return JsonResponse({'data': response})
     return JsonResponse({})
-
 
     
 class HallintaView(PaakayttajatUserMixin, ListView):
