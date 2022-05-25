@@ -5,6 +5,7 @@
 {% block css %}
 {% load static %}
     <link rel="stylesheet"  type="text/css" href="{% static "poista-tuote.css" %}">
+   
 {% endblock %}
 
 {% block content %}
@@ -16,6 +17,16 @@
         <p>Oletko varma että haluat poistaa tuotteen "{{ tuote.nimike }}"?</p>
     
         <input id="poista-nappi" type="submit" value="Poista">
-        <button id="peruuta-nappi" type="button" onclick="location.href='{% url "hallinta" %}'">Peruuta</button>
+        <button id="peruuta-nappi" type="button" onclick="location.href='{% url "hallinta" %}'">Peruuta</button>    
+
+        <input type="button" class="floated" id="slide_poista_button" value="Poista">
+        <input type="button" class="floated" id="slide_peruuta_button" value="Peruuta">
+
+       
+        <input type="button" class="inline" id="slide_poista_button" value="Poista">
+        <input type="button" class="inline" id="slide_peruuta_button" value="Peruuta">
+
+        
+
     </form>
 {% endblock %}
