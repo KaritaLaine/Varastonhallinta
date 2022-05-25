@@ -374,6 +374,11 @@ class LainaaTuoteView(VarastonhoitajatUserMixin, CreateView):
     template_name = 'suorita-lainaus.html'
     success_url = '/lainattavat/'
 
+    def get_form_kwargs(self):
+        kwargs = super(LainaaTuoteView, self).get_form_kwargs()
+        kwargs['viivakoodi'] = get_object_or_404(Tuote, pk=self.kwargs.get('pk')).viivakoodi
+        return kwargs
+
     def get_initial(self):
         varastonhoitaja = self.request.user
         tuote = get_object_or_404(Tuote, pk=self.kwargs.get('pk'))
@@ -405,6 +410,12 @@ class PalautaTuoteView(VarastonhoitajatUserMixin, UpdateView):
     form_class = PalautaTuoteForm
     template_name = 'suorita-palautus.html'
     success_url = '/palautettavat/'
+
+    def get_form_kwargs(self):
+        kwargs = super(PalautaTuoteView, self).get_form_kwargs()
+        tuote = get_object_or_404(Varastotapahtuma, pk=self.kwargs.get('pk')).tuote
+        kwargs['viivakoodi'] = get_object_or_404(Tuote, nimike=tuote).viivakoodi
+        return kwargs
 
     def get_initial(self):
         varasto = Varasto.objects.get(nimi='Koululla')
