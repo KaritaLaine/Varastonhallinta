@@ -57,7 +57,7 @@ class Tuoteryhma(models.Model):
 
 class Tuote(models.Model):
     viivakoodi = models.CharField(max_length=30)
-    nimike = models.CharField(max_length=100)
+    nimike = models.CharField(max_length=100, unique=True)
     valmistaja = models.CharField(max_length=100, null=True, blank=True)
     kappalemaara = models.PositiveIntegerField(
         validators=[MinValueValidator(1)],
@@ -73,10 +73,6 @@ class Tuote(models.Model):
     laskun_numero = models.IntegerField(null=True, blank=True)
     kustannuspaikka = models.CharField(max_length=30, null=True, blank=True)
     takuuaika = models.DateField(null=True, blank=True, verbose_name="takuun päättymispäivä")
-    # tila = models.CharField(default='varastossa', max_length=10, choices=[
-    #     ('varastossa', 'Varastossa'),
-    #     ('lainassa', 'Lainassa')
-    # ])
 
     def validoi_kappalemaarat(self):
         if self.kappalemaara_lainassa > self.kappalemaara:
@@ -113,7 +109,6 @@ class Varastotapahtuma(models.Model):
     palautuspaiva = models.DateField(
         verbose_name="palautuspäivä",
         help_text="Päivä jona tuote tulisi viimeistään palauttaa", null=True, blank=True)
-    #palautettu = models.BooleanField(default=False, null=True, blank=True)
 
     class Meta:
         verbose_name_plural = "Varastotapahtumat"
