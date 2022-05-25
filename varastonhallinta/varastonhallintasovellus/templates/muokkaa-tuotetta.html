@@ -8,19 +8,20 @@
 {% endblock %}
 
 {% block content %}
-    <h1>Muokkaa Tuotetta</h1>
-    <form method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
+        <div id="sivun-sisalto">
+            <h1>Muokkaa Tuotetta</h1>
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
 
-        {% for field in form %}
-            <div class="form-control {% if field.error %}errors{% endif %}">
-                {{ field.label_tag }}
-                {{ field }}
-                {{ field.errors }}
-            </div>
-        {% endfor %}
+                {% for field in form %}
+                    <div class="form-control {% if field.error %}errors{% endif %}">
+                        {{ field.label_tag }}
+                        {{ field }}
+                        {{ field.errors }}
+                    </div>
+                {% endfor %}
 
-        <button id="muokkaa-nappi" type="submit">Muokkaa tuotetta</button>
-        
-    </form>
+                <button id="muokkaa-tuotetta-nappi" type="submit">Muokkaa tuotetta</button>
+            </form>
+        </div>
 {% endblock %}
