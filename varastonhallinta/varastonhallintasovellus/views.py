@@ -66,7 +66,7 @@ class KaikkiKayttajatUserMixin(EiOikeuttaUserMixin, UserPassesTestMixin):
     Pääsyoikeidet kaikille käyttäjätyypeille --> esim etusivua varten
     --> Tätä classia käytetään parametrina tietyissä class näkymissä.
     """
-    
+
     def test_func(self):
         if self.request.user.rooli in kaikki_kayttajatyypit:
             return True
@@ -77,7 +77,7 @@ class PaakayttajatUserMixin(EiOikeuttaUserMixin, UserPassesTestMixin):
     Pääsyoikeidet kaikille pääkäyttäjäjille --> varastonhoitajat, opettajat, hallinto jne.
     --> Tätä classia käytetään parametrina tietyissä class näkymissä.
     """
-    
+
     def test_func(self):
         if self.request.user.rooli in paakayttajat:
             return True
@@ -88,7 +88,7 @@ class VarastonhoitajatUserMixin(EiOikeuttaUserMixin, UserPassesTestMixin):
     Pääsyoikeidet henkilökunnalle --> opettajat, hallinto.
     --> Tätä classia käytetään parametrina tietyissä class näkymissä.
     """
-    
+
     def test_func(self):
         if self.request.user.rooli in varastonhoitajat:
             return True
@@ -99,7 +99,7 @@ class HenkilokuntaUserMixin(EiOikeuttaUserMixin, UserPassesTestMixin):
     Pääsyoikeidet henkilökunnalle --> opettajat, hallinto.
     --> Tätä classia käytetään parametrina tietyissä class näkymissä.
     """
-    
+
     def test_func(self):
         if self.request.user.rooli in henkilokunta:
             return True
@@ -315,6 +315,8 @@ class LainaaTuoteView(VarastonhoitajatUserMixin, CreateView):
 
     def form_valid(self, form):
         try:
+            # 'get_object_or_404' already does the 'try/excerpt' does that for you!
+            # MOVE IT OUTSIDE OF IT IF POSSIBLE!
             tuote = get_object_or_404(Tuote, pk=self.kwargs.get('pk'))
             maara = form.cleaned_data['maara']
             tuote.kappalemaara_lainassa += maara
@@ -348,6 +350,8 @@ class PalautaTuoteView(VarastonhoitajatUserMixin, UpdateView):
 
     def form_valid(self, form):
         try:
+            # 'get_object_or_404' already does the 'try/excerpt' does that for you!
+            # MOVE IT OUTSIDE OF IT IF POSSIBLE!
             tuote = get_object_or_404(Tuote, nimike=form.cleaned_data['tuote'])
             maara = form.cleaned_data['maara']
             tuote.kappalemaara_lainassa -= maara
