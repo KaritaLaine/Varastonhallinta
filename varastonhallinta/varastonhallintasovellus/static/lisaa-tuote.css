@@ -1,9 +1,37 @@
-h1 {
-    margin-top: 40px;
+#sivun-sisalto {
     margin-left: 50px;
-    font-size: 2em;
 }
 
-#lisaa-nappi {
+form {
+    width: 100%;
+}
+
+h1 {
+    margin-top: 25px;
+    margin-bottom: 20px;
+    font-size: 2.2em;
+}
+
+input,
+select,
+label {
+    display: block;
+    width: 50%;
+}
+
+label {
+    margin-top: 10px;
+    margin-bottom: 1px;
+}
+
+#lisaa-tuote-nappi {
+    margin-top: 20px;
     cursor: pointer;
+    width: 50%;
+    height: 40px;
+    background-color: #1b3259;
+    color: #ffffff;
+    font-weight: bold;
+    border: none;
+    border-radius: 3px;
 }

@@ -27,13 +27,13 @@
             <ul class="nav-links">
                 {% if request.user.rooli == 'varastonhoitaja' %}
                     <li {% if request.resolver_match.url_name == 'varastonhoitaja' %}class="active"{% else %} class="inactive" {% endif %}><a href="#">Varastonhoitaja</a></li>
-                    <li {% if request.resolver_match.url_name == 'lainattavat' %}class="active"{% else %} class="inactive" {% endif %}><a href="{% url 'lainattavat' %}">Suorita Lainaus</a></li>
-                    <li {% if request.resolver_match.url_name == 'palautettavat' %}class="active"{% else %} class="inactive" {% endif %}><a href="{% url 'palautettavat' %}">Suorita Palautus</a></li>
+                    <li {% if request.resolver_match.url_name == 'lainattavat' %}class="active"{% else %} class="inactive" {% endif %}><a href="{% url 'lainattavat' %}">Lainaus</a></li>
+                    <li {% if request.resolver_match.url_name == 'palautettavat' %}class="active"{% else %} class="inactive" {% endif %}><a href="{% url 'palautettavat' %}">Palautus</a></li>
                     <li {% if request.resolver_match.url_name == 'hallinta' %}class="active"{% else %} class="inactive" {% endif %}><a href="{% url 'hallinta' %}">Tuotteiden Hallinta</a></li>
                 {% elif request.user.rooli == 'opettaja' %}
                     <li {% if request.resolver_match.url_name == 'opettaja' %}class="active"{% else %} class="inactive" {% endif %}><a href="#">Opettaja</a></li>
-                    <li {% if request.resolver_match.url_name == 'lainattavat' %}class="active"{% else %} class="inactive" {% endif %}><a href="{% url 'lainattavat' %}">Suorita Lainaus</a></li>
-                    <li {% if request.resolver_match.url_name == 'palautettavat' %}class="active"{% else %} class="inactive" {% endif %}><a href="{% url 'palautettavat' %}">Suorita Palautus</a></li>
+                    <li {% if request.resolver_match.url_name == 'lainattavat' %}class="active"{% else %} class="inactive" {% endif %}><a href="{% url 'lainattavat' %}">Lainaus</a></li>
+                    <li {% if request.resolver_match.url_name == 'palautettavat' %}class="active"{% else %} class="inactive" {% endif %}><a href="{% url 'palautettavat' %}">Palautus</a></li>
                     <li {% if request.resolver_match.url_name == 'hallinta' %}class="active"{% else %} class="inactive" {% endif %}><a href="{% url 'hallinta' %}">Tuotteiden Hallinta</a></li>
                 {% elif request.user.rooli == 'hallinto' %}
                     <li {% if request.resolver_match.url_name == 'hallinto' %}class="active"{% else %} class="inactive" {% endif %}><a href="#">Hallinto</a></li>

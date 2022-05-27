@@ -34,6 +34,7 @@ urlpatterns = [
     path('hallinta/', views.HallintaView.as_view(), name='hallinta'),
     
     path('haku/', views.haku_tulokset, name='haku'),
+    path('hakuu/', views.varastotapahtuma_hakutulokset, name='hakuu'),
 
     path('lainattavat/', views.lainattavat, name='lainattavat'),
     path('lainattavat/suorita-lainaus/<int:pk>/', views.LainaaTuoteView.as_view(), name='suorita-lainaus'),
@@ -42,6 +43,6 @@ urlpatterns = [
     path('palautettavat/suorita-palautus/<int:pk>', views.PalautaTuoteView.as_view(), name='suorita-palautus'),
     
     path('lisaa-tuote/', views.LisaaTuoteView.as_view(), name='lisaaminen'),
-    path('muokkaa-tuotetta/<int:pk>/', views.MuokkaaTuotettaView.as_view(), name='muokkaaminen'),
-    path('poista-tuote/<int:pk>/', views.PoistaTuoteView.as_view(), name='poistaminen'),
+    path('hallinta/muokkaa-tuotetta/<int:pk>/', views.MuokkaaTuotettaView.as_view(), name='muokkaaminen'),
+    path('hallinta/poista-tuote/<int:pk>/', views.PoistaTuoteView.as_view(), name='poistaminen'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

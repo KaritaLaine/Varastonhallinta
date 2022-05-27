@@ -8,25 +8,27 @@
 {% endblock %}
 
 {% block content %}
-    <h1>Lisää Tuote</h1>
-    <form method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
+    <div id="sivun-sisalto">
+        <h1>Lisää Tuote</h1>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
 
-        {% if messages %}
-            {% for message in messages %}
-                {{ message }}
+            {% if messages %}
+                {% for message in messages %}
+                    {{ message }}
+                {% endfor %}
+            {% endif %} 
+
+            {% for field in form %}
+                <div class="form-control {% if field.error %}errors{% endif %}">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {{ field.errors }}
+                </div>
             {% endfor %}
-        {% endif %}
 
-        {% for field in form %}
-            <div class="form-control {% if field.error %}errors{% endif %}">
-                {{ field.label_tag }}
-                {{ field }}
-                {{ field.errors }}
-            </div>
-        {% endfor %}
-
-        <button id="lisaa-nappi" type="submit">Lisää tuote</button>
-        
-    </form>
+            <button id="lisaa-tuote-nappi" type="submit">Lisää Tuote</button>
+            
+        </form>
+    </div>
 {% endblock %}

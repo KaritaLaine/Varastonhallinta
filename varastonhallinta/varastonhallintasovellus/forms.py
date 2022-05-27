@@ -36,11 +36,24 @@ class RekisteroityminenForm(UserCreationForm):
 
 
 class MuokkaaKayttajaaForm(UserChangeForm):
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('kayttajan_rooli')
+        super(MuokkaaKayttajaaForm, self).__init__(*args, **kwargs)
+        if self.user != 'oppilas':
+            del self.fields['vastuuopettaja']
+
     password = None
 
     class Meta:
         model = Henkilo
-        fields = ("username", "email", "first_name", "last_name")
+        fields = ("username", "email", "first_name", "last_name", "vastuuopettaja",)
+
+    def clean_email(self):
+        sahkopostiosoite = self.cleaned_data['email']
+        if sahkopostiosoite.find('@edu.raseko.fi') == -1:
+            raise forms.ValidationError('Syötä henkilökohtainen RASEKON tarjoama sähköpostiosoite!')
+        return sahkopostiosoite
 
 
 class TuoteForm(forms.ModelForm):
@@ -48,6 +61,8 @@ class TuoteForm(forms.ModelForm):
         self.user = kwargs.pop('kayttajan_rooli')
         super(TuoteForm, self).__init__(*args, **kwargs)
         self.fields['hankintapaiva'].required = False
+
+        del self.fields['kappalemaara_lainassa']
 
         if self.user == 'varastonhoitaja':
             for kentta in ['hankintapaikka', 'hankintapaiva', 'hankintahinta', 'laskun_numero', 'kustannuspaikka', 'takuuaika']:
@@ -100,7 +115,10 @@ class TuoteForm(forms.ModelForm):
 
 
 class LainaaTuoteForm(forms.ModelForm):
+    tarkista_viivakoodi = forms.CharField(label='Tarkista tuote skannaamalla sen viivakoodi')
+
     def __init__(self, *args, **kwargs):
+        self.viivakoodi = kwargs.pop('viivakoodi')
         super(LainaaTuoteForm, self).__init__(*args, **kwargs)
 
         self.fields['asiakas'].required = True
@@ -109,7 +127,7 @@ class LainaaTuoteForm(forms.ModelForm):
         self.fields['tuote'].disabled = True
         self.fields['arkistotunnus'].disabled = True
 
-        self.piilota_label = ('tyyppi', 'maara', 'varastonhoitaja', 'varasto', 'palautuspaiva')
+        self.piilota_label = ('tyyppi', 'maara', 'varastonhoitaja', 'varasto')
         for field in self.piilota_label:
             self.fields[field].label = ''
 
@@ -135,9 +153,18 @@ class LainaaTuoteForm(forms.ModelForm):
             raise forms.ValidationError('Palautuspäivä ei voi olla menneisyydessä!')
         return palautuspaiva
 
+    def clean_tarkista_viivakoodi(self):
+        viivakoodi_input = self.cleaned_data['tarkista_viivakoodi']
+        if self.viivakoodi != viivakoodi_input:
+            raise forms.ValidationError('Väärä tuote!')
+        return viivakoodi_input
+
 
 class PalautaTuoteForm(forms.ModelForm):
+    tarkista_viivakoodi = forms.CharField(label='Tarkista tuote skannaamalla sen viivakoodi')
+
     def __init__(self, *args, **kwargs):
+        self.viivakoodi = kwargs.pop('viivakoodi')
         super(PalautaTuoteForm, self).__init__(*args, **kwargs)
 
         self.fields['tuote'].disabled = True
@@ -157,3 +184,9 @@ class PalautaTuoteForm(forms.ModelForm):
             'varasto': forms.HiddenInput(),
             'palautuspaiva' : forms.HiddenInput(),
         }
+
+    def clean_tarkista_viivakoodi(self):
+        viivakoodi_input = self.cleaned_data['tarkista_viivakoodi']
+        if self.viivakoodi != viivakoodi_input:
+            raise forms.ValidationError('Väärä tuote!')
+        return viivakoodi_input
