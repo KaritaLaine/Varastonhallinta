@@ -5,6 +5,17 @@ from django.db import models
 from django.db.models import Q
 from django.utils.translation import gettext_lazy as _
 
+# ADD A 'is_deleted' FIELD WITH 'soft_delete' that doesn't actually delete the object
+# from the database, but just makes the object invisible in the views
+
+# The pros: you can have data about the object, but it isn't visible in the view!
+# is_deleted = models.BooleanField(default=False)
+
+# def soft_delete(self):
+#     """soft  delete a model instance"""
+#     self.is_deleted=True
+#     self.save()
+
 
 class Henkilo(AbstractUser):
     email = models.EmailField(max_length=254, default=None, verbose_name="sähköpostiosoite")
