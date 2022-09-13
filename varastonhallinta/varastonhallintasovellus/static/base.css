@@ -606,3 +606,56 @@ header {
     width: 210px;
     margin: 0 auto;
 }
+
+
+/* KIRJAUTUMINEN */
+
+.keskita {
+    display: flex;
+}
+
+.otsikko{
+    font-weight:bold;
+    font-size: 30px;
+    margin-bottom: 20px;
+}
+
+.kirjautuminen{
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #1b3259;
+}
+
+.kirjautumiskortti {
+    background-color: white;
+    width: 500px;
+    height: 550px;
+    box-shadow: #122340 5px 5px 10px;
+    text-align: center;
+}
+
+.keskita .p-nappi {
+    background-color: #df2070;
+    color: white;
+    width: 300px;
+    height: 60px;
+    font-weight: normal;
+    margin-top: 10px;
+}
+
+.k-form {
+    width: 300px;
+    height: 60px;
+    margin: 5px;
+    background-color: rgb(238, 238, 238);
+    border: none;
+    padding: 10px;
+    border-radius: none;
+}
+
+.ohje {
+    text-align: center;
+    margin-top: 100px;
+    margin-bottom: 30px;
+}
