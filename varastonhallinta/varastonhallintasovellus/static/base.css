@@ -656,6 +656,15 @@ header {
 
 .kirjautuminen .ohje {
     text-align: center;
-    margin-top: 100px;
-    margin-bottom: 30px;
+    margin-top: 80px;
+    margin-bottom: 40px;
+}
+
+.ohje2 {
+    margin-top: 30px;
+}
+
+.ohje2 a {
+    color: #df2070;
+    text-decoration: none;
 }
