@@ -610,11 +610,11 @@ header {
 
 /* KIRJAUTUMINEN */
 
-.keskita {
+.kirjautuminen keskita {
     display: flex;
 }
 
-.otsikko{
+.kirjautuminen otsikko{
     font-weight:bold;
     font-size: 30px;
     margin-bottom: 20px;
@@ -635,7 +635,7 @@ header {
     text-align: center;
 }
 
-.keskita .p-nappi {
+.kirjautuminen .p-nappi {
     background-color: #df2070;
     color: white;
     width: 300px;
@@ -654,7 +654,7 @@ header {
     border-radius: none;
 }
 
-.ohje {
+.kirjautuminen .ohje {
     text-align: center;
     margin-top: 100px;
     margin-bottom: 30px;
