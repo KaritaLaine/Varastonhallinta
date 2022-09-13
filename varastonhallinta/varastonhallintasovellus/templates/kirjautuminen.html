@@ -11,6 +11,7 @@
                 <div class="kirjautumiskortti">
                     <form class="kirjautumis-form" action="" method="post">
                         {% csrf_token %}
+                        
                         <div class = "ohje">
                             <h1 class="otsikko">Kirjaudu sisään</h1>
                             <p>Kirjautuminen tapahtuu opiskelijatunnuksella.</p>
@@ -27,6 +28,8 @@
                         <input type="text" class="k-form" name="käyttäjätunnus" placeholder="Sähköpostiosoite"><br>
                         <input type="password" class="k-form" name="salasana" placeholder="Salasana"><br>
                         <button type="submit" class="p-nappi">Kirjaudu sisään</button>
+
+                        <p class="ohje2">Ei käyttäjätunnuksia? <a href="{% url 'rekisteroityminen' %}">Rekisteröidy</a>.</p>
                     </form>
                 </div>
             </div>
