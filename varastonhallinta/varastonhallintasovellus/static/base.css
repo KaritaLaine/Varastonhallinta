@@ -629,8 +629,8 @@ header {
 
 .kirjautumiskortti {
     background-color: white;
-    width: 500px;
-    height: 550px;
+    width: 550px;
+    height: 600px;
     box-shadow: #122340 5px 5px 10px;
     text-align: center;
 }
@@ -656,7 +656,7 @@ header {
 
 .kirjautuminen .ohje {
     text-align: center;
-    margin-top: 80px;
+    margin-top: 35px;
     margin-bottom: 40px;
 }
 
@@ -667,4 +667,61 @@ header {
 .ohje2 a {
     color: #df2070;
     text-decoration: none;
+}
+
+.kirjautuminen .logo {
+    margin-top: 55px;
+    width: 300px;
+}
+
+
+/* LAINAA JA PALAUTA */
+
+.l-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 50px;
+}
+
+.jutut {
+    width: 400px;
+}
+
+.l-teksti p {
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.l-teksti {
+    justify-content: flex-start;
+    display: flex; 
+}
+
+.label {
+    font-weight: bold;
+    margin-bottom: 15px;
+    margin-top: 15px;
+}
+
+.l-wrapper .p-nappi {
+    color: white;
+    margin: 0;
+    width: 150px;
+}
+
+.nappi {
+    justify-content: flex-end;
+    display: flex; 
+    margin-top: 20px;
+}
+
+.l-wrapper input, .l-wrapper select {
+    border: none;
+    background-color: #1b325917;
+    height: 50px;
+    width: 400px;
+    padding: 10px;
 }
