@@ -610,11 +610,11 @@ header {
 
 /* KIRJAUTUMINEN */
 
-.kirjautuminen keskita {
+.kirjautuminen .keskita {
     display: flex;
 }
 
-.kirjautuminen otsikko{
+.kirjautuminen .otsikko{
     font-weight:bold;
     font-size: 30px;
     margin-bottom: 20px;
