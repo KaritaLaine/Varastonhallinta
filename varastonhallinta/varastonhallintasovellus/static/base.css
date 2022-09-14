@@ -738,3 +738,27 @@ header {
 .pa-la {
     color: #df2070
 }
+
+
+
+/* POISTA JA MUOKKAA */
+
+.p-wrapper .l-teksti{
+    width: 400px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.p-wrapper .l-teksti p {
+    font-size: 23px;
+}
+
+.p-wrapper .nappi {
+    justify-content: center;
+    display: flex; 
+    gap: 20px;
+}
+
+.p-wrapper .p-nappi {
+    width: 120px;
+}
