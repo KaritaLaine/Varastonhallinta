@@ -674,14 +674,15 @@ header {
 }
 
 
+
 /* LAINAA JA PALAUTA */
 
 .l-wrapper {
     display: flex;
     align-items: center;
     justify-content: center;
-   background-color: #1b3259f1;
-    height: 100vh;
+    background-color: #1b3259f1;
+    min-height: 100vh;
     /* margin-top: 70px; */
     width: 100%;
 }
@@ -753,12 +754,33 @@ header {
     font-size: 23px;
 }
 
-.p-wrapper .nappi {
+.p-wrapper .nappi, .mt .p-nappi {
     justify-content: center;
     display: flex; 
     gap: 20px;
+    color: white !important;
 }
 
 .p-wrapper .p-nappi {
-    width: 120px;
+    width: 100px;
+}
+
+.mt {
+    padding: 50px;
+}
+
+.mt .jutut {
+    width: 600px;
+    padding: 100px;
+}
+
+.l-wrapper input#tuotekuva-clear_id {
+    width: 15px;
+    height:15px;
+    margin-bottom: 15px;
+    margin-left: 15px;
+}
+
+.l-wrapper input#id_tuotekuva {
+    width: 330px;
 }
