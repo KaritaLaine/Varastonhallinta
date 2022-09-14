@@ -104,7 +104,6 @@ header {
     width: 100%;
     height: 100%;
     margin: auto;
-    padding-top: 5px;
 }
 
 
@@ -681,13 +680,23 @@ header {
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-direction: column;
+   background-color: #1b3259f1;
+    height: 100vh;
+    /* margin-top: 70px; */
     width: 100%;
-    margin-top: 50px;
+}
+
+.l-wrapper .wrapper {
+    margin: 0;
 }
 
 .jutut {
-    width: 400px;
+    width: 460px;
+    padding: 30px;
+    background-color: white;
+    box-shadow: 1px 1px 5px #1b32595e;
+    display: flex;
+    flex-direction: column;
 }
 
 .l-teksti p {
@@ -724,4 +733,8 @@ header {
     height: 50px;
     width: 400px;
     padding: 10px;
+}
+
+.pa-la {
+    color: #df2070
 }
