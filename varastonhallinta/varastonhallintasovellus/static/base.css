@@ -806,3 +806,34 @@ header {
     color: grey;
     list-style: none;
 }
+
+
+
+/* REKISTERÖITYMINEN */
+
+.r-kortti input {
+        width: 350px;
+        height: 50px;
+        margin: 5px;
+        background-color: rgb(238, 238, 238);
+        border: none;
+        padding: 5px;
+        border-radius: none;
+}
+
+.r-kortti .p-nappi {
+    width: 350px;
+}
+
+.r-kortti {
+    width: 650px;
+    height: 725px;
+}
+
+.r-kortti .logo {
+    margin-top: 15px; 
+}
+
+.r-kortti .ohje {
+    margin-top: 15px;
+}

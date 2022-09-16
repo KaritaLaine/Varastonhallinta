@@ -1,27 +1,35 @@
 <!DOCTYPE html>
 <html lang="fi">
-    <head>
-        {% load static %}
-        <link rel="stylesheet" type="text/css" href="{% static 'rekisteroityminen.css' %}">
-    </head>
-    <body>
-        <form action="" method="post">
-            {% csrf_token %}
-            <img id="raseko-logo" src="{% static 'Raseko-logo-vaaka_VÄRI.png' %}" alt="RASEKO-Logo"/>
-            <h1>Rekisteröidy</h1>
-            <p><em>Tai <strong><a href="{% url 'kirjautuminen' %}">kirjaudu sisään</a></strong> jos sinulla on jo tunnukset.</em></p>
-            <p>Rekisteröityminen tapahtuu, koulun tarjoamalla sähköpostiosoitteella ja opiskelijanumerosi toimii käyttäjätunnuksena.</p>
-            <section>
-                <p>
-                    {% if messages %}
-                        {% for message in messages %}
-                            {{ message }}
-                        {% endfor %}
-                    {% endif %}
-                </p>
-            </section>
-            {{ form.as_p }}
-            <button type="submit">Luo käyttäjä</button>
-        </form>
-    </body>
+    <div class ="kirjautuminen"
+        <head>
+            {% load static %}
+            <link rel="stylesheet" type="text/css" href="{% static 'base.css' %}">
+        </head>
+        <body>
+            <div class="keskita">
+                <div class="kirjautumiskortti r-kortti"
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <img class="logo" src="{% static 'Raseko-logo-vaaka_VÄRI.png' %}" alt="RASEKO-Logo"/>
+                        <div class ="ohje">
+                            <h1 class="otsikko">Rekisteröidy</h1>
+                            <p>Rekisteröityminen tapahtuu koulun sähköpostiosoitteella. <br> Opiskelijanumerosi toimii käyttäjätunnuksena.</p>
+                        </div>
+                        <section>
+                            <p>
+                                {% if messages %}
+                                    {% for message in messages %}
+                                        {{ message }}
+                                    {% endfor %}
+                                {% endif %}
+                            </p>
+                        </section>
+                        {{ form.as_p }}
+                        <button type="submit" class="p-nappi">Luo käyttäjä</button>
+                        <p class="ohje2">Omistat jo tunnukset? <a href="{% url 'kirjautuminen' %}">Kirjaudu sisään</a>.</p>
+                    </form>
+                </div>
+            </div>
+        </body>
+    </div>
 </html>
