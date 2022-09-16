@@ -2,25 +2,29 @@
 
 {% block title %}Muokkaa Tuotetta{% endblock %}
 
-{% block css %}
-{% load static %}
-    <link rel="stylesheet"  type="text/css" href="{% static "muokkaa-tuotetta.css" %}">
-{% endblock %}
-
 {% block content %}
-    <h1>Muokkaa Tuotetta</h1>
-    <form method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
 
-        {% for field in form %}
-            <div class="form-control {% if field.error %}errors{% endif %}">
-                {{ field.label_tag }}
-                {{ field }}
-                {{ field.errors }}
+<div class="l-wrapper mt">
+    <div class="jutut">
+        <div class="l-teksti">
+            <p class="pa-la">Muokkaa&nbsp;</p><p> tuotetta </p>
+        </div>
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            {% for field in form %}
+                <div class="form-control {% if field.error %}errors{% endif %}">
+                    <div class="label"> {{ field.label_tag }} </div>
+                    {{ field }}
+                    {{ field.errors }}
+                </div>
+            {% endfor %}
+            
+            <div class="nappi">
+                <button class="p-nappi" type="submit">Muokkaa tuotetta</button>
             </div>
-        {% endfor %}
-
-        <button id="muokkaa-nappi" type="submit">Muokkaa tuotetta</button>
-        
-    </form>
+        </form>
+    </div>
+</dib>
 {% endblock %}

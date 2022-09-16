@@ -7,9 +7,9 @@
 <body>
     <!-- Napataan  rooli ja muutetaan se json scriptiksi -->
     {{ request.user.rooli|json_script:"user_rooli" }}
-    <div class = "lainaus-keskita"  id="hallinta-koko">
+    <div class = "hallinta-keskita"  id="hallinta-koko">
         <h1 class="iso_otsikko" id="lainaus-otsikko">Hallinta</h1>
-        <p>Lisää, muokkaa tai poista tietokannassa olevia tuotteita.</p>
+        <p>Muokkaa, lisää tai poista varastossa olevia tuotteita nappien avulla.</p>
         </br> </br>
         {% if messages %}
         {% for message in messages %}
@@ -38,9 +38,9 @@
                         <tr>
                             <th>Tuotekuva</th>
                             <th>Nimike</th>
-                            <th>Tuoteryhma</th>
+                            <th>Ryhmä</th>
                             <th>Valmistaja</th>
-                            <th>Kappalemäärä</th>
+                            <th>Määrä</th>
                             {% if request.user.rooli == 'hallinto' or request.user.rooli == 'opettaja' %}
                                 <th>Hankintapaikka</th>
                                 <th>Hankintapäivä</th>
@@ -56,7 +56,7 @@
                     <tbody>
                         {% for tuote in tuotteet %}
                             <tr>
-                                <td><img src="{{ tuote.tuotekuva.url }}" class="tuotekuva" alt="Tuotekuva"></td>
+                                <td class="keski"><img src="{{ tuote.tuotekuva.url }}" class="tuotekuva" alt="Tuotekuva"></td>
                                 <td>{{ tuote.nimike }}</td>
                                 <td>{{ tuote.tuoteryhma }}</td>
                                 <td>{{ tuote.valmistaja | default_if_none:"-" }}</td>
@@ -69,8 +69,8 @@
                                     <td>{{ tuote.kustannuspaikka | default_if_none:"-" }}</td>
                                     <td>{{ tuote.takuuaika | default_if_none:"-" }}</td>
                                 {% endif %}
-                                <td><button type="button" id="muokkaa-nappi"><a id="muokkaa-linkki" href="{% url "muokkaaminen" tuote.id %}">Muokkaa</a></button></td>
-                                <td><button type="button" id="poista-nappi"><a id="poista-linkki" href="{% url "poistaminen" tuote.id %}">Poista</a></button></td>
+                                <td class="keski"><button type="button" id="muokkaa-nappi"><a id="muokkaa-linkki" href="{% url "muokkaaminen" tuote.id %}">Muokkaa</a></button></td>
+                                <td class="keski"><button type="button" id="poista-nappi"><a id="poista-linkki" href="{% url "poistaminen" tuote.id %}">Poista</a></button></td>
                                 <!-- Jos taulu on tyhjä -->
                                 {% empty %}
                                 <p><b>Vaikuttaa siltä ettei tietokannassa ole tällä hetkellä tuotteita. </br> 
@@ -88,9 +88,9 @@
                         <tr>
                             <th>Tuotekuva</th>
                             <th>Nimike</th>
-                            <th>Tuoteryhma</th>
+                            <th>Ryhmä</th>
                             <th>Valmistaja</th>
-                            <th>Kappalemäärä</th>
+                            <th>Määrä</th>
                             {% if request.user.rooli == 'hallinto' or request.user.rooli == 'opettaja' %}
                                 <th>Hankintapaikka</th>
                                 <th>Hankintapäivä</th>

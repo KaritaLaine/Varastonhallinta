@@ -2,31 +2,30 @@
 
 {% block title %}Poista {{ tuote.nimike }}{% endblock title %}
 
-{% block css %}
-{% load static %}
-    <link rel="stylesheet"  type="text/css" href="{% static "poista-tuote.css" %}">
-   
-{% endblock %}
-
 {% block content %}
-    <h1>Oletko varma...</h1>
+<div class="l-wrapper p-wrapper">
+    <div class="jutut">
+        <div class="l-teksti">
+            <p>Oletko varma, että haluat poistaa tuotteen "{{ tuote.nimike }}"?</p>
+        </div>
 
-    <form method="POST">
-        {% csrf_token %}
+        <form method="POST">
+            {% csrf_token %}
 
-        <p>Oletko varma että haluat poistaa tuotteen "{{ tuote.nimike }}"?</p>
-    
-        <input id="poista-nappi" type="submit" value="Poista">
-        <button id="peruuta-nappi" type="button" onclick="location.href='{% url "hallinta" %}'">Peruuta</button>    
+            <div class ="nappi">
+                <input id="poista-nappi" class="p-nappi" type="submit" value="Poista">
+                <button id="peruuta-nappi" class="p-nappi" type="button" onclick="location.href='{% url "hallinta" %}'">Peruuta</button>
+                
 
-        <input type="button" class="floated" id="slide_poista_button" value="Poista">
-        <input type="button" class="floated" id="slide_peruuta_button" value="Peruuta">
+                <input type="button" class="floated" id="slide_poista_button" value="Poista">
+                <input type="button" class="floated" id="slide_peruuta_button" value="Peruuta">
 
-       
-        <input type="button" class="inline" id="slide_poista_button" value="Poista">
-        <input type="button" class="inline" id="slide_peruuta_button" value="Peruuta">
 
+                <input type="button" class="inline" id="slide_poista_button" value="Poista">
+                <input type="button" class="inline" id="slide_peruuta_button" value="Peruuta">
         
-
-    </form>
+            </div>
+        </form>
+    </div>
+</div>
 {% endblock %}

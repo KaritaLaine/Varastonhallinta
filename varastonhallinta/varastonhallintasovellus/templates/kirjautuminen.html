@@ -1,28 +1,39 @@
 <!DOCTYPE html>
 <html lang="fi">
-    <head>
-        {% load static %}
-        <link rel="stylesheet" type="text/css" href="{% static 'kirjautuminen.css' %}">
-    </head>
-    <body>
-        <form action="" method="post">
-            {% csrf_token %}
-            <img id="raseko-logo" src="{% static 'Raseko-logo-vaaka_VÄRI.png' %}" alt="RASEKO-Logo"/>
-            <h1>Kirjaudu Sisään</h1>
-            <p><em>Tai <strong><a href="{% url 'rekisteroityminen' %}">rekisteröidy</a></strong> jos sinulla ei vielä ole tunnuksia.</em></p>
-            <p>Kirjautuminen tapahtuu oppilaan henkilökohtaisella, koulun tarjoamalla opiskelijatunnuksella ja salasanalla</p>
-            <section>
-                <p>
-                    {% if messages %}
-                        {% for message in messages %}
-                            {{ message }}
-                        {% endfor %}
-                    {% endif %}
-                </p>
-            </section>
-            <input type="text" name="käyttäjätunnus" placeholder="Käyttäjätunnus"><br>
-            <input type="password" name="salasana" placeholder="Salasana"><br>
-            <button type="submit">Kirjaudu Sisään</button>
-        </form>
-    </body>
+    <div class ="kirjautuminen"
+        <head>
+            {% load static %}
+            <link rel="stylesheet" type="text/css" href="{% static 'base.css' %}">
+        </head>
+        <body>
+            <div id="kirjautuminen" class="keskita">
+                
+                <div class="kirjautumiskortti">
+                    <form class="kirjautumis-form" action="" method="post">
+                        {% csrf_token %}
+                        <img class="logo" src="{% static 'Raseko-logo-vaaka_VÄRI.png' %}" alt="RASEKO-Logo"/>
+                        <div class = "ohje">
+                    
+                            <h1 class="otsikko">Kirjaudu sisään</h1>
+                            <p>Kirjautuminen tapahtuu opiskelijatunnuksella.</p>
+                        </div>
+                        <section>
+                            <p>
+                                {% if messages %}
+                                    {% for message in messages %}
+                                        {{ message }}
+                                    {% endfor %}
+                                {% endif %}
+                            </p>
+                        </section>
+                        <input type="text" class="k-form" name="käyttäjätunnus" placeholder="Käyttäjätunnus"><br>
+                        <input type="password" class="k-form" name="salasana" placeholder="Salasana"><br>
+                        <button type="submit" class="p-nappi">Kirjaudu sisään</button>
+
+                        <p class="ohje2">Ei käyttäjätunnuksia? <a href="{% url 'rekisteroityminen' %}">Rekisteröidy</a>.</p>
+                    </form>
+                </div>
+            </div>
+        </body>
+    </div>
 </html>
