@@ -43,7 +43,7 @@
                 {% else %}
                     <li {% if request.resolver_match.url_name == 'lainattavat' %}class="active"{% else %} class="inactive" {% endif %}><a href="#">Oppilas</a></li>
                 {% endif %}
-                    <li {% if request.resolver_match.url_name == 'muokkaa-kayttajaa' %}class="active"{% else %} class="inactive" {% endif %}><a href="{% url 'muokkaa-kayttajaa' %}">Omat Tiedot</a></li>
+                    <li {% if request.resolver_match.url_name == 'muokkaa-kayttajaa' %}class="active"{% else %} class="inactive" {% endif %}><a href="{% url 'muokkaa-kayttajaa' %}">Asetukset</a></li>
         </div>
         <div class="oikea-header">
                 <li class="right"><a href="{% url 'uloskirjautuminen' %}">Kirjaudu ulos</a></li>

@@ -784,3 +784,25 @@ header {
 .l-wrapper input#id_tuotekuva {
     width: 330px;
 }
+
+
+
+/* MUOKKAA KÄYTTÄJÄÄ / ASETUKSET */
+
+
+.a-wrapper span.helptext {
+    display: none;
+}
+
+.a-wrapper p {
+    margin-top: 15px;
+}
+
+.a-wrapper {
+    background-color: #112444
+}
+
+.a-wrapper li {
+    color: grey;
+    list-style: none;
+}
