@@ -7,13 +7,11 @@
         </head>
         <body>
             <div id="kirjautuminen" class="keskita">
-                
                 <div class="kirjautumiskortti">
                     <form class="kirjautumis-form" action="" method="post">
                         {% csrf_token %}
                         <img class="logo" src="{% static 'Raseko-logo-vaaka_VÄRI.png' %}" alt="RASEKO-Logo"/>
                         <div class = "ohje">
-                    
                             <h1 class="otsikko">Kirjaudu sisään</h1>
                             <p>Kirjautuminen tapahtuu opiskelijatunnuksella.</p>
                         </div>

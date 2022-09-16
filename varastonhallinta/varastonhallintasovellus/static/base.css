@@ -386,6 +386,7 @@ header {
     border-collapse: separate;
     border-spacing: 0;
     width:  100%;
+    margin-bottom: 50px;
 }
 
 .hallinta-taulu td, .hallinta-taulu th {
@@ -737,7 +738,8 @@ header {
 }
 
 .pa-la {
-    color: #df2070
+    color: #df2070;
+    text-decoration: none;
 }
 
 
@@ -783,4 +785,88 @@ header {
 
 .l-wrapper input#id_tuotekuva {
     width: 330px;
+}
+
+
+
+/* MUOKKAA KÄYTTÄJÄÄ / ASETUKSET */
+
+
+.a-wrapper span.helptext {
+    display: none;
+}
+
+.a-wrapper p {
+    margin-top: 15px;
+}
+
+.a-wrapper {
+    background-color: #112444
+}
+
+.a-wrapper li {
+    color: grey;
+    list-style: none;
+}
+
+
+
+/* REKISTERÖITYMINEN */
+
+.r-kortti input {
+        width: 350px;
+        height: 50px;
+        margin: 5px;
+        background-color: rgb(238, 238, 238);
+        border: none;
+        padding: 5px;
+        border-radius: none;
+}
+
+.r-kortti .p-nappi {
+    width: 350px;
+}
+
+.r-kortti {
+    width: 650px;
+    height: 725px;
+}
+
+.r-kortti .logo {
+    margin-top: 15px; 
+}
+
+.r-kortti .ohje {
+    margin-top: 15px;
+}
+
+
+
+
+/* LISÄÄ TUOTE */
+
+.lt .label{
+    margin: 10px;
+    padding: 0;
+}
+
+.lt input#id_tuotekuva {
+    width: 400px;
+}
+
+
+/* VIRHEKOODIT */
+
+.v403 p, .v403 a {
+    font-size: 20px;
+}
+
+.v403 a:hover {
+    color: #b31e5c;
+    transition: 0,5s;
+}
+
+.v-jutut {
+    text-align: center;
+    width: 500px;
 }

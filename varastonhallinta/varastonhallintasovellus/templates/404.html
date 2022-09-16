@@ -3,6 +3,12 @@
 {% block title %}Sivua ei löytynyt{% endblock title %}
 
 {% block content %}
-    <h1>Pahoittelen, mutta etsimääsi sivua ei löytynyt</h1>
-    <a href="{% url 'etusivu' %}">etusivu</a>
+<div class="l-wrapper">
+    <div class="jutut v-jutut">
+        <div class="l-teksti v403">
+            <p> Pahoittelen, mutta etsimääsi sivua ei löytynyt.</br>
+            Palaa <a class="pa-la" href="{% url 'etusivu' %}">etusivulle</a>.</p>
+        </div>
+    </div>
+</div>
 {% endblock content %}
