@@ -9,29 +9,30 @@ from .models import Henkilo, Tuote, Varastotapahtuma
 class RekisteroityminenForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['password1'].label = 'Salasana'
-        self.fields['password2'].label = 'Salasana uudelleen'
+        self.fields['username'].widget.attrs['placeholder'] = 'Käyttäjätunnus'
+        self.fields['email'].widget.attrs['placeholder'] = 'Sähköpostiosoite'
+        self.fields['first_name'].widget.attrs['placeholder'] = 'Etunimesi'
+        self.fields['last_name'].widget.attrs['placeholder'] = 'Sukunimesi'
+        self.fields['password1'].widget.attrs['placeholder'] = 'Salasana'
+        self.fields['password2'].widget.attrs['placeholder'] = 'Salasana uudelleen'
 
-        self.fields['password1'].help_text = 'Anna salasana joka sisältää ainakin 8 merkkiä'
-        self.fields['password2'].help_text = 'Syötä sama salasana tarkistuksen vuoksi uudelleen'
+        for fieldname in ['username', 'email', 'first_name', 'last_name', 'password1', 'password2']:
+            self.fields[fieldname].help_text = None
+            self.fields[fieldname].label = ''
 
     class Meta:
         model = Henkilo
         fields = ("username", "email", "first_name", "last_name", "vastuuopettaja", "password1", "password2")
 
-        labels = {
-            "username"          : "Anna käyttäjätunnus",
-            "email"             : "Anna sähköpostiosoite",
-            "first_name"        : "Anna etunimi",
-            "last_name"         : "Anna sukunimi",
-            "vastuuopettaja"    : "Vastuuopettaja",
+        widgets = {
+            'vastuuopettaja': forms.HiddenInput(),
         }
 
-        help_texts = {
-            "username"          : "Anna käyttäjätunnus, esim. oppilaan opiskelijanumero",
-            "email"             : "Anna koulun tarjoama sähköpostiosoite",
-            "vastuuopettaja"    : "Jos luot käyttäjää oppilaalle, valitse hänen vastuuopettajansa"
-        }
+    def clean_email(self):
+        sahkopostiosoite = self.cleaned_data['email']
+        if sahkopostiosoite.find('@edu.raseko.fi') == -1:
+            raise forms.ValidationError('Syötä henkilökohtainen RASEKON tarjoama sähköpostiosoite!')
+        return sahkopostiosoite
 
 
 class MuokkaaKayttajaaForm(UserChangeForm):
@@ -47,6 +48,8 @@ class TuoteForm(forms.ModelForm):
         self.user = kwargs.pop('kayttajan_rooli')
         super(TuoteForm, self).__init__(*args, **kwargs)
         self.fields['hankintapaiva'].required = False
+
+        del self.fields['kappalemaara_lainassa']
 
         if self.user == 'varastonhoitaja':
             for kentta in ['hankintapaikka', 'hankintapaiva', 'hankintahinta', 'laskun_numero', 'kustannuspaikka', 'takuuaika']:
@@ -108,7 +111,7 @@ class LainaaTuoteForm(forms.ModelForm):
         self.fields['tuote'].disabled = True
         self.fields['arkistotunnus'].disabled = True
 
-        self.piilota_label = ('tyyppi', 'maara', 'varastonhoitaja', 'varasto', 'palautuspaiva')
+        self.piilota_label = ('tyyppi', 'maara', 'varastonhoitaja', 'varasto')
         for field in self.piilota_label:
             self.fields[field].label = ''
 
@@ -139,7 +142,9 @@ class PalautaTuoteForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(PalautaTuoteForm, self).__init__(*args, **kwargs)
 
+        self.fields['tuote'].disabled = True
         self.fields['arkistotunnus'].disabled = True
+        self.fields['asiakas'].disabled = True
 
         self.piilota_label = ('tyyppi', 'varastonhoitaja', 'varasto', 'palautuspaiva',)
         for field in self.piilota_label:
