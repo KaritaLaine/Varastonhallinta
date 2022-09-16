@@ -386,6 +386,7 @@ header {
     border-collapse: separate;
     border-spacing: 0;
     width:  100%;
+    margin-bottom: 50px;
 }
 
 .hallinta-taulu td, .hallinta-taulu th {
@@ -737,7 +738,8 @@ header {
 }
 
 .pa-la {
-    color: #df2070
+    color: #df2070;
+    text-decoration: none;
 }
 
 
@@ -836,4 +838,35 @@ header {
 
 .r-kortti .ohje {
     margin-top: 15px;
+}
+
+
+
+
+/* LISÄÄ TUOTE */
+
+.lt .label{
+    margin: 10px;
+    padding: 0;
+}
+
+.lt input#id_tuotekuva {
+    width: 400px;
+}
+
+
+/* VIRHEKOODIT */
+
+.v403 p, .v403 a {
+    font-size: 20px;
+}
+
+.v403 a:hover {
+    color: #b31e5c;
+    transition: 0,5s;
+}
+
+.v-jutut {
+    text-align: center;
+    width: 500px;
 }
