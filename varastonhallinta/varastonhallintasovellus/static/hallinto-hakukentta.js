@@ -1,3 +1,5 @@
+// Päädokumentointi lainaus-hakukentta.js-tiedostossa..
+
 const lahetaHakuData = (tuote) => {
     $.ajax({
         type: 'POST',

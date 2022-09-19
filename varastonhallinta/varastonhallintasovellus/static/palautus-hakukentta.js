@@ -1,3 +1,5 @@
+// Päädokumentointi lainaus-hakukentta.js-tiedostossa..
+
 const lahetaHakuData = (tapahtuma) => {
     $.ajax({
         type: 'POST',
