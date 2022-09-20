@@ -26,22 +26,24 @@
             <nav>   
             <ul class="nav-links">
                 {% if request.user.rooli == 'varastonhoitaja' %}
-                    <li {% if request.resolver_match.url_name == 'varastonhoitaja' %}class="active"{% else %} class="inactive" {% endif %}><a href="#">Varastonhoitaja</a></li>
+                    <!-- <li {% if request.resolver_match.url_name == 'varastonhoitaja' %}class="active"{% else %} class="inactive" {% endif %}><a href="#">Varastonhoitaja</a></li> -->
                     <li {% if request.resolver_match.url_name == 'lainattavat' %}class="active"{% else %} class="inactive" {% endif %}><a href="{% url 'lainattavat' %}">Lainaus</a></li>
                     <li {% if request.resolver_match.url_name == 'palautettavat' %}class="active"{% else %} class="inactive" {% endif %}><a href="{% url 'palautettavat' %}">Palautus</a></li>
-                    <li {% if request.resolver_match.url_name == 'hallinta' %}class="active"{% else %} class="inactive" {% endif %}><a href="{% url 'hallinta' %}">Tuotteiden Hallinta</a></li>
+                    <li {% if request.resolver_match.url_name == 'hallinta' %}class="active"{% else %} class="inactive" {% endif %}><a href="{% url 'hallinta' %}">Hallinta</a></li>
                 {% elif request.user.rooli == 'opettaja' %}
-                    <li {% if request.resolver_match.url_name == 'opettaja' %}class="active"{% else %} class="inactive" {% endif %}><a href="#">Opettaja</a></li>
+                    <!-- <li {% if request.resolver_match.url_name == 'opettaja' %}class="active"{% else %} class="inactive" {% endif %}><a href="#">Opettaja</a></li> -->
                     <li {% if request.resolver_match.url_name == 'lainattavat' %}class="active"{% else %} class="inactive" {% endif %}><a href="{% url 'lainattavat' %}">Lainaus</a></li>
                     <li {% if request.resolver_match.url_name == 'palautettavat' %}class="active"{% else %} class="inactive" {% endif %}><a href="{% url 'palautettavat' %}">Palautus</a></li>
-                    <li {% if request.resolver_match.url_name == 'hallinta' %}class="active"{% else %} class="inactive" {% endif %}><a href="{% url 'hallinta' %}">Tuotteiden Hallinta</a></li>
+                    <li {% if request.resolver_match.url_name == 'hallinta' %}class="active"{% else %} class="inactive" {% endif %}><a href="{% url 'hallinta' %}">Hallinta</a></li>
                 {% elif request.user.rooli == 'hallinto' %}
-                    <li {% if request.resolver_match.url_name == 'hallinto' %}class="active"{% else %} class="inactive" {% endif %}><a href="#">Hallinto</a></li>
-                    <li {% if request.resolver_match.url_name == 'hallinta' %}class="active"{% else %} class="inactive" {% endif %}><a href="{% url 'hallinta' %}">Tuotteiden Hallinta</a></li>
+                    <!-- <li {% if request.resolver_match.url_name == 'hallinto' %}class="active"{% else %} class="inactive" {% endif %}><a href="#">Hallinto</a></li> -->
+                    <li {% if request.resolver_match.url_name == 'lainattavat' %}class="active"{% else %} class="inactive" {% endif %}><a href="{% url 'lainattavat' %}">Lainaus</a></li>
+                    <li {% if request.resolver_match.url_name == 'palautettavat' %}class="active"{% else %} class="inactive" {% endif %}><a href="{% url 'palautettavat' %}">Palautus</a></li>
+                    <li {% if request.resolver_match.url_name == 'hallinta' %}class="active"{% else %} class="inactive" {% endif %}><a href="{% url 'hallinta' %}">Hallinta</a></li>
                 {% else %}
                     <li {% if request.resolver_match.url_name == 'lainattavat' %}class="active"{% else %} class="inactive" {% endif %}><a href="#">Oppilas</a></li>
                 {% endif %}
-                    <li {% if request.resolver_match.url_name == 'muokkaa-kayttajaa' %}class="active"{% else %} class="inactive" {% endif %}><a href="{% url 'muokkaa-kayttajaa' %}">Omat Tiedot</a></li>
+                    <li {% if request.resolver_match.url_name == 'muokkaa-kayttajaa' %}class="active"{% else %} class="inactive" {% endif %}><a href="{% url 'muokkaa-kayttajaa' %}">Asetukset</a></li>
         </div>
         <div class="oikea-header">
                 <li class="right"><a href="{% url 'uloskirjautuminen' %}">Kirjaudu ulos</a></li>

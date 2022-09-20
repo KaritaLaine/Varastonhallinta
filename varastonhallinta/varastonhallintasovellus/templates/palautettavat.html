@@ -15,7 +15,8 @@
     {% endif %}
     <div class = "lainaus-keskita">
         <h1 class="iso_otsikko" id="lainaus-otsikko">Palauta tuote</h1>
-        <p class="lainaus-ohjeteksti"> Palauta alla olevia tuotteita sinisen Palauta-napin avulla. </br> </br>
+        <p class="lainaus-ohjeteksti"> Palauta lainattuja tuotteita varastoon 
+            sinisen Palauta-napin avulla. </br> </br>
         
         <!-- Hakukenttä -->
         <div class = "hakukentta-wrap">
@@ -23,7 +24,6 @@
                 <p><b> Hae tuotteita </b></p>
             </div>
             <div class="oikea-hakukentta">
-                <!-- <input type="text" class="haku" id="hakukentta" placeholder="Hae"/> !-->
                 <form id="haku-form" autocomplete = "off">
                     {% csrf_token %}
                     <input type="text" class="haku" id="hakusyote" placeholder="Hae"/>
@@ -32,30 +32,26 @@
         </div>
 
 
-
-
 <!-- Taulukon perusnäkymä -->
         <div class="taulukko-perus">
             <div class="scroll-wrap">
                 <table class="lainaus-taulu">
-                    <div class="lainaus-otsikot">
                         <thead>
                             <tr>
                                 <th>Tuotekuva</th>
                                 <th>Nimike</th>
-                                <th>Kappalemäärä</th>
+                                <th>Määrä</th>
                                 <th>Lainaaja</th>
                                 <th></th>
                             </tr>
                         </thead>
-                    </div>
                         <tbody>
                             {% for varastotapahtuma in varastotapahtumat %}
                                 <tr>
-                                    <td><img src="{{ varastotapahtuma.tuote.tuotekuva.url }}" class="tuotekuva" alt="Tuotekuva"></td>
-                                    <td><p> {{ varastotapahtuma.tuote.nimike }} </p></td>
-                                    <td><p> {{ varastotapahtuma.tuote.kappalemaara_lainassa }} </p></td>
-                                    <td><p> {{ varastotapahtuma.asiakas }} </p></td>
+                                    <td class="koko"><img src="{{ varastotapahtuma.tuote.tuotekuva.url }}" class="tuotekuva" alt="Tuotekuva"></td>
+                                    <td> {{ varastotapahtuma.tuote.nimike }} </td>
+                                    <td> {{ varastotapahtuma.tuote.kappalemaara_lainassa }} </td>
+                                    <td> {{ varastotapahtuma.asiakas }} </td>
                                     <td><button type="button" class="palautus-nappi"><a href="{% url 'suorita-palautus' varastotapahtuma.id %}">Palauta</a></button></td>
                                 </tr>
                             {% endfor %}
@@ -65,22 +61,19 @@
         </div>
         
 
-
         <!-- Taulukon tulosnäkymä -->
         <div class="taulukko-tulos ">
             <div class="scroll-wrap tulos-wrap">
                 <table class="lainaus-taulu" >
-                    <div class="lainaus-otsikot">
                         <thead>
                             <tr>
                                 <th>Tuotekuva</th>
                                 <th>Nimike</th>
-                                <th>Kappalemäärä</th>
+                                <th>Määrä</th>
                                 <th>Lainaaja</th>
                                 <th></th>
                             </tr>
                         </thead>
-                    </div>
                     <tbody class="piilossa" id="tulos-taulukko">
                         <!-- Tänne tulostuu roolin mukaan hakukentta.js-tiedostosta 
                             taulurivejä -->
@@ -91,7 +84,7 @@
 
         <!-- Pagination, eli sivutus -->
         <nav>
-            <div id="pagination">
+            <div class="p-koko" id="pagination">
                 {% if varastotapahtumat.has_previous %}
                     <a class="edellinen eka" href="?sivu={{ varastotapahtumat.previous_page_number }}"> &laquo</a>
                 {% endif %}

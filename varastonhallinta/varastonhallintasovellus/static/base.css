@@ -104,7 +104,6 @@ header {
     width: 100%;
     height: 100%;
     margin: auto;
-    padding-top: 5px;
 }
 
 
@@ -141,14 +140,9 @@ header {
 
 .lainaus-taulu td {
     border-bottom: 2pt solid #efefef;
-    max-width: 120px;
-    line-clamp: 2; 
-    overflow:hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
 }
 
-.lainaus-taulu td:hover {
+.lainaus-taulu td:hover, .palautus:hover {
     overflow: visible;
     word-break: break-all;
     white-space: normal;
@@ -157,9 +151,23 @@ header {
 
 .lainaus-taulu td, .lainaus-taulu th {
     text-align: left;
-    height: 100px;
-    padding: 0.5rem;
-    min-width: 150px;
+    height: 80px;
+    padding: 5px;
+    border-right: solid 1px;
+    border-right-color: #1b32590a;
+    padding: 5px;
+
+    line-clamp: 2; 
+    overflow:hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+
+    min-width: 60px;
+    max-width: 60px;
+}
+
+.lainaus-taulu td:last-child, .lainaus-taulu th:last-child {
+    border-right: none;
 }
 
 .lainaus-taulu th {
@@ -170,6 +178,7 @@ header {
     position: sticky;
     position: -webkit-sticky;
     top: 0;
+    height: 60px;
 }
 
 .lainaus-taulu tr:nth-child(odd){
@@ -268,6 +277,14 @@ header {
     display: none;
 }
 
+/* PALAUTUSSIVUN OPTIMOINTIA */
+
+.tuotekuva, .palautus-nappi, .lainaus-nappi {
+    display: flex;
+    margin: 0 auto;
+    align-items: center;
+}
+
 
 /* LAINAUSNAPPI JA PALAUTUSNAPPI */
 
@@ -361,31 +378,45 @@ header {
 /* HALLINTA-TAULU */
 
 .hallinta-keskita {
-    margin: auto;
+    margin: 0 auto;
+    width: 85% !important;
 }
 
 .hallinta-taulu {
     border-collapse: separate;
     border-spacing: 0;
-    width: 100%;
+    width:  100%;
+    margin-bottom: 50px;
 }
 
 .hallinta-taulu td, .hallinta-taulu th {
+    min-width: 50px;
+    max-width: 50px;
     text-align: left;
-    height: 100px;
-    padding: 0.5rem;
+}
+
+.hallinta-taulu .tuotekuva, .hallinta-taulu #muokkaa-nappi, .hallinta-taulu #poista-nappi {
+    display: flex;
+    margin: 0 auto;
+    align-items: center;
 }
 
 .hallinta-taulu td {
-    border-bottom: 2pt solid #efefef;
-    max-width: 120px;
     line-clamp: 2; 
+    padding: 5px;
+    border-right: solid 1px;
+    border-color: #1b32590a;
     overflow:hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    border-bottom: 2pt solid #efefef
 }
 
-.hallinta-taulu td:hover {
+.hallinta-taulu td:last-child, .hallinta-taulu th:last-child {
+    border-right: none;
+}
+
+.hallinta-taulu td:hover, .hallinta-taulu th:hover {
     overflow: visible;
     word-break: break-all;
     white-space: normal;
@@ -394,13 +425,19 @@ header {
 
 .hallinta-taulu th {
     background-color: white;
-    border-bottom: 2pt solid #d6d6d6;
     font-family: 'Nunito Sans semibold', sans-serif;
-    min-width: 120px;
+    height: 60px;
     color: #424242;
     position: sticky;
     position: -webkit-sticky;
     top: 0;
+    border-bottom: 2pt solid #d6d6d6;
+    border-right: solid 1px;
+    border-right-color: #1b32590a;
+    padding: 5px;
+    overflow:hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .hallinta-taulu tr:nth-child(odd){
@@ -412,7 +449,7 @@ header {
 }
 
 .varastonhoitaja #muokkaa-nappi, .varastonhoitaja #poista-nappi {
-    width: 60%;
+    width: 100px;
 }
 
 
@@ -466,6 +503,9 @@ header {
     height: 600px;
 }
 
+.p-koko {
+    margin-bottom: 20px;
+}
 
 /* ETUSIVU */
 
@@ -509,6 +549,7 @@ header {
 .k-otsikko {
     font-size: 20px;
     color: black;
+    font-style: bold;
 }
 
 .s-nappi {
@@ -562,7 +603,270 @@ header {
 }
 
 .lainauskortti p {
-    width: 80%;
+    width: 210px;
     margin: 0 auto;
 }
 
+
+/* KIRJAUTUMINEN */
+
+.kirjautuminen .keskita {
+    display: flex;
+}
+
+.kirjautuminen .otsikko{
+    font-weight:bold;
+    font-size: 30px;
+    margin-bottom: 20px;
+}
+
+.kirjautuminen{
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #1b3259;
+}
+
+.kirjautumiskortti {
+    background-color: white;
+    width: 550px;
+    height: 600px;
+    box-shadow: #122340 5px 5px 10px;
+    text-align: center;
+}
+
+.kirjautuminen .p-nappi {
+    background-color: #df2070;
+    color: white;
+    width: 300px;
+    height: 60px;
+    font-weight: normal;
+    margin-top: 10px;
+}
+
+.k-form {
+    width: 300px;
+    height: 60px;
+    margin: 5px;
+    background-color: rgb(238, 238, 238);
+    border: none;
+    padding: 10px;
+    border-radius: none;
+}
+
+.kirjautuminen .ohje {
+    text-align: center;
+    margin-top: 35px;
+    margin-bottom: 40px;
+}
+
+.ohje2 {
+    margin-top: 30px;
+}
+
+.ohje2 a {
+    color: #df2070;
+    text-decoration: none;
+}
+
+.kirjautuminen .logo {
+    margin-top: 55px;
+    width: 300px;
+}
+
+
+
+/* LAINAA JA PALAUTA */
+
+.l-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #1b3259f1;
+    min-height: 100vh;
+    /* margin-top: 70px; */
+    width: 100%;
+}
+
+.l-wrapper .wrapper {
+    margin: 0;
+}
+
+.jutut {
+    width: 460px;
+    padding: 30px;
+    background-color: white;
+    box-shadow: 1px 1px 5px #1b32595e;
+    display: flex;
+    flex-direction: column;
+}
+
+.l-teksti p {
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.l-teksti {
+    justify-content: flex-start;
+    display: flex; 
+}
+
+.label {
+    font-weight: bold;
+    margin-bottom: 15px;
+    margin-top: 15px;
+}
+
+.l-wrapper .p-nappi {
+    color: white;
+    margin: 0;
+    width: 150px;
+}
+
+.nappi {
+    justify-content: flex-end;
+    display: flex; 
+    margin-top: 20px;
+}
+
+.l-wrapper input, .l-wrapper select {
+    border: none;
+    background-color: #1b325917;
+    height: 50px;
+    width: 400px;
+    padding: 10px;
+}
+
+.pa-la {
+    color: #df2070;
+    text-decoration: none;
+}
+
+
+
+/* POISTA JA MUOKKAA */
+
+.p-wrapper .l-teksti{
+    width: 400px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.p-wrapper .l-teksti p {
+    font-size: 23px;
+}
+
+.p-wrapper .nappi, .mt .p-nappi {
+    justify-content: center;
+    display: flex; 
+    gap: 20px;
+    color: white !important;
+}
+
+.p-wrapper .p-nappi {
+    width: 100px;
+}
+
+.mt {
+    padding: 50px;
+}
+
+.mt .jutut {
+    width: 600px;
+    padding: 100px;
+}
+
+.l-wrapper input#tuotekuva-clear_id {
+    width: 15px;
+    height:15px;
+    margin-bottom: 15px;
+    margin-left: 15px;
+}
+
+.l-wrapper input#id_tuotekuva {
+    width: 330px;
+}
+
+
+
+/* MUOKKAA KÄYTTÄJÄÄ / ASETUKSET */
+
+
+.a-wrapper span.helptext {
+    display: none;
+}
+
+.a-wrapper p {
+    margin-top: 15px;
+}
+
+.a-wrapper {
+    background-color: #112444
+}
+
+.a-wrapper li {
+    color: grey;
+    list-style: none;
+}
+
+
+
+/* REKISTERÖITYMINEN */
+
+.r-kortti input {
+        width: 350px;
+        height: 50px;
+        margin: 5px;
+        background-color: rgb(238, 238, 238);
+        border: none;
+        padding: 5px;
+        border-radius: none;
+}
+
+.r-kortti .p-nappi {
+    width: 350px;
+}
+
+.r-kortti {
+    width: 650px;
+    height: 725px;
+}
+
+.r-kortti .logo {
+    margin-top: 15px; 
+}
+
+.r-kortti .ohje {
+    margin-top: 15px;
+}
+
+
+
+
+/* LISÄÄ TUOTE */
+
+.lt .label{
+    margin: 10px;
+    padding: 0;
+}
+
+.lt input#id_tuotekuva {
+    width: 400px;
+}
+
+
+/* VIRHEKOODIT */
+
+.v403 p, .v403 a {
+    font-size: 20px;
+}
+
+.v403 a:hover {
+    color: #b31e5c;
+    transition: 0,5s;
+}
+
+.v-jutut {
+    text-align: center;
+    width: 500px;
+}

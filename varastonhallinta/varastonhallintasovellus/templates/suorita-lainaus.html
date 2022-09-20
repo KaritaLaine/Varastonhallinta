@@ -2,31 +2,34 @@
 
 {% block title %}Suorita Lainaus{% endblock %}
 
-{% comment %} {% block css %}
-{% load static %}
-    <link rel="stylesheet"  type="text/css" href="{% static "lisaa-tuote.css" %}">
-{% endblock %}{% endcomment %}
-
 {% block content %}
-    <h1>Suorita Lainaus</h1>
-    <form method="POST">
-        {% csrf_token %}
+<div class="l-wrapper">
+    <div class="jutut">
+        <div class="l-teksti">
+            <p>Suorita <p class="pa-la">&nbsp;lainaus</p>
+        </div>
 
-        {% if messages %}
-            {% for message in messages %}
-                {{ message }}
+        <form method="POST">
+            {% csrf_token %}
+
+            {% if messages %}
+                {% for message in messages %}
+                    {{ message }}
+                {% endfor %}
+            {% endif %}
+
+            {% for field in form %}
+                <div class="form-control {% if field.error %}errors{% endif %}">
+                    <div class="label">{{ field.label_tag }}</div>
+                    {{ field }}
+                    {{ field.errors }}
+                </div>
             {% endfor %}
-        {% endif %}
 
-        {% for field in form %}
-            <div class="form-control {% if field.error %}errors{% endif %}">
-                {{ field.label_tag }}
-                {{ field }}
-                {{ field.errors }}
+            <div class ="nappi">
+                <button class="p-nappi" type="submit">Vahvista</button>
             </div>
-        {% endfor %}
-
-        <button type="submit">Vahvista</button>
-        
-    </form>
+        </form>
+    </div>
+</div>
 {% endblock %}

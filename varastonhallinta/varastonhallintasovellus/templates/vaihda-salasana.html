@@ -1,14 +1,21 @@
 {% extends "base.html" %}
 
-{% block title %}Vaihda salasanasi{% endblock %}
+{% block title %}Vaihda salasana{% endblock %}
 
 {% block content %}
-    <main>
-        <h2>Vaihda salasanasi...</h2>
+<div class="l-wrapper a-wrapper">
+    <div class="jutut">
+        <div class="l-teksti">
+            <p>Vaihda salasana</p>
+        </div>
+
         <form method="POST">
             {% csrf_token %}
             {{ form.as_p }}
-            <button type="submit">Vaihda salasanasi</button>
+            <div class ="nappi">
+                <button class="p-nappi" type="submit">Vaihda salasana</button>
+            </div>
         </form>
-    </main>
+    </div>
+</div>
 {% endblock %}

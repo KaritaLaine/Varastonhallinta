@@ -210,7 +210,7 @@ def lainattavat(request):
     tuotteet = Tuote.objects.filter(kappalemaara__gt=F('kappalemaara_lainassa'))
     maara = tuotteet.count()
     # Asetetaan pagination eli sivutus
-    per_page = 5
+    per_page = 20
     paginator = Paginator(tuotteet, per_page)
     sivunumero = request.GET.get('sivu', 1)
     sivu_obj = paginator.get_page(sivunumero)
@@ -223,7 +223,7 @@ def lainattavat(request):
         }
     return render(request, 'lainattavat.html', context)
 
-
+# Käytetään XMLHttp-apia ajax-pyyntöjen luomiseen.
 def is_ajax(request):
     return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
 
@@ -232,30 +232,38 @@ def is_ajax(request):
 def haku_tulokset(request):
     if is_ajax(request=request):
         response = None
-        tuote = request.POST.get('tuote')
-        tuotteet = Tuote.objects.filter(nimike__icontains=tuote).filter(kappalemaara__gt=F('kappalemaara_lainassa'))
-        if len(tuotteet) > 0 and len(tuote) > 0:
+         # Haku-muuttujaan tallennetaan käyttäjän antama tuote-hakuteksti.
+        haku = request.POST.get('tuote')
+        # Tuotteet-muuttujaan tallennetaan hakutulokset, eli haut jotka vastaavat Tuote-taulussa olevaa nimikettä.
+        tuotteet = Tuote.objects.filter(nimike__icontains=haku).filter(kappalemaara__gt=F('kappalemaara_lainassa'))
+        
+        # Tallennetaan jokaisesta hakutuloksesta pk, nimike, tuotekuva ja kappalemäärä item-sanakirjaan.
+        if len(tuotteet) > 0 and len(haku) > 0:
             data = []
-            for objekti in tuotteet:
-                iteemit = {
-                    'pk': objekti.pk,
-                    'nimike': objekti.nimike,
-                    'tuotekuva': str(objekti.tuotekuva.url),
-                    'kappalemaara': objekti.kappalemaara,
-                    'tuoteryhma': str(objekti.tuoteryhma),
-                    'valmistaja': objekti.valmistaja,
-                    'hankintapaikka': objekti.hankintapaikka,
-                    'hankintapaiva' : objekti.hankintapaiva,
-                    'hankintahinta': objekti.hankintahinta,
-                    'laskun_numero': objekti.laskun_numero,
-                    'kustannuspaikka': objekti.kustannuspaikka,
-                    'takuuaika': (objekti.takuuaika),
+            for pos in tuotteet:
+                itemit = {
+                    'pk': pos.pk,
+                    'nimike': pos.nimike,
+                    'tuotekuva': str(pos.tuotekuva.url),
+                    'kappalemaara': pos.kappalemaara,
+                    'tuoteryhma': str(pos.tuoteryhma),
+                    'valmistaja': pos.valmistaja,
+                    'hankintapaikka': pos.hankintapaikka,
+                    'hankintapaiva' : pos.hankintapaiva,
+                    'hankintahinta': pos.hankintahinta,
+                    'laskun_numero': pos.laskun_numero,
+                    'kustannuspaikka': pos.kustannuspaikka,
+                    'takuuaika': (pos.takuuaika),
                 }
-
-                data.append(iteemit)
+                # Lisätään itemit data-listaan ja sen jälkeen response-muuttujaan.
+                data.append(itemit)
             response = data
+        
+        # Jos hakutuloksia ei ole, tallennetaan response-muuttujaan "Ei hakutulosta.."-teksti.
         else:
             response = '</br> <b>Ei hakutulosta..</b>'
+            
+        # Response-muuttuja palautetaan.
         return JsonResponse({'data': response})
     return JsonResponse({})
 
@@ -266,7 +274,7 @@ def palautettavat(request):
     varastotapahtumat = Varastotapahtuma.objects.filter(tyyppi='lainaus')
     maara = Varastotapahtuma.objects.all().count()
     # Asetetaan pagination eli sivutus
-    per_page = 5
+    per_page = 20
     paginator = Paginator(varastotapahtumat, per_page)
     sivunumero = request.GET.get('sivu', 1)
     sivu_obj = paginator.get_page(sivunumero)
@@ -288,13 +296,13 @@ def varastotapahtuma_hakutulokset(request):
         varastotapahtumat = Varastotapahtuma.objects.filter(tuote__nimike__icontains=tapahtuma)
         if len(varastotapahtumat) > 0 and len(tapahtuma) > 0:
             data = []
-            for objekti in varastotapahtumat:
+            for pos in varastotapahtumat:
                 iteemit = {
-                    'pk':objekti.pk,
-                    'nimike': objekti.tuote.nimike,
-                    'tuotekuva': str(objekti.tuote.tuotekuva.url),
-                    'kappalemaara': objekti.tuote.kappalemaara_lainassa,
-                    'lainaaja': str(objekti.asiakas),
+                    'pk':pos.pk,
+                    'nimike': pos.tuote.nimike,
+                    'tuotekuva': str(pos.tuote.tuotekuva.url),
+                    'kappalemaara': pos.tuote.kappalemaara_lainassa,
+                    'lainaaja': str(pos.asiakas),
                 }
                 data.append(iteemit)
             response = data
