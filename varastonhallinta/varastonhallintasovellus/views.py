@@ -8,7 +8,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 # Importit class näkymän parametrille joka vaatii käyttäjää
 # olemaan sisäänkirjautuneena nähdäkseen sivun (funktionäkymät)
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 # Importit "testeille joiden käyttäjien on läpäistävä" jotta he pääsevät tietyille sivulle (class näkymät)
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 # Import class näkymä tyypille jonka avulla käyttäjä voi vaihtaa salasanansa
@@ -21,7 +21,6 @@ from django.db.models import F
 # Import 404 (sivua ei löydy) näkymään
 from django.http import Http404, HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
-from django.urls import reverse
 # Importit class näkymä tyypeille
 from django.views import View
 from django.views.generic import ListView, UpdateView
@@ -68,7 +67,7 @@ class KaikkiKayttajatUserMixin(EiOikeuttaUserMixin, UserPassesTestMixin):
     Pääsyoikeidet kaikille käyttäjätyypeille --> esim etusivua varten
     --> Tätä classia käytetään parametrina tietyissä class näkymissä.
     """
-    
+
     def test_func(self):
         if self.request.user.rooli in kaikki_kayttajatyypit:
             return True
@@ -79,7 +78,7 @@ class PaakayttajatUserMixin(EiOikeuttaUserMixin, UserPassesTestMixin):
     Pääsyoikeidet kaikille pääkäyttäjäjille --> varastonhoitajat, opettajat, hallinto jne.
     --> Tätä classia käytetään parametrina tietyissä class näkymissä.
     """
-    
+
     def test_func(self):
         if self.request.user.rooli in paakayttajat:
             return True
@@ -90,7 +89,7 @@ class VarastonhoitajatUserMixin(EiOikeuttaUserMixin, UserPassesTestMixin):
     Pääsyoikeidet henkilökunnalle --> opettajat, hallinto.
     --> Tätä classia käytetään parametrina tietyissä class näkymissä.
     """
-    
+
     def test_func(self):
         if self.request.user.rooli in varastonhoitajat:
             return True
@@ -101,10 +100,17 @@ class HenkilokuntaUserMixin(EiOikeuttaUserMixin, UserPassesTestMixin):
     Pääsyoikeidet henkilökunnalle --> opettajat, hallinto.
     --> Tätä classia käytetään parametrina tietyissä class näkymissä.
     """
-    
+
     def test_func(self):
         if self.request.user.rooli in henkilokunta:
             return True
+
+
+def role_check(user):
+    if user.rooli != 'oppilas':
+        return True
+    
+    raise PermissionDenied()
 
 
 class RekisteroityminenView(CreateView):
@@ -133,7 +139,12 @@ class MuokkaaKayttajaaView(KaikkiKayttajatUserMixin, UpdateView):
     template_name = 'muokkaa-kayttajaa.html'
 
     def get_object(self):
-      return self.request.user
+        return self.request.user
+
+    def get_form_kwargs(self):
+        kwargs = super(MuokkaaKayttajaaView, self).get_form_kwargs()
+        kwargs['kayttajan_rooli'] = self.request.user.rooli
+        return kwargs
 
     def form_valid(self, form):
         messages.success(self.request, f'Tietojasi on nyt muokattu!')
@@ -193,8 +204,8 @@ class EtusivuView(KaikkiKayttajatUserMixin, TemplateView):
     template_name = 'etusivu.html'
 
 
-
 @login_required
+@user_passes_test(role_check)
 def lainattavat(request):
     tuotteet = Tuote.objects.filter(kappalemaara__gt=F('kappalemaara_lainassa'))
     maara = tuotteet.count()
@@ -217,6 +228,7 @@ def is_ajax(request):
     return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
 
 # Ajax hakuominaisuus
+@user_passes_test(role_check)
 def haku_tulokset(request):
     if is_ajax(request=request):
         response = None
@@ -256,8 +268,8 @@ def haku_tulokset(request):
     return JsonResponse({})
 
 
-
 @login_required
+@user_passes_test(role_check)
 def palautettavat(request):
     varastotapahtumat = Varastotapahtuma.objects.filter(tyyppi='lainaus')
     maara = Varastotapahtuma.objects.all().count()
@@ -276,6 +288,7 @@ def palautettavat(request):
         }
     return render(request, 'palautettavat.html', context)
 
+@user_passes_test(role_check)
 def varastotapahtuma_hakutulokset(request):
     if is_ajax(request=request):
         response = None
@@ -297,7 +310,6 @@ def varastotapahtuma_hakutulokset(request):
             response = '</br> <b>Ei hakutulosta..</b>'
         return JsonResponse({'data': response})
     return JsonResponse({})
-
 
     
 class HallintaView(PaakayttajatUserMixin, ListView):
@@ -370,6 +382,11 @@ class LainaaTuoteView(VarastonhoitajatUserMixin, CreateView):
     template_name = 'suorita-lainaus.html'
     success_url = '/lainattavat/'
 
+    def get_form_kwargs(self):
+        kwargs = super(LainaaTuoteView, self).get_form_kwargs()
+        kwargs['viivakoodi'] = get_object_or_404(Tuote, pk=self.kwargs.get('pk')).viivakoodi
+        return kwargs
+
     def get_initial(self):
         varastonhoitaja = self.request.user
         tuote = get_object_or_404(Tuote, pk=self.kwargs.get('pk'))
@@ -385,6 +402,8 @@ class LainaaTuoteView(VarastonhoitajatUserMixin, CreateView):
 
     def form_valid(self, form):
         try:
+            # 'get_object_or_404' already does the 'try/excerpt' does that for you!
+            # MOVE IT OUTSIDE OF IT IF POSSIBLE!
             tuote = get_object_or_404(Tuote, pk=self.kwargs.get('pk'))
             maara = form.cleaned_data['maara']
             tuote.kappalemaara_lainassa += maara
@@ -402,6 +421,12 @@ class PalautaTuoteView(VarastonhoitajatUserMixin, UpdateView):
     template_name = 'suorita-palautus.html'
     success_url = '/palautettavat/'
 
+    def get_form_kwargs(self):
+        kwargs = super(PalautaTuoteView, self).get_form_kwargs()
+        tuote = get_object_or_404(Varastotapahtuma, pk=self.kwargs.get('pk')).tuote
+        kwargs['viivakoodi'] = get_object_or_404(Tuote, nimike=tuote).viivakoodi
+        return kwargs
+
     def get_initial(self):
         varasto = Varasto.objects.get(nimi='Koululla')
         return {
@@ -411,6 +436,8 @@ class PalautaTuoteView(VarastonhoitajatUserMixin, UpdateView):
 
     def form_valid(self, form):
         try:
+            # 'get_object_or_404' already does the 'try/excerpt' does that for you!
+            # MOVE IT OUTSIDE OF IT IF POSSIBLE!
             tuote = get_object_or_404(Tuote, nimike=form.cleaned_data['tuote'])
             maara = form.cleaned_data['maara']
             tuote.kappalemaara_lainassa -= maara

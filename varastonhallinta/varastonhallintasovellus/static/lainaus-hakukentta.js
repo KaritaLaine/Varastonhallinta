@@ -78,4 +78,4 @@ hakusyote.addEventListener('keyup', e=>{
     }
     // Siirretään event data lahetaHakuData-funktioon.
     lahetaHakuData(e.target.value);
-}) 
+})
