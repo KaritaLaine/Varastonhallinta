@@ -46,7 +46,7 @@
                         </thead>
                     </div>
                         <tbody>
-                            {% for tuote in tuotteet %}
+                            {% for tuote in tuotelista %}
                                 <tr>
                                     <td><img src="{{ tuote.tuotekuva.url }}" class="tuotekuva" alt="Tuotekuva"></td>
                                     <td>{{tuote.nimike}}</td>
@@ -89,23 +89,29 @@
         </div> </br> </br>
 
 
-        <!-- Pagination, eli sivutus -->
+        <!-- Pagination -->
         <nav>   
             <div class="p-koko" id="pagination">
-                {% if tuotteet.has_previous %}
-                    <a class="edellinen eka" href="?sivu={{ tuotteet.previous_page_number }}"> &laquo</a>
+                <!-- Jos tuotelistalla on edellinen sivu, tulostuu nuoli vasemmalle: «. -->
+                {% if tuotelista.has_previous %}
+                    <a class="edellinen eka" href="?sivu={{ tuotelista.previous_page_number }}"> &laquo</a>
                 {% endif %}
 
+                <!-- Käydään läpi ja tulostetaan jokainen sivunumero. -->
                 {% for i in paginator.page_range %}
-                    {% if i == sivunumero %}
+                    <!-- Jos sivu on auki, siihen lisätään is-active-class, 
+                         jota kautta sen ulkonäköä voidaan muokata normaalista poikkeavaksi. -->
+                    {% if i == sivut %}
                         <a class="is-active sivu-linkki {% if maara <= per_page %} hidden {%endif%}" href="?sivu={{ i }}"> {{i}} </a>
+                    <!-- Muuten sivunumerot tulostetaan normaalisti. -->
                     {% else %}
                         <a class="numero" href="?sivu={{ i }}"> {{i}} </a>
                     {% endif %}
                 {% endfor %}
-
-                {% if tuotteet.has_next %}
-                    <a class="seuraava vika" href="?sivu={{ tuotteet.next_page_number }}">&raquo</a>
+                
+                <!-- Jos tuotelistalla on seuraava sivu, tulostuu nuoli oikealle: ». -->
+                {% if tuotelista.has_next %}
+                    <a class="seuraava vika" href="?sivu={{ tuotelista.next_page_number }}">&raquo</a>
                 {% endif %}
             </div>
         </nav>
