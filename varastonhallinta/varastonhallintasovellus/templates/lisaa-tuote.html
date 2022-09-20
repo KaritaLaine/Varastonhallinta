@@ -2,14 +2,13 @@
 
 {% block title %}Lisää Tuote{% endblock %}
 
-{% block css %}
-{% load static %}
-    <link rel="stylesheet"  type="text/css" href="{% static "lisaa-tuote.css" %}">
-{% endblock %}
-
 {% block content %}
-    <div id="sivun-sisalto">
-        <h1>Lisää Tuote</h1>
+<div class="l-wrapper lt">
+    <div class="jutut">
+        <div class="l-teksti">
+            <p class="pa-la"> Lisää&nbsp;</p> <p>tuote</p>
+        </div>
+
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
 
@@ -17,18 +16,20 @@
                 {% for message in messages %}
                     {{ message }}
                 {% endfor %}
-            {% endif %} 
+            {% endif %}
 
             {% for field in form %}
-                <div class="form-control {% if field.error %}errors{% endif %}">
-                    {{ field.label_tag }}
+                <div class="form-control{% if field.error %}errors{% endif %}">
+                    <div class="label">{{ field.label_tag }}</div>
                     {{ field }}
                     {{ field.errors }}
                 </div>
             {% endfor %}
 
-            <button id="lisaa-tuote-nappi" type="submit">Lisää Tuote</button>
-            
+            <div class ="nappi">
+                <button class="p-nappi" type="submit">Lisää tuote</button>
+            <div>
         </form>
     </div>
+</div>
 {% endblock %}
