@@ -16,7 +16,7 @@
     <div class = "lainaus-keskita">
         <h1 class="iso_otsikko" id="lainaus-otsikko">Lainaa tuote</h1>
         <p class="lainaus-ohjeteksti"> Lainaa varastossa olevia tuotteita sinisen Lainaa-napin avulla.</br> </br>
-        
+
         <!-- Hakukenttä -->
         <div class = "hakukentta-wrap">
             <div class="vasen-hakukentta">
@@ -58,7 +58,7 @@
                 </table>
             </div>
         </div>
-        
+
         <!-- Taulukon tulosnäkymä -->
         <div class="taulukko-tulos ">
             <div class="scroll-wrap tulos-wrap">
@@ -74,7 +74,7 @@
                         </thead>
                     </div>
                     <tbody class="piilossa" id="tulos-taulukko">
-                        <!-- Tänne tulostuu hakukentta.js-tiedostosta 
+                        <!-- Tänne tulostuu hakukentta.js-tiedostosta
                             taulurivejä -->
                     </tbody>
                 </table>
@@ -83,14 +83,14 @@
                     <!-- Ei tulosta -näkymä -->
                     <div class="ei-tulosta">
                         </br><p><b> Ei hakutulosta </b></p>
-                    </div> 
+                    </div>
                 {% endcomment %}
             </div>
         </div> </br> </br>
 
 
         <!-- Pagination, eli sivutus -->
-        <nav>   
+        <nav>
             <div class="p-koko" id="pagination">
                 {% if tuotteet.has_previous %}
                     <a class="edellinen eka" href="?sivu={{ tuotteet.previous_page_number }}"> &laquo</a>

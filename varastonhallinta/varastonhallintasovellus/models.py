@@ -1,3 +1,5 @@
+from enum import unique
+
 from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
@@ -67,7 +69,7 @@ class Tuoteryhma(models.Model):
 
 
 class Tuote(models.Model):
-    viivakoodi = models.CharField(max_length=30)
+    viivakoodi = models.CharField(max_length=30, unique=True)
     nimike = models.CharField(max_length=100, unique=True)
     valmistaja = models.CharField(max_length=100, null=True, blank=True)
     kappalemaara = models.PositiveIntegerField(

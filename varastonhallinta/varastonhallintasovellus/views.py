@@ -109,7 +109,7 @@ class HenkilokuntaUserMixin(EiOikeuttaUserMixin, UserPassesTestMixin):
 def role_check(user):
     if user.rooli != 'oppilas':
         return True
-    
+
     raise PermissionDenied()
 
 
@@ -208,6 +208,11 @@ class EtusivuView(KaikkiKayttajatUserMixin, TemplateView):
 @user_passes_test(role_check)
 def lainattavat(request):
     tuotteet = Tuote.objects.filter(kappalemaara__gt=F('kappalemaara_lainassa'))
+
+    for tuote in tuotteet:
+        if tuote.kappalemaara_lainassa > 0:
+            tuote.kappalemaara -= tuote.kappalemaara_lainassa
+
     maara = tuotteet.count()
     # Asetetaan pagination eli sivutus
     per_page = 20
@@ -215,7 +220,7 @@ def lainattavat(request):
     sivunumero = request.GET.get('sivu', 1)
     sivu_obj = paginator.get_page(sivunumero)
     context = {
-        'tuotteet':sivu_obj, 
+        'tuotteet':sivu_obj,
         'paginator':paginator,
         'sivunumero': int(sivunumero),
         'maara':int(maara),
@@ -236,7 +241,7 @@ def haku_tulokset(request):
         haku = request.POST.get('tuote')
         # Tuotteet-muuttujaan tallennetaan hakutulokset, eli haut jotka vastaavat Tuote-taulussa olevaa nimikettä.
         tuotteet = Tuote.objects.filter(nimike__icontains=haku).filter(kappalemaara__gt=F('kappalemaara_lainassa'))
-        
+
         # Tallennetaan jokaisesta hakutuloksesta pk, nimike, tuotekuva ja kappalemäärä item-sanakirjaan.
         if len(tuotteet) > 0 and len(haku) > 0:
             data = []
@@ -258,11 +263,11 @@ def haku_tulokset(request):
                 # Lisätään itemit data-listaan ja sen jälkeen response-muuttujaan.
                 data.append(itemit)
             response = data
-        
+
         # Jos hakutuloksia ei ole, tallennetaan response-muuttujaan "Ei hakutulosta.."-teksti.
         else:
             response = '</br> <b>Ei hakutulosta..</b>'
-            
+
         # Response-muuttuja palautetaan.
         return JsonResponse({'data': response})
     return JsonResponse({})
@@ -280,7 +285,7 @@ def palautettavat(request):
     sivu_obj = paginator.get_page(sivunumero)
     context = {
         'varastotapahtuma' : varastotapahtumat,
-        'varastotapahtumat':sivu_obj, 
+        'varastotapahtumat':sivu_obj,
         'paginator':paginator,
         'sivunumero': int(sivunumero),
         'maara':int(maara),
@@ -311,7 +316,7 @@ def varastotapahtuma_hakutulokset(request):
         return JsonResponse({'data': response})
     return JsonResponse({})
 
-    
+
 class HallintaView(PaakayttajatUserMixin, ListView):
     """
     Vain pääkäyttäjät (varastonhoitaja', 'opettaja', 'hallinto) pääsevät hallinta
