@@ -207,25 +207,32 @@ class EtusivuView(KaikkiKayttajatUserMixin, TemplateView):
 @login_required
 @user_passes_test(role_check)
 def lainattavat(request):
-    tuotteet = Tuote.objects.filter(kappalemaara__gt=F('kappalemaara_lainassa'))
+    tuotelista = Tuote.objects.filter(kappalemaara__gt=F('kappalemaara_lainassa'))
+    maara = tuotelista.count()
 
-    for tuote in tuotteet:
+    for tuote in tuotelista:
         if tuote.kappalemaara_lainassa > 0:
             tuote.kappalemaara -= tuote.kappalemaara_lainassa
 
-    maara = tuotteet.count()
-    # Asetetaan pagination eli sivutus
+    # Asetetaan pagination eli sivutus. Muokkaa sivulla olevien
+    #   itemien määrää vaihtamalla muuttujaa "per_page".
     per_page = 20
-    paginator = Paginator(tuotteet, per_page)
-    sivunumero = request.GET.get('sivu', 1)
-    sivu_obj = paginator.get_page(sivunumero)
+    paginator = Paginator(tuotelista, per_page)
+    # GET-pyyntö, joka pitää kirjaa sivuista.
+    sivut = request.GET.get('sivu', 1)
+    tuotteet = paginator.get_page(sivut)
+
+    # Context-sanakirja, johon tallennetaan kaikki
+    #   palautettavat muuttujat.
     context = {
-        'tuotteet':sivu_obj,
+        'tuotelista':tuotteet,
         'paginator':paginator,
-        'sivunumero': int(sivunumero),
+        'sivut': int(sivut),
         'maara':int(maara),
         'per_page': int(per_page)
         }
+
+     # Palautetaan context ja html-näkymä.
     return render(request, 'lainattavat.html', context)
 
 # Käytetään XMLHttp-apia ajax-pyyntöjen luomiseen.
